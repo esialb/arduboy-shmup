@@ -19,11 +19,12 @@ Enemy::Enemy() {
 	bullets = enemy_bullets;
 	bullets_size = 1;
 
-	bullets[0].dx = -2;
+	bullets[0].dx = -1;
 	bullets[0].dy = 0;
 
 	dx = -1;
 	dy = 0;
+	fm = 3;
 }
 
 Enemy::~Enemy() {

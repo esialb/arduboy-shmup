@@ -16,7 +16,7 @@ public:
 	Enemy();
 	virtual ~Enemy();
 
-	int dx, dy;
+	int dx, dy, fm;
 
 	Bullet enemy_bullets[1];
 };
