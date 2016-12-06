@@ -23,6 +23,7 @@ public:
 	static const unsigned char BULLET_MASK[];
 
 	static void draw(Arduboy &arduboy, const unsigned char *sprite, const unsigned char *mask, int x, int y);
+	static bool collides(int x1, int y1, const unsigned char *m1, int x2, int y2, const unsigned char *m2);
 };
 
 #endif /* SRC_SPRITES_H_ */

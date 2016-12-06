@@ -21,6 +21,9 @@ public:
 
 	int x, y;
 	int dx, dy;
+
+	unsigned char *sprite;
+	unsigned char *mask;
 };
 
 #endif /* SRC_BULLET_H_ */

@@ -8,10 +8,13 @@
 #include <Arduboy.h>
 #include "Sprites.h"
 #include "Player.h"
+#include "Enemy.h"
 
 Arduboy arduboy;
 
 Player player;
+const int enemies_size = 2;
+Enemy enemies[enemies_size];
 
 bool firing;
 
@@ -21,6 +24,13 @@ void setup() {
 	arduboy.display();
 
 	arduboy.setFrameRate(60);
+}
+
+void update_bullet(Bullet *b) {
+	b->x += b->dx;
+	b->y += b->dy;
+	if(b->x <= -8 || b->x >= 128 || b->y <= -8 || b->y >= 64)
+		b->active = false;
 }
 
 void loop() {
@@ -37,10 +47,7 @@ void loop() {
 	for(int i = 0; i < player.bullets_size; i++) {
 		if(player.bullets[i].active) {
 			Bullet *b = player.bullets + i;
-			b->x += b->dx;
-			b->y += b->dy;
-			if(b->x <= -8 || b->x >= 128 || b->y <= -8 || b->y >= 64)
-				b->active = false;
+			update_bullet(b);
 		}
 	}
 	if(arduboy.pressed(A_BUTTON)) {
@@ -59,6 +66,36 @@ void loop() {
 	} else {
 		firing = false;
 	}
+	for(int i = 0; i < enemies_size; i++) {
+		Enemy *e = enemies + i;
+		if(!e->active) {
+			if(random(0,63) < 62)
+				continue;
+			e->x = 120;
+			e->y = random(0, 63);
+			e->active = true;
+		}
+		e->x += e->dx;
+		e->y += e->dy;
+		if(e->x <= -8 || e->x >= 128 || e->y <= -8 || e->y >= 64) {
+			e->active = false;
+			for(size_t j = 0; j < e->bullets_size; j++)
+				e->bullets[j].active = false;
+		}
+		else {
+			for(size_t j = 0; j < e->bullets_size; j++) {
+				update_bullet(e->bullets + j);
+				if(!e->bullets[j].active) {
+					if(random(0, 63) < 60)
+						continue;
+					Bullet *b = e->bullets + j;
+					b->active = true;
+					b->x = e->x - 8;
+					b->y = e->y;
+				}
+			}
+		}
+	}
 
 	arduboy.fillScreen(WHITE);
 
@@ -69,6 +106,8 @@ void loop() {
 	arduboy.drawFastVLine(96 + lh, 0, 64, BLACK);
 
 	player.draw(arduboy);
+	for(int i = 0; i < enemies_size; i++)
+		enemies[i].draw(arduboy);
 
 	arduboy.display();
 }

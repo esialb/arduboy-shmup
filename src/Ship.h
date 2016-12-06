@@ -21,6 +21,7 @@ public:
 
 	int x;
 	int y;
+	bool active;
 
 	Bullet *bullets;
 	size_t bullets_size;

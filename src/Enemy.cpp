@@ -14,12 +14,16 @@ Enemy::Enemy() {
 	mask = Sprites::ENEMY_MASK;
 	x = 0;
 	y = 28;
+	active = false;
 
 	bullets = enemy_bullets;
 	bullets_size = 1;
 
-	bullets[0].dx = -1;
+	bullets[0].dx = -2;
 	bullets[0].dy = 0;
+
+	dx = -1;
+	dy = 0;
 }
 
 Enemy::~Enemy() {

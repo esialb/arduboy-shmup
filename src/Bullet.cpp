@@ -10,6 +10,8 @@
 
 Bullet::Bullet() {
 	active = false;
+	sprite = Sprites::BULLET;
+	mask = Sprites::BULLET_MASK;
 }
 
 Bullet::~Bullet() {
@@ -18,5 +20,5 @@ Bullet::~Bullet() {
 
 void Bullet::draw(Arduboy &arduboy) {
 	if(active)
-		Sprites::draw(arduboy, Sprites::BULLET, Sprites::BULLET_MASK, x, y);
+		Sprites::draw(arduboy, sprite, mask, x, y);
 }
