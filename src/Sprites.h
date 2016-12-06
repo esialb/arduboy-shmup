@@ -13,19 +13,19 @@
 
 class Sprites {
 public:
-	static const unsigned char PLAYER[];
-	static const unsigned char PLAYER_MASK[];
+	static const uint8_t PLAYER[];
+	static const uint8_t PLAYER_MASK[];
 
-	static const unsigned char ENEMY[];
-	static const unsigned char ENEMY_MASK[];
+	static const uint8_t ENEMY[];
+	static const uint8_t ENEMY_MASK[];
 
-	static const unsigned char BULLET[];
-	static const unsigned char BULLET_MASK[];
+	static const uint8_t BULLET[];
+	static const uint8_t BULLET_MASK[];
 
 	static bool invert;
 
-	static void draw(Arduboy &arduboy, const unsigned char *sprite, const unsigned char *mask, int x, int y);
-	static bool collides(int x1, int y1, const unsigned char *m1, int x2, int y2, const unsigned char *m2);
+	static void draw(Arduboy &arduboy, const uint8_t *sprite, const uint8_t *mask, int x, int y);
+	static bool collides(int x1, int y1, const uint8_t *m1, int x2, int y2, const uint8_t *m2);
 };
 
 #endif /* SRC_SPRITES_H_ */

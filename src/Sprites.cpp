@@ -8,7 +8,7 @@
 #include <Sprites.h>
 #include <avr/pgmspace.h>
 
-const unsigned char Sprites::PLAYER[] PROGMEM = {
+const uint8_t Sprites::PLAYER[] PROGMEM = {
 		0b00011000,
 		0b11100111,
 		0b10000001,
@@ -19,18 +19,18 @@ const unsigned char Sprites::PLAYER[] PROGMEM = {
 		0b00011000,
 };
 
-const unsigned char Sprites::PLAYER_MASK[] PROGMEM = {
+const uint8_t Sprites::PLAYER_MASK[] PROGMEM = {
+		0b00000000,
 		0b00011000,
-		0b11111111,
-		0b11111111,
 		0b01111110,
 		0b00111100,
-		0b00111100,
-		0b00111100,
 		0b00011000,
+		0b00011000,
+		0b00011000,
+		0b00000000,
 };
 
-const unsigned char Sprites::ENEMY[] PROGMEM = {
+const uint8_t Sprites::ENEMY[] PROGMEM = {
 		0b00011000,
 		0b00100100,
 		0b00100100,
@@ -41,18 +41,18 @@ const unsigned char Sprites::ENEMY[] PROGMEM = {
 		0b00011000,
 };
 
-const unsigned char Sprites::ENEMY_MASK[] PROGMEM = {
+const uint8_t Sprites::ENEMY_MASK[] PROGMEM = {
+		0b00000000,
 		0b00011000,
-		0b00111100,
-		0b00111100,
+		0b00011000,
+		0b00011000,
 		0b00111100,
 		0b01111110,
-		0b11111111,
-		0b11111111,
 		0b00011000,
+		0b00000000,
 };
 
-const unsigned char Sprites::BULLET[] PROGMEM = {
+const uint8_t Sprites::BULLET[] PROGMEM = {
 		0b00000000,
 		0b00000000,
 		0b00011000,
@@ -63,46 +63,43 @@ const unsigned char Sprites::BULLET[] PROGMEM = {
 		0b00000000,
 };
 
-const unsigned char Sprites::BULLET_MASK[] PROGMEM = {
+const uint8_t Sprites::BULLET_MASK[] PROGMEM = {
+		0b00000000,
 		0b00000000,
 		0b00000000,
 		0b00011000,
-		0b00111100,
-		0b00111100,
 		0b00011000,
+		0b00000000,
 		0b00000000,
 		0b00000000,
 };
 
 bool Sprites::invert = false;
 
-void Sprites::draw(Arduboy &arduboy, const unsigned char *sprite, const unsigned char *mask, int x, int y) {
+void Sprites::draw(Arduboy &arduboy, const uint8_t *sprite, const uint8_t *mask, int x, int y) {
 	if(mask)
 		arduboy.drawBitmap(x, y, mask, 8, 8, invert ? BLACK : WHITE);
 	if(sprite)
 		arduboy.drawBitmap(x, y, sprite, 8, 8, invert ? WHITE : BLACK);
 }
 
-bool Sprites::collides(int x1, int y1, const unsigned char *m1, int x2, int y2, const unsigned char *m2) {
+bool Sprites::collides(int x1, int y1, const uint8_t *m1, int x2, int y2, const uint8_t *m2) {
 	if(abs(x1-x2) >= 8  || abs(y1 - y2) >= 8)
 		return false;
-	const unsigned char *p1 = m1;
-	const unsigned char *p2 = m2;
-	if(y1 > y2)
-		p2 += (y1 - y2);
-	if(y1 < y2)
-		p1 += (y2 - y1);
-	while(p1 < m1 + 8 && p2 < m2 + 8) {
-		unsigned char c1 = *p1;
-		unsigned char c2 = *p2;
-		if(x1 > x2)
-			c1 = c1 >> (x1 - x2);
-		if(x1 < x2)
-			c1 = c1 << (x2 - x1);
-		if(c1 & c2)
+	int o1 = 0, o2 = 0;
+	if(x1 > x2)
+		o2 = (x1 - x2);
+	if(x1 < x2)
+		o1 = (x2 - x1);
+	for(int i = 0; i < 8 - abs(x1 - x2); i++) {
+		uint8_t c1 = m1[i + o1];
+		uint8_t c2 = m2[i + o2];
+		if(y1 > y2)
+			c1 <<= y1 - y2;
+		if(y1 < y2)
+			c2 <<= y2 - y1;
+		if((c1 & c2) != 0)
 			return true;
-		p1++;
-		p2++;
 	}
 	return false;
 }

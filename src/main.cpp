@@ -21,12 +21,14 @@ int skip_fire = 0;
 
 int score = 0;
 
+bool inverting = false;
+
 void setup() {
 	arduboy.beginNoLogo();
 	arduboy.fillScreen(BLACK);
 	arduboy.display();
 
-	arduboy.setFrameRate(60);
+	arduboy.setFrameRate(15);
 	Sprites::invert = false;
 }
 
@@ -94,6 +96,7 @@ void loop() {
 	} else {
 		skip_fire = 0;
 	}
+	bool collide = false;
 	for(int i = 0; i < enemies_size; i++) {
 		Enemy *e = enemies + i;
 		if(!e->active) {
@@ -135,6 +138,29 @@ void loop() {
 				break;
 			}
 		}
+
+		if(!collide && e->active)
+			collide = Sprites::collides(player.x, player.y, player.mask, e->x, e->y, e->mask);
+		if(!collide) {
+			for(int j = 0; j < e->bullets_size; j++) {
+				Bullet *b = e->bullets + j;
+				if(!b->active)
+					continue;
+				collide = Sprites::collides(player.x, player.y, player.mask, b->x, b->y, b->mask);
+				if(collide)
+					break;
+			}
+		}
+	}
+
+	if(collide) {
+		if(!inverting) {
+			arduboy.invert(true);
+			inverting = true;
+		}
+	} else {
+		inverting = false;
+		arduboy.invert(false);
 	}
 
 	arduboy.fillScreen(WHITE);
