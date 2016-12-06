@@ -9,11 +9,14 @@
 #define SRC_ENEMY_H_
 
 #include <Ship.h>
+#include "Bullet.h"
 
 class Enemy: public Ship {
 public:
-	Enemy(int x, int y);
+	Enemy();
 	virtual ~Enemy();
+
+	Bullet enemy_bullets[1];
 };
 
 #endif /* SRC_ENEMY_H_ */
