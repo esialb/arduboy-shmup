@@ -74,11 +74,13 @@ const unsigned char Sprites::BULLET_MASK[] PROGMEM = {
 		0b00000000,
 };
 
+bool Sprites::invert = false;
+
 void Sprites::draw(Arduboy &arduboy, const unsigned char *sprite, const unsigned char *mask, int x, int y) {
 	if(mask)
-		arduboy.drawBitmap(x, y, mask, 8, 8, WHITE);
+		arduboy.drawBitmap(x, y, mask, 8, 8, invert ? BLACK : WHITE);
 	if(sprite)
-		arduboy.drawBitmap(x, y, sprite, 8, 8, BLACK);
+		arduboy.drawBitmap(x, y, sprite, 8, 8, invert ? WHITE : BLACK);
 }
 
 bool Sprites::collides(int x1, int y1, const unsigned char *m1, int x2, int y2, const unsigned char *m2) {

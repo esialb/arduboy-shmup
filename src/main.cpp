@@ -19,12 +19,15 @@ Enemy enemies[enemies_size];
 int skip_spawn = 0;
 int skip_fire = 0;
 
+int score = 0;
+
 void setup() {
 	arduboy.beginNoLogo();
-	arduboy.fillScreen(WHITE);
+	arduboy.fillScreen(BLACK);
 	arduboy.display();
 
 	arduboy.setFrameRate(60);
+	Sprites::invert = false;
 }
 
 void update_bullet(Bullet *b) {
@@ -57,6 +60,7 @@ void loop() {
 					if(e->active && Sprites::collides(b->x, b->y, b->mask, e->x, e->y, e->mask)) {
 						e->active = false;
 						b->active = false;
+						score += 10;
 						break;
 					}
 					bool nb = true;
@@ -65,6 +69,7 @@ void loop() {
 						if(b2->active && Sprites::collides(b->x, b->y, b->mask, b2->x, b2->y, b2->mask)) {
 							b2->active = false;
 							b->active = false;
+							score += 1;
 							nb = false;
 						}
 					}
@@ -97,6 +102,13 @@ void loop() {
 					e->x = 120;
 					e->y = random(0, 64 - 8);
 					e->active = true;
+					int ry = random(0,4);
+					if(ry == 0)
+						e->dy = -1;
+					else if(ry == 1)
+						e->dy = 1;
+					else
+						e->dy = 0;
 					skip_spawn = 3 + random(0, 6);
 				} else
 					skip_spawn--;
@@ -114,7 +126,7 @@ void loop() {
 		}
 		for(size_t j = 0; j < e->bullets_size; j++) {
 			if(e->active && !e->bullets[j].active) {
-				if(random(0, 96) != 0)
+				if(random(0, 60) != 0)
 					continue;
 				Bullet *b = e->bullets + j;
 				b->active = true;
@@ -128,10 +140,10 @@ void loop() {
 	arduboy.fillScreen(WHITE);
 
 	int lh = 31 - ((arduboy.frameCount >> 3) & 0x1F);
-	arduboy.drawFastVLine(lh, 0, 64, BLACK);
-	arduboy.drawFastVLine(32 + lh, 0, 64, BLACK);
-	arduboy.drawFastVLine(64 + lh, 0, 64, BLACK);
-	arduboy.drawFastVLine(96 + lh, 0, 64, BLACK);
+	arduboy.drawFastVLine(lh, 0, 64, Sprites::invert ? WHITE : BLACK);
+	arduboy.drawFastVLine(32 + lh, 0, 64, Sprites::invert ? WHITE : BLACK);
+	arduboy.drawFastVLine(64 + lh, 0, 64, Sprites::invert ? WHITE : BLACK);
+	arduboy.drawFastVLine(96 + lh, 0, 64, Sprites::invert ? WHITE : BLACK);
 
 	player.draw(arduboy);
 	for(int i = 0; i < enemies_size; i++)

@@ -18,7 +18,7 @@ public:
 
 	int dx, dy, fm;
 
-	Bullet enemy_bullets[2];
+	Bullet enemy_bullets[3];
 };
 
 #endif /* SRC_ENEMY_H_ */

@@ -17,14 +17,13 @@ Enemy::Enemy() {
 	active = false;
 
 	bullets = enemy_bullets;
-	bullets_size = 2;
+	bullets_size = 3;
 
-	bullets[0].dx = -1;
-	bullets[0].dy = 0;
-	bullets[0].fm = 2;
-	bullets[1].dx = -1;
-	bullets[1].dy = 0;
-	bullets[1].fm = 2;
+	for(int i = 0; i < bullets_size; i++) {
+		bullets[i].dx = -1;
+		bullets[i].dy = 0;
+		bullets[i].fm = 2;
+	}
 
 	dx = -1;
 	dy = 0;
