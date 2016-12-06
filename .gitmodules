@@ -1,0 +1,4 @@
+[submodule "lib/Arduboy"]
+	path = lib/Arduboy
+	url = https://github.com/Arduboy/Arduboy.git
+	branch = stable
