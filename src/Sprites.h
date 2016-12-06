@@ -16,6 +16,12 @@ public:
 	static const unsigned char PLAYER[];
 	static const unsigned char PLAYER_MASK[];
 
+	static const unsigned char ENEMY[];
+	static const unsigned char ENEMY_MASK[];
+
+	static const unsigned char BULLET[];
+	static const unsigned char BULLET_MASK[];
+
 	static void draw(Arduboy &arduboy, const unsigned char *sprite, const unsigned char *mask, int x, int y);
 };
 
