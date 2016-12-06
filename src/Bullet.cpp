@@ -6,10 +6,10 @@
  */
 
 #include <Bullet.h>
+#include "Sprites.h"
 
 Bullet::Bullet() {
-	// TODO Auto-generated constructor stub
-
+	active = false;
 }
 
 Bullet::~Bullet() {
@@ -17,5 +17,6 @@ Bullet::~Bullet() {
 }
 
 void Bullet::draw(Arduboy &arduboy) {
-
+	if(active)
+		Sprites::draw(arduboy, Sprites::BULLET, Sprites::BULLET_MASK, x, y);
 }

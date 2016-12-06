@@ -13,6 +13,15 @@ Player::Player() {
 	mask = Sprites::PLAYER_MASK;
 	x = 0;
 	y = 28;
+	bullets = player_bullets;
+	bullets_size = 3;
+
+	bullets[0].dx = 1;
+	bullets[0].dy = 0;
+	bullets[1].dx = 1;
+	bullets[1].dy = 0;
+	bullets[2].dx = 1;
+	bullets[2].dy = 0;
 }
 
 Player::~Player() {

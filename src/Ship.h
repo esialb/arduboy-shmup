@@ -9,6 +9,7 @@
 #define SRC_SHIP_H_
 
 #include <Arduboy.h>
+#include "Bullet.h"
 
 class Ship {
 public:
@@ -20,6 +21,9 @@ public:
 
 	int x;
 	int y;
+
+	Bullet *bullets;
+	size_t bullets_size;
 
 	void draw(Arduboy &arduboy);
 private:

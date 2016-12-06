@@ -1,5 +1,5 @@
 /*
- * Player.h
+lll * Player.h
  *
  *  Created on: Dec 6, 2016
  *      Author: robin
@@ -14,6 +14,8 @@ class Player: public Ship {
 public:
 	Player();
 	virtual ~Player();
+
+	Bullet player_bullets[3];
 };
 
 #endif /* SRC_PLAYER_H_ */

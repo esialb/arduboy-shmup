@@ -17,6 +17,8 @@ public:
 
 	void draw(Arduboy &arduboy);
 
+	bool active;
+
 	int x, y;
 	int dx, dy;
 };

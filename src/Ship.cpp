@@ -20,4 +20,7 @@ Ship::~Ship() {
 
 void Ship::draw(Arduboy &arduboy) {
 	Sprites::draw(arduboy, sprite, mask, x, y);
+
+	for(int i = 0; i < bullets_size; i++)
+		bullets[i].draw(arduboy);
 }
