@@ -13,10 +13,11 @@
 Arduboy arduboy;
 
 Player player;
-const int enemies_size = 2;
+const int enemies_size = 4;
 Enemy enemies[enemies_size];
 
-bool firing;
+int skip_spawn = 0;
+int skip_fire = 0;
 
 void setup() {
 	arduboy.beginNoLogo();
@@ -27,8 +28,10 @@ void setup() {
 }
 
 void update_bullet(Bullet *b) {
-	b->x += b->dx;
-	b->y += b->dy;
+	if(arduboy.frameCount % b->fm == 0) {
+		b->x += b->dx;
+		b->y += b->dy;
+	}
 	if(b->x <= -8 || b->x >= 128 || b->y <= -8 || b->y >= 64)
 		b->active = false;
 }
@@ -51,19 +54,26 @@ void loop() {
 			if(b->active) {
 				for(int j = 0; j < enemies_size; j++) {
 					Enemy *e = enemies + j;
-					if(!e->active)
-						continue;
-					if(Sprites::collides(b->x, b->y, b->mask, e->x, e->y, e->mask)) {
+					if(e->active && Sprites::collides(b->x, b->y, b->mask, e->x, e->y, e->mask)) {
 						e->active = false;
 						b->active = false;
 						break;
+					}
+					bool nb = true;
+					for(int k = 0; nb && k < e->bullets_size; k++) {
+						Bullet *b2 = e->bullets + k;
+						if(b2->active && Sprites::collides(b->x, b->y, b->mask, b2->x, b2->y, b2->mask)) {
+							b2->active = false;
+							b->active = false;
+							nb = false;
+						}
 					}
 				}
 			}
 		}
 	}
 	if(arduboy.pressed(A_BUTTON)) {
-		if(!firing) {
+		if(skip_fire == 0) {
 			for(int i = 0; i < player.bullets_size; i++) {
 				Bullet *b = player.bullets + i;
 				if(b->active)
@@ -73,18 +83,23 @@ void loop() {
 				b->y = player.y;
 				break;
 			}
-			firing = true;
-		}
+			skip_fire = 5;
+		} else
+			skip_fire--;
 	} else {
-		firing = false;
+		skip_fire = 0;
 	}
 	for(int i = 0; i < enemies_size; i++) {
 		Enemy *e = enemies + i;
 		if(!e->active) {
-			if(random(0,63) >= 62) {
-				e->x = 120;
-				e->y = random(0, 63);
-				e->active = true;
+			if(random(0,16) == 0) {
+				if(skip_spawn == 0) {
+					e->x = 120;
+					e->y = random(0, 64 - 8);
+					e->active = true;
+					skip_spawn = 3 + random(0, 6);
+				} else
+					skip_spawn--;
 			}
 		}
 		if(arduboy.frameCount % e->fm == 0) {
@@ -96,13 +111,16 @@ void loop() {
 		}
 		for(size_t j = 0; j < e->bullets_size; j++) {
 			update_bullet(e->bullets + j);
+		}
+		for(size_t j = 0; j < e->bullets_size; j++) {
 			if(e->active && !e->bullets[j].active) {
-				if(random(0, 63) < 60)
+				if(random(0, 96) != 0)
 					continue;
 				Bullet *b = e->bullets + j;
 				b->active = true;
 				b->x = e->x - 8;
 				b->y = e->y;
+				break;
 			}
 		}
 	}

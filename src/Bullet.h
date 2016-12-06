@@ -20,7 +20,7 @@ public:
 	bool active;
 
 	int x, y;
-	int dx, dy;
+	int dx, dy, fm;
 
 	unsigned char *sprite;
 	unsigned char *mask;

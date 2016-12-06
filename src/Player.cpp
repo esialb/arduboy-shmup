@@ -18,12 +18,11 @@ Player::Player() {
 	bullets = player_bullets;
 	bullets_size = 3;
 
-	bullets[0].dx = 2;
-	bullets[0].dy = 0;
-	bullets[1].dx = 2;
-	bullets[1].dy = 0;
-	bullets[2].dx = 2;
-	bullets[2].dy = 0;
+	for(int i = 0; i < bullets_size; i++) {
+		bullets[i].dx = 2;
+		bullets[i].dy = 0;
+		bullets[i].fm = 1;
+	}
 }
 
 Player::~Player() {
