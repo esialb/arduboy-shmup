@@ -28,7 +28,7 @@ void setup() {
 	arduboy.fillScreen(BLACK);
 	arduboy.display();
 
-	arduboy.setFrameRate(15);
+	arduboy.setFrameRate(60);
 	Sprites::invert = false;
 }
 
