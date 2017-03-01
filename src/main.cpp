@@ -196,7 +196,7 @@ void loop() {
 	}
 
 	if(arduboy.pressed(B_BUTTON)) {
-		if(beamf == -1) {
+		if(beamf == -1 && score >= 50) {
 			score -= 50;
 			beamf = 120;
 			beamy = player.y;
