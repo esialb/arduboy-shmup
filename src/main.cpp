@@ -40,6 +40,7 @@ void intro() {
 
 void select_fps() {
 	arduboy.fillScreen(BLACK);
+	arduboy.invert(false);
 	arduboy.setCursor(0, 0);
 	arduboy.print("select framerate");
 	arduboy.setCursor(6, 16);
@@ -141,6 +142,7 @@ void loop() {
 		if(arduboy.pressed(B_BUTTON)) {
 			while(arduboy.pressed(B_BUTTON))
 				;
+			select_fps();
 			gameover = false;
 			player.x = 0;
 			player.y = 28;
