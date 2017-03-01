@@ -25,7 +25,6 @@ bool inverting = false;
 
 bool gameover = false;
 
-int beamy;
 int beamf = 0;
 
 void setup() {
@@ -199,21 +198,20 @@ void loop() {
 		if(beamf == -1 && score >= 50) {
 			score -= 50;
 			beamf = 120;
-			beamy = player.y;
 		} else if(beamf > 0) {
 			beamf--;
 			for(int i = 0; i < enemies_size; i++) {
 				if(enemies[i].x > player.x) {
 					if(Sprites::collides(
 							enemies[i].x, enemies[i].y, enemies[i].mask,
-							enemies[i].x, beamy, Sprites::BEAM_MASK))
+							enemies[i].x, player.y, Sprites::BEAM_MASK))
 						enemies[i].active = false;
 				}
 				for(int j = 0; j < enemies[i].bullets_size; j++) {
 					if(enemies[i].bullets[j].x > player.x) {
 						if(Sprites::collides(
 								enemies[i].bullets[j].x, enemies[i].bullets[j].y, enemies[i].bullets[j].mask,
-								enemies[i].bullets[j].x, beamy, Sprites::BEAM_MASK))
+								enemies[i].bullets[j].x, player.y, Sprites::BEAM_MASK))
 							enemies[i].bullets[j].active = false;
 					}
 				}
