@@ -23,6 +23,11 @@ int score = 0;
 
 bool inverting = false;
 
+bool gameover = false;
+
+int beamy;
+int beamf = 0;
+
 void setup() {
 	arduboy.beginNoLogo();
 	arduboy.fillScreen(BLACK);
@@ -44,6 +49,31 @@ void update_bullet(Bullet *b) {
 void loop() {
 	if(!arduboy.nextFrame())
 		return;
+	bool collide = false;
+
+	if(gameover) {
+		if(arduboy.pressed(B_BUTTON)) {
+			while(arduboy.pressed(B_BUTTON))
+				;
+			gameover = false;
+			player.x = 0;
+			player.y = 28;
+			player.active = true;
+			for(int i = 0; i < player.bullets_size; i++)
+				player.bullets[i].active = false;
+			for(int i = 0; i < enemies_size; i++) {
+				enemies[i].x = 0;
+				enemies[i].y = 28;
+				enemies[i].active = false;
+				for(int j = 0; j < enemies[i].bullets_size; j++)
+					enemies[i].bullets[j].active = false;
+			}
+			score = 0;
+		}
+
+		goto draw;
+	}
+
 	if(player.x > 0 && arduboy.pressed(LEFT_BUTTON))
 		player.x--;
 	if(player.x < WIDTH - 8 && arduboy.pressed(RIGHT_BUTTON))
@@ -52,6 +82,7 @@ void loop() {
 		player.y--;
 	if(player.y < HEIGHT - 8 && arduboy.pressed(DOWN_BUTTON))
 		player.y++;
+
 	for(int i = 0; i < player.bullets_size; i++) {
 		if(player.bullets[i].active) {
 			Bullet *b = player.bullets + i;
@@ -96,7 +127,7 @@ void loop() {
 	} else {
 		skip_fire = 0;
 	}
-	bool collide = false;
+
 	for(int i = 0; i < enemies_size; i++) {
 		Enemy *e = enemies + i;
 		if(!e->active) {
@@ -157,13 +188,58 @@ void loop() {
 		if(!inverting) {
 			arduboy.invert(true);
 			inverting = true;
+			score -= 100;
 		}
 	} else {
 		inverting = false;
 		arduboy.invert(false);
 	}
 
+	if(arduboy.pressed(B_BUTTON)) {
+		if(beamf == -1) {
+			score -= 50;
+			beamf = 120;
+			beamy = player.y;
+		} else if(beamf > 0) {
+			beamf--;
+			for(int i = 0; i < enemies_size; i++) {
+				if(enemies[i].x > player.x) {
+					if(Sprites::collides(
+							enemies[i].x, enemies[i].y, enemies[i].mask,
+							enemies[i].x, beamy, Sprites::BEAM_MASK))
+						enemies[i].active = false;
+				}
+				for(int j = 0; j < enemies[i].bullets_size; j++) {
+					if(enemies[i].bullets[j].x > player.x) {
+						if(Sprites::collides(
+								enemies[i].bullets[j].x, enemies[i].bullets[j].y, enemies[i].bullets[j].mask,
+								enemies[i].bullets[j].x, beamy, Sprites::BEAM_MASK))
+							enemies[i].bullets[j].active = false;
+					}
+				}
+			}
+		}
+	} else
+		beamf = -1;
+
+
+
+	if(score < 0)
+		gameover = true;
+
+	draw:
+
 	arduboy.fillScreen(WHITE);
+
+	if(beamf > 0) {
+		arduboy.drawFastHLine(player.x + 8, player.y + 3, 128 - player.x - 8, BLACK);
+		arduboy.drawFastHLine(player.x + 8, player.y + 4, 128 - player.x - 8, BLACK);
+	}
+
+	char buf[12];
+	itoa(score, buf, 10);
+	arduboy.setCursor(0, 0);
+	arduboy.print(buf);
 
 	int lh = 31 - ((arduboy.frameCount >> 3) & 0x1F);
 	arduboy.drawFastVLine(lh, 0, 64, Sprites::invert ? WHITE : BLACK);
@@ -174,6 +250,12 @@ void loop() {
 	player.draw(arduboy);
 	for(int i = 0; i < enemies_size; i++)
 		enemies[i].draw(arduboy);
+
+	if(gameover) {
+		arduboy.setCursor(40, 28);
+		arduboy.print("GAMEOVER");
+	}
+
 
 	arduboy.display();
 }

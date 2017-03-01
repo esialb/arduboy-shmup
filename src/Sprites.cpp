@@ -74,6 +74,17 @@ const uint8_t Sprites::BULLET_MASK[] PROGMEM = {
 		0b00000000,
 };
 
+const uint8_t Sprites::BEAM_MASK[] PROGMEM = {
+		0b00111100,
+		0b00111100,
+		0b00111100,
+		0b00111100,
+		0b00111100,
+		0b00111100,
+		0b00111100,
+		0b00111100,
+};
+
 bool Sprites::invert = false;
 
 void Sprites::draw(Arduboy &arduboy, const uint8_t *sprite, const uint8_t *mask, int x, int y) {

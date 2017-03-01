@@ -22,6 +22,8 @@ public:
 	static const uint8_t BULLET[];
 	static const uint8_t BULLET_MASK[];
 
+	static const uint8_t BEAM_MASK[];
+
 	static bool invert;
 
 	static void draw(Arduboy &arduboy, const uint8_t *sprite, const uint8_t *mask, int x, int y);
