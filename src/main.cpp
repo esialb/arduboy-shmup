@@ -197,7 +197,7 @@ void loop() {
 	if(arduboy.pressed(B_BUTTON)) {
 		if(beamf == -1 && score >= 50) {
 			score -= 50;
-			beamf = 120;
+			beamf = 20;
 		} else if(beamf > 0) {
 			beamf--;
 			for(int i = 0; i < enemies_size; i++) {
@@ -224,6 +224,19 @@ void loop() {
 
 	if(score < 0)
 		gameover = true;
+
+	if(beamf > 0)
+		arduboy.setRGBled(0, 0, 255);
+	else if(score < 0)
+		arduboy.setRGBled(0, 0, 0);
+	else if(score < 50)
+		arduboy.setRGBled(255, 0, 0);
+	else if(score < 100)
+		arduboy.setRGBled(255, 255, 0);
+	else if(score < 150)
+		arduboy.setRGBled(0, 255, 0);
+	else
+		arduboy.setRGBled(0, 255, 255);
 
 	draw:
 
