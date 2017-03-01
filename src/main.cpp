@@ -13,7 +13,7 @@
 Arduboy arduboy;
 
 Player player;
-const int enemies_size = 5;
+const int enemies_size = 6;
 Enemy enemies[enemies_size];
 
 int skip_spawn = 0;
@@ -27,7 +27,19 @@ bool gameover = false;
 
 int beamf = 0;
 
+void intro() {
+	arduboy.fillScreen(BLACK);
+	arduboy.setCursor(37, 28);
+	arduboy.print("ArduSHMUP");
+	arduboy.display();
+	while(arduboy.buttonsState() == 0)
+		;
+	while(arduboy.buttonsState() != 0)
+		;
+}
+
 void select_fps() {
+	arduboy.fillScreen(BLACK);
 	arduboy.setCursor(0, 0);
 	arduboy.print("select framerate");
 	arduboy.setCursor(6, 16);
@@ -99,9 +111,9 @@ void select_fps() {
 
 void setup() {
 	arduboy.beginNoLogo();
-	arduboy.fillScreen(BLACK);
-	arduboy.display();
 
+
+	intro();
 
 	select_fps();
 	arduboy.fillScreen(BLACK);
