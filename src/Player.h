@@ -15,7 +15,7 @@ public:
 	Player();
 	virtual ~Player();
 
-	Bullet player_bullets[3];
+	Bullet player_bullets[4];
 };
 
 #endif /* SRC_PLAYER_H_ */

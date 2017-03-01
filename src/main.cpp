@@ -13,13 +13,13 @@
 Arduboy arduboy;
 
 Player player;
-const int enemies_size = 4;
+const int enemies_size = 5;
 Enemy enemies[enemies_size];
 
 int skip_spawn = 0;
 int skip_fire = 0;
 
-int score = 0;
+int score = 300;
 
 bool inverting = false;
 
@@ -27,14 +27,89 @@ bool gameover = false;
 
 int beamf = 0;
 
+void select_fps() {
+	arduboy.setCursor(0, 0);
+	arduboy.print("select framerate");
+	arduboy.setCursor(6, 16);
+	arduboy.print("15");
+	arduboy.setCursor(6, 24);
+	arduboy.print("30");
+	arduboy.setCursor(6, 32);
+	arduboy.print("60");
+	arduboy.setCursor(6, 40);
+	arduboy.print("90");
+	arduboy.setCursor(6, 48);
+	arduboy.print("120");
+
+	int opt = 2;
+
+	for(;;) {
+		arduboy.setCursor(0, 8 * opt + 16);
+		arduboy.print(">");
+		arduboy.display();
+		uint8_t button = 0;
+		for(;;) {
+			uint8_t bs = arduboy.buttonsState();
+			while(arduboy.buttonsState() == bs)
+				;
+			if(arduboy.pressed(UP_BUTTON)) {
+				button = UP_BUTTON;
+				break;
+			}
+			if(arduboy.pressed(DOWN_BUTTON)) {
+				button = DOWN_BUTTON;
+				break;
+			}
+			if(arduboy.pressed(B_BUTTON)) {
+				button = B_BUTTON;
+				break;
+			}
+		}
+		while(arduboy.pressed(button))
+			;
+
+		arduboy.setCursor(0, 8 * opt + 16);
+		arduboy.print(" ");
+
+		if(button == UP_BUTTON && opt > 0)
+			opt--;
+		if(button == DOWN_BUTTON && opt < 4)
+			opt++;
+		if(button == B_BUTTON)
+			break;
+	}
+	switch(opt) {
+	case 0:
+		arduboy.setFrameRate(15);
+		break;
+	case 1:
+		arduboy.setFrameRate(30);
+		break;
+	case 2:
+		arduboy.setFrameRate(60);
+		break;
+	case 3:
+		arduboy.setFrameRate(90);
+		break;
+	case 4:
+		arduboy.setFrameRate(120);
+		break;
+	}
+}
+
 void setup() {
 	arduboy.beginNoLogo();
 	arduboy.fillScreen(BLACK);
 	arduboy.display();
 
-	arduboy.setFrameRate(60);
+
+	select_fps();
+	arduboy.fillScreen(BLACK);
+	arduboy.display();
 	Sprites::invert = false;
 }
+
+
 
 void update_bullet(Bullet *b) {
 	if(arduboy.frameCount % b->fm == 0) {
@@ -67,7 +142,7 @@ void loop() {
 				for(int j = 0; j < enemies[i].bullets_size; j++)
 					enemies[i].bullets[j].active = false;
 			}
-			score = 0;
+			score = 300;
 		}
 
 		goto draw;
