@@ -57,10 +57,12 @@ void select_fps() {
 	arduboy.invert(false);
 	arduboy.setCursor(0, 0);
 	arduboy.print("select framerate");
-	arduboy.setCursor(6, 16);
+	arduboy.setCursor(6, 8);
 	arduboy.print("15");
-	arduboy.setCursor(6, 24);
+	arduboy.setCursor(6, 16);
 	arduboy.print("30");
+	arduboy.setCursor(6, 24);
+	arduboy.print("45");
 	arduboy.setCursor(6, 32);
 	arduboy.print("60");
 	arduboy.setCursor(6, 40);
@@ -68,10 +70,10 @@ void select_fps() {
 	arduboy.setCursor(6, 48);
 	arduboy.print("120");
 
-	int opt = 2;
+	int opt = 3;
 
 	for(;;) {
-		arduboy.setCursor(0, 8 * opt + 16);
+		arduboy.setCursor(0, 8 * opt + 8);
 		arduboy.print(">");
 		arduboy.display();
 		uint8_t button = 0;
@@ -95,12 +97,12 @@ void select_fps() {
 		while(arduboy.pressed(button))
 			;
 
-		arduboy.setCursor(0, 8 * opt + 16);
+		arduboy.setCursor(0, 8 * opt + 8);
 		arduboy.print(" ");
 
 		if(button == UP_BUTTON && opt > 0)
 			opt--;
-		if(button == DOWN_BUTTON && opt < 4)
+		if(button == DOWN_BUTTON && opt < 5)
 			opt++;
 		if(button == B_BUTTON)
 			break;
@@ -113,12 +115,15 @@ void select_fps() {
 		arduboy.setFrameRate(30);
 		break;
 	case 2:
-		arduboy.setFrameRate(60);
+		arduboy.setFrameRate(45);
 		break;
 	case 3:
-		arduboy.setFrameRate(90);
+		arduboy.setFrameRate(60);
 		break;
 	case 4:
+		arduboy.setFrameRate(90);
+		break;
+	case 5:
 		arduboy.setFrameRate(120);
 		break;
 	}
