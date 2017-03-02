@@ -238,6 +238,7 @@ void loop() {
 					e->x = 120;
 					e->y = random(0, 64 - 8);
 					e->active = true;
+					e->fm = 2 + random(0, 3);
 					int ry = random(0,4);
 					if(ry == 0)
 						e->dy = -1;
@@ -268,6 +269,7 @@ void loop() {
 				b->active = true;
 				b->x = e->x - 8;
 				b->y = e->y;
+				b->fm = e->fm - 1;
 				break;
 			}
 		}
