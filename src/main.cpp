@@ -279,16 +279,19 @@ void loop() {
 			}
 		}
 
-		if(!collide && e->active)
-			collide = Sprites::collides(player.x, player.y, player.mask, e->x, e->y, e->mask);
-		if(!collide) {
-			for(int j = 0; j < e->bullets_size; j++) {
-				Bullet *b = e->bullets + j;
-				if(!b->active)
-					continue;
-				collide = Sprites::collides(player.x, player.y, player.mask, b->x, b->y, b->mask);
-				if(collide)
-					break;
+		if(e->active) {
+			if(Sprites::collides(player.x, player.y, player.mask, e->x, e->y, e->mask)) {
+				collide = true;
+				e->active = false;
+			}
+		}
+		for(int j = 0; j < e->bullets_size; j++) {
+			Bullet *b = e->bullets + j;
+			if(!b->active)
+				continue;
+			if(Sprites::collides(player.x, player.y, player.mask, b->x, b->y, b->mask)) {
+				collide = true;
+				b->active = false;
 			}
 		}
 	}
