@@ -31,6 +31,20 @@ void intro() {
 	arduboy.fillScreen(BLACK);
 	arduboy.setCursor(37, 28);
 	arduboy.print("ArduSHMUP");
+	Player player;
+	Sprites::invert = true;
+	player.x = 0;
+	player.y = 28;
+	player.active = true;
+	player.draw(arduboy);
+	Enemy enemy;
+	enemy.x = 120;
+	enemy.active = true;
+	for(int i = 0; i < 4; i++) {
+		enemy.y = i * 16 + 4;
+		enemy.draw(arduboy);
+	}
+	Sprites::invert = false;
 	arduboy.display();
 	while(arduboy.buttonsState() == 0)
 		;
