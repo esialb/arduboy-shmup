@@ -282,7 +282,7 @@ void loop() {
 		if(e->active) {
 			if(Sprites::collides(player.x, player.y, player.mask, e->x, e->y, e->mask)) {
 				collide = true;
-				e->active = false;
+//				e->active = false;
 			}
 		}
 		for(int j = 0; j < e->bullets_size; j++) {
@@ -291,7 +291,7 @@ void loop() {
 				continue;
 			if(Sprites::collides(player.x, player.y, player.mask, b->x, b->y, b->mask)) {
 				collide = true;
-				b->active = false;
+//				b->active = false;
 			}
 		}
 	}
