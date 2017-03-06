@@ -2,16 +2,12 @@
 
 ArdoBoy Shoot-Em-Up
 
-![ardushmup](doc/png/ardushmup1.png)
-
+![ardushmup](doc/png/ardushmup1.png) 
 ![ardushmup](doc/png/ardushmup2.png)
-
 ![ardushmup](doc/png/ardushmup3.png)
 
 ![ardushmup](doc/png/ardushmup4.png)
-
 ![ardushmup](doc/png/ardushmup5.png)
-
 ![ardushmup](doc/png/ardushmup6.png)
 
 
