@@ -185,6 +185,30 @@ int curvy(int frames) {
 	return 20 - frames;
 }
 
+void destroy_enemy_tunes() {
+	arduboy.tunes.tone(4400, 50);
+}
+
+void collision_tunes() {
+	static int freq = 1100;
+	arduboy.tunes.tone(freq, 50);
+	freq *= 2;
+	if(freq > 10000)
+		freq = 1100;
+}
+
+void beam_tunes() {
+	static int freq = 2200;
+	arduboy.tunes.tone(freq, 50);
+	freq = freq / 1.3;
+	if(freq < 300)
+		freq = 2200;
+}
+
+void gameover_tunes() {
+	arduboy.tunes.tone(440, 1000);
+}
+
 void loop() {
 	if(!arduboy.nextFrame())
 		return;
@@ -234,6 +258,7 @@ void loop() {
 						e->active = false;
 						b->active = false;
 						score += 10;
+						destroy_enemy_tunes();
 						break;
 					}
 					bool nb = true;
@@ -336,6 +361,7 @@ void loop() {
 	}
 
 	if(collide) {
+		collision_tunes();
 		if(!inverting) {
 			arduboy.invert(true);
 			inverting = true;
@@ -351,6 +377,7 @@ void loop() {
 			score -= 50;
 			beamf = 20;
 		} else if(beamf > 0) {
+			beam_tunes();
 			beamf--;
 			for(int i = 0; i < enemies_size; i++) {
 				if(enemies[i].x > player.x) {
@@ -374,8 +401,10 @@ void loop() {
 
 
 
-	if(score < 0)
+	if(score < 0) {
+		gameover_tunes();
 		gameover = true;
+	}
 
 	if(beamf > 0)
 		arduboy.setRGBled(0, 0, 255);
