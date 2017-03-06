@@ -152,6 +152,17 @@ void update_bullet(Bullet *b) {
 		b->active = false;
 }
 
+int curvy(int frames) {
+	frames = frames % 20;
+	if(frames < 5)
+		return -frames;
+	if(frames < 10)
+		return -(10 - frames);
+	if(frames < 15)
+		return frames - 10;
+	return 20 - frames;
+}
+
 void loop() {
 	if(!arduboy.nextFrame())
 		return;
@@ -244,12 +255,16 @@ void loop() {
 					e->y = random(0, 64 - 8);
 					e->active = true;
 					e->fm = 2 + random(0, 3);
+					e->dyfn = 0;
 					int ry = random(0,4);
 					if(ry == 0)
 						e->dy = -1;
 					else if(ry == 1)
 						e->dy = 1;
-					else
+					else if(ry == 2) {
+						e->dy = 0;
+						e->dyfn = curvy;
+					} else
 						e->dy = 0;
 					skip_spawn = 3 + random(0, 6);
 				} else
@@ -259,6 +274,8 @@ void loop() {
 		if(arduboy.frameCount % e->fm == 0) {
 			e->x += e->dx;
 			e->y += e->dy;
+			if(e->dyfn)
+				e->dy = e->dyfn(arduboy.frameCount / e->fm);
 		}
 		if(e->x <= -8 || e->x >= 128 || e->y <= -8 || e->y >= 64) {
 			e->active = false;
