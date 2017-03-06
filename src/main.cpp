@@ -256,7 +256,7 @@ void loop() {
 					e->active = true;
 					e->fm = 2 + random(0, 3);
 					e->dyfn = 0;
-					int ry = random(0,4);
+					int ry = random(0,5);
 					if(ry == 0)
 						e->dy = -1;
 					else if(ry == 1)
@@ -285,7 +285,7 @@ void loop() {
 		}
 		for(size_t j = 0; j < e->bullets_size; j++) {
 			if(e->active && !e->bullets[j].active) {
-				if(random(0, 60) != 0)
+				if(random(0, 90) != 0)
 					continue;
 				Bullet *b = e->bullets + j;
 				b->active = true;
