@@ -22,8 +22,6 @@ For now requires platformio to build which means Linux or OSX. Will make somethi
 
 ## gameplay
 
-*buttons*
-
 - `UP` `DOWN` `LEFT` `RIGHT`: move the ship
 - `A`: fire a bullet
 - `B`: fire a beam
