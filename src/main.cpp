@@ -29,6 +29,8 @@ bool gameover = false;
 
 int beamf = 0;
 
+bool screencasting = false;
+
 void intro() {
 	arduboy.fillScreen(BLACK);
 	arduboy.setCursor(37, 28);
@@ -48,6 +50,8 @@ void intro() {
 	}
 	Sprites::invert = false;
 	arduboy.display();
+	if(screencasting)
+		Serial.write(arduboy.getBuffer(), 1024);
 	while(arduboy.buttonsState() == 0)
 		;
 	while(arduboy.buttonsState() != 0)
@@ -78,6 +82,8 @@ void select_fps() {
 		arduboy.setCursor(0, 8 * opt + 16);
 		arduboy.print(">");
 		arduboy.display();
+		if(screencasting)
+			Serial.write(arduboy.getBuffer(), 1024);
 		uint8_t button = 0;
 		for(;;) {
 			uint8_t bs = arduboy.buttonsState();
@@ -132,7 +138,14 @@ void select_fps() {
 }
 
 void setup() {
-	arduboy.beginNoLogo();
+	arduboy.begin();
+
+	if(arduboy.pressed(DOWN_BUTTON)) {
+		screencasting = true;
+		Serial.begin(9600);
+		while(arduboy.pressed(DOWN_BUTTON))
+			;
+	}
 
 	arduboy.initRandomSeed();
 	long int seed = random();
@@ -145,6 +158,8 @@ void setup() {
 	select_fps();
 	arduboy.fillScreen(BLACK);
 	arduboy.display();
+	if(screencasting)
+		Serial.write(arduboy.getBuffer(), 1024);
 	Sprites::invert = false;
 }
 
@@ -406,5 +421,7 @@ void loop() {
 
 
 	arduboy.display();
+	if(screencasting)
+		Serial.write(arduboy.getBuffer(), 1024);
 }
 
