@@ -161,6 +161,8 @@ void setup() {
 	if(screencasting)
 		Serial.write(arduboy.getBuffer(), 1024);
 	Sprites::invert = false;
+
+	arduboy.invert(true);
 }
 
 
@@ -363,13 +365,13 @@ void loop() {
 	if(collide) {
 		collision_tunes();
 		if(!inverting) {
-			arduboy.invert(true);
+			arduboy.invert(false);
 			inverting = true;
 			score -= 100;
 		}
 	} else {
 		inverting = false;
-		arduboy.invert(false);
+		arduboy.invert(true);
 	}
 
 	if(arduboy.pressed(B_BUTTON)) {
