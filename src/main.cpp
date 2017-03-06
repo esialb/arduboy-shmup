@@ -10,6 +10,8 @@
 #include "Player.h"
 #include "Enemy.h"
 
+#include <EEPROM.h>
+
 Arduboy arduboy;
 
 Player player;
@@ -56,24 +58,24 @@ void select_fps() {
 	arduboy.fillScreen(BLACK);
 	arduboy.invert(false);
 	arduboy.setCursor(0, 0);
-	arduboy.print("select framerate");
-	arduboy.setCursor(6, 8);
-	arduboy.print("15");
+	arduboy.print("select speed");
 	arduboy.setCursor(6, 16);
-	arduboy.print("30");
+	arduboy.print("slow");
 	arduboy.setCursor(6, 24);
-	arduboy.print("45");
+	arduboy.print("easy");
 	arduboy.setCursor(6, 32);
-	arduboy.print("60");
+	arduboy.print("leisurely");
 	arduboy.setCursor(6, 40);
-	arduboy.print("90");
+	arduboy.print("normal");
 	arduboy.setCursor(6, 48);
-	arduboy.print("120");
+	arduboy.print("fast");
+	arduboy.setCursor(6, 56);
+	arduboy.print("insane");
 
 	int opt = 3;
 
 	for(;;) {
-		arduboy.setCursor(0, 8 * opt + 8);
+		arduboy.setCursor(0, 8 * opt + 16);
 		arduboy.print(">");
 		arduboy.display();
 		uint8_t button = 0;
@@ -97,7 +99,7 @@ void select_fps() {
 		while(arduboy.pressed(button))
 			;
 
-		arduboy.setCursor(0, 8 * opt + 8);
+		arduboy.setCursor(0, 8 * opt + 16);
 		arduboy.print(" ");
 
 		if(button == UP_BUTTON && opt > 0)
@@ -132,6 +134,11 @@ void select_fps() {
 void setup() {
 	arduboy.beginNoLogo();
 
+	arduboy.initRandomSeed();
+	long int seed = random();
+	seed += EEPROM.read(0);
+	randomSeed(seed);
+	EEPROM.write(0, random());
 
 	intro();
 
