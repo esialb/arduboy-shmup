@@ -14,6 +14,8 @@
 
 #define DESTROY_ENEMY_SCORE 10
 #define DESTROY_BULLET_SCORE 1
+#define PLAYER_HIT_SCORE -100
+#define BEAM_COST_SCORE -50
 
 Arduboy arduboy;
 
@@ -214,6 +216,40 @@ void gameover_tunes() {
 	arduboy.tunes.tone(440, 1000);
 }
 
+void check_beam() {
+	if(arduboy.pressed(B_BUTTON)) {
+		if(beamf == -1 && score >= 50) {
+			score += BEAM_COST_SCORE;
+			beamf = 20;
+		} else if(beamf > 0) {
+			beam_tunes();
+			beamf--;
+			for(int i = 0; i < enemies_size; i++) {
+				if(enemies[i].active && enemies[i].x > player.x) {
+					if(Sprites::collides(
+							enemies[i].x, enemies[i].y, enemies[i].mask,
+							enemies[i].x, player.y, Sprites::BEAM_MASK)) {
+						enemies[i].active = false;
+						score += DESTROY_ENEMY_SCORE;
+					}
+				}
+				for(int j = 0; j < enemies[i].bullets_size; j++) {
+					if(enemies[i].bullets[j].active && enemies[i].bullets[j].x > player.x) {
+						if(Sprites::collides(
+								enemies[i].bullets[j].x, enemies[i].bullets[j].y, enemies[i].bullets[j].mask,
+								enemies[i].bullets[j].x, player.y, Sprites::BEAM_MASK)) {
+							enemies[i].bullets[j].active = false;
+							score += DESTROY_BULLET_SCORE;
+						}
+					}
+				}
+			}
+		}
+	} else
+		beamf = -1;
+
+}
+
 void loop() {
 	if(!arduboy.nextFrame())
 		return;
@@ -308,6 +344,7 @@ void loop() {
 					e->active = true;
 					e->fm = 2 + random(0, 3);
 					e->dyfn = 0;
+					e->age = 0;
 					int ry = random(0,5);
 					if(ry == 0)
 						e->dy = -1;
@@ -326,8 +363,9 @@ void loop() {
 		if(arduboy.frameCount % e->fm == 0) {
 			e->x += e->dx;
 			e->y += e->dy;
+			e->age++;
 			if(e->dyfn)
-				e->dy = e->dyfn(arduboy.frameCount / e->fm);
+				e->dy = e->dyfn(e->age);
 		}
 		if(e->x <= -8 || e->x >= 128 || e->y <= -8 || e->y >= 64) {
 			e->active = false;
@@ -370,43 +408,16 @@ void loop() {
 		if(!inverting) {
 			arduboy.invert(false);
 			inverting = true;
-			score -= 100;
+			score += PLAYER_HIT_SCORE;
 		}
 	} else {
 		inverting = false;
 		arduboy.invert(true);
 	}
 
-	if(arduboy.pressed(B_BUTTON)) {
-		if(beamf == -1 && score >= 50) {
-			score -= 50;
-			beamf = 20;
-		} else if(beamf > 0) {
-			beam_tunes();
-			beamf--;
-			for(int i = 0; i < enemies_size; i++) {
-				if(enemies[i].active && enemies[i].x > player.x) {
-					if(Sprites::collides(
-							enemies[i].x, enemies[i].y, enemies[i].mask,
-							enemies[i].x, player.y, Sprites::BEAM_MASK)) {
-						enemies[i].active = false;
-						score += DESTROY_ENEMY_SCORE;
-					}
-				}
-				for(int j = 0; j < enemies[i].bullets_size; j++) {
-					if(enemies[i].bullets[j].active && enemies[i].bullets[j].x > player.x) {
-						if(Sprites::collides(
-								enemies[i].bullets[j].x, enemies[i].bullets[j].y, enemies[i].bullets[j].mask,
-								enemies[i].bullets[j].x, player.y, Sprites::BEAM_MASK)) {
-							enemies[i].bullets[j].active = false;
-							score += DESTROY_BULLET_SCORE;
-						}
-					}
-				}
-			}
-		}
-	} else
-		beamf = -1;
+
+	check_beam();
+
 
 
 

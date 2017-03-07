@@ -18,7 +18,7 @@ public:
 
 	int (*dyfn)(int frames) = 0;
 
-	int dx, dy, fm;
+	int dx, dy, fm, age;
 
 	Bullet enemy_bullets[3];
 };
