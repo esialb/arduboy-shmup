@@ -12,6 +12,9 @@
 
 #include <EEPROM.h>
 
+#define DESTROY_ENEMY_SCORE 10
+#define DESTROY_BULLET_SCORE 1
+
 Arduboy arduboy;
 
 Player player;
@@ -259,7 +262,7 @@ void loop() {
 					if(e->active && Sprites::collides(b->x, b->y, b->mask, e->x, e->y, e->mask)) {
 						e->active = false;
 						b->active = false;
-						score += 10;
+						score += DESTROY_ENEMY_SCORE;
 						destroy_enemy_tunes();
 						break;
 					}
@@ -269,7 +272,7 @@ void loop() {
 						if(b2->active && Sprites::collides(b->x, b->y, b->mask, b2->x, b2->y, b2->mask)) {
 							b2->active = false;
 							b->active = false;
-							score += 1;
+							score += DESTROY_BULLET_SCORE;
 							nb = false;
 						}
 					}
@@ -382,18 +385,22 @@ void loop() {
 			beam_tunes();
 			beamf--;
 			for(int i = 0; i < enemies_size; i++) {
-				if(enemies[i].x > player.x) {
+				if(enemies[i].active && enemies[i].x > player.x) {
 					if(Sprites::collides(
 							enemies[i].x, enemies[i].y, enemies[i].mask,
-							enemies[i].x, player.y, Sprites::BEAM_MASK))
+							enemies[i].x, player.y, Sprites::BEAM_MASK)) {
 						enemies[i].active = false;
+						score += DESTROY_ENEMY_SCORE;
+					}
 				}
 				for(int j = 0; j < enemies[i].bullets_size; j++) {
-					if(enemies[i].bullets[j].x > player.x) {
+					if(enemies[i].bullets[j].active && enemies[i].bullets[j].x > player.x) {
 						if(Sprites::collides(
 								enemies[i].bullets[j].x, enemies[i].bullets[j].y, enemies[i].bullets[j].mask,
-								enemies[i].bullets[j].x, player.y, Sprites::BEAM_MASK))
+								enemies[i].bullets[j].x, player.y, Sprites::BEAM_MASK)) {
 							enemies[i].bullets[j].active = false;
+							score += DESTROY_BULLET_SCORE;
+						}
 					}
 				}
 			}
