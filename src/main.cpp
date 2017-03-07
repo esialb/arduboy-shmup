@@ -181,15 +181,23 @@ void update_bullet(Bullet *b) {
 		b->active = false;
 }
 
-int curvy(int frames) {
-	frames = frames % 20;
-	if(frames < 5)
-		return -frames;
-	if(frames < 10)
-		return -(10 - frames);
-	if(frames < 15)
-		return frames - 10;
-	return 20 - frames;
+int curvy(int age) {
+	age = age % 20;
+	if(age < 5)
+		return -age;
+	if(age < 10)
+		return -(10 - age);
+	if(age < 15)
+		return age - 10;
+	return 20 - age;
+}
+
+int jumpy_up(int age) {
+	return sqrt(age % 9) / 2;
+}
+
+int jumpy_down(int age) {
+	return -sqrt(age % 9) / 2;
 }
 
 void destroy_enemy_tunes() {
@@ -345,16 +353,15 @@ void loop() {
 					e->fm = 2 + random(0, 3);
 					e->dyfn = 0;
 					e->age = 0;
+					e->dy = 0;
 					int ry = random(0,5);
 					if(ry == 0)
-						e->dy = -1;
+						e->dyfn=jumpy_down;
 					else if(ry == 1)
-						e->dy = 1;
-					else if(ry == 2) {
-						e->dy = 0;
+						e->dyfn = jumpy_up;
+					else if(ry == 2)
 						e->dyfn = curvy;
-					} else
-						e->dy = 0;
+
 					skip_spawn = 3 + random(0, 6);
 				} else
 					skip_spawn--;
