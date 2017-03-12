@@ -9,10 +9,11 @@
 
 #include <Arduino.h>
 #include <EEPROM.h>
+#include <Arduboy.h>
 
-#define SEED_OFFSET 0
-#define FPS_OFFSET 1
-#define MUTE_OFFSET 2
+#define SEED_OFFSET (EEPROM_STORAGE_SPACE_START + 0)
+#define FPS_OFFSET (EEPROM_STORAGE_SPACE_START + 1)
+#define MUTE_OFFSET (EEPROM_STORAGE_SPACE_START + 2)
 
 void ShmupEeprom::initRandom() {
 	long int seed = random();
