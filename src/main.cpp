@@ -364,7 +364,7 @@ void loop() {
 	}
 
 	if(beamf > 0)
-		arduboy.setRGBled(0, 0, 255);
+		arduboy.setRGBled(0, 0, arduboy.frameCount & 1 ? 255 : 0);
 	else if(score < 0)
 		arduboy.setRGBled(0, 0, 0);
 	else if(score < 50)
