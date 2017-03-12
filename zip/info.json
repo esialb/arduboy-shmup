@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 2,
+  "title": "ArduSHMUP",
+  "description": "Arduboy Shoot-Em-Up",
+  "author": "esialb",
+  "version": "v0.0.3",
+  "date": "2017-03-12",
+  "genre": "Action",
+  "url": "https://github.com/esialb/arduboy-shmup/releases",
+  "sourceUrl": "https://github.com/esialb/arduboy-shmup/releases",
+  "screenshots": [
+    {
+      "title": "title screen",
+      "filename": "screenshot00.png"
+    },
+    {
+      "title": "gameplay",
+      "filename": "screenshot01.png"
+    }
+  ],
+  "binaries": [
+    {
+      "title": "ArduSHMUP",
+      "filename": "firmware.hex",
+      "device": "Arduboy"
+    }
+  ],
+  "buttons": [
+    {
+      "control": "A",
+      "action": "beam"
+    },
+    {
+      "control": "B",
+      "action": "fire"
+    },
+    {
+      "control": "Up",
+      "action": "move up"
+    },
+    {
+      "control": "Down",
+      "action": "move down"
+    },
+    {
+      "control": "Left",
+      "action": "move left"
+    },
+    {
+      "control": "Right",
+      "action": "move right"
+    }
+  ]
+}
