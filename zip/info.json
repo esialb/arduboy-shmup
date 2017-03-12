@@ -1,7 +1,11 @@
 {
   "schemaVersion": 2,
   "title": "ArduSHMUP",
-  "description": "Arduboy Shoot-Em-Up",
+  "description": "Arduboy Shoot-Em-Up
+Use your skill and speed to navigate a sea of oncoming enemy ships and bullets while firing your own bullets and beams to destroy your foes.
+Play as long as your score stays non-negative; each destroyed enemy bullet earns you 1 point and each destroyed enemy ship earns you 10.  Watch out, each beam costs you 50!
+
+",
   "author": "esialb",
   "version": "v0.0.3",
   "date": "2017-03-12",
