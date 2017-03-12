@@ -87,9 +87,9 @@ void setup() {
 	arduboy.display();
 	if(options.screencasting)
 		Serial.write(arduboy.getBuffer(), 1024);
-	Sprites::invert = false;
+	Sprites::invert = true;
 
-	arduboy.invert(true);
+	arduboy.invert(false);
 }
 
 
@@ -343,13 +343,13 @@ void loop() {
 	if(collide) {
 		collision_tunes();
 		if(!inverting) {
-			arduboy.invert(false);
+			arduboy.invert(true);
 			inverting = true;
 			score += PLAYER_HIT_SCORE;
 		}
 	} else {
 		inverting = false;
-		arduboy.invert(true);
+		arduboy.invert(false);
 	}
 
 
@@ -378,11 +378,11 @@ void loop() {
 
 	draw:
 
-	arduboy.fillScreen(WHITE);
+	arduboy.fillScreen(BLACK);
 
 	if(beamf > 0) {
-		arduboy.drawFastHLine(player.x + 8, player.y + 3, 128 - player.x - 8, BLACK);
-		arduboy.drawFastHLine(player.x + 8, player.y + 4, 128 - player.x - 8, BLACK);
+		arduboy.drawFastHLine(player.x + 8, player.y + 3, 128 - player.x - 8, WHITE);
+		arduboy.drawFastHLine(player.x + 8, player.y + 4, 128 - player.x - 8, WHITE);
 	}
 
 	char buf[12];
