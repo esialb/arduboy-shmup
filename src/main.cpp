@@ -10,6 +10,9 @@
 #include "Player.h"
 #include "Enemy.h"
 
+#include "ShmupOptions.h"
+#include "ShmupEeprom.h"
+
 #include <EEPROM.h>
 
 #define DESTROY_ENEMY_SCORE 10
@@ -18,6 +21,8 @@
 #define BEAM_COST_SCORE -50
 
 Arduboy arduboy;
+
+ShmupOptions options;
 
 Player player;
 const int enemies_size = 6;
@@ -33,8 +38,6 @@ bool inverting = false;
 bool gameover = false;
 
 int beamf = 0;
-
-bool screencasting = false;
 
 void intro() {
 	arduboy.fillScreen(BLACK);
@@ -55,7 +58,7 @@ void intro() {
 	}
 	Sprites::invert = false;
 	arduboy.display();
-	if(screencasting)
+	if(options.screencasting)
 		Serial.write(arduboy.getBuffer(), 1024);
 	while(arduboy.buttonsState() == 0)
 		;
@@ -63,107 +66,26 @@ void intro() {
 		;
 }
 
-void select_fps() {
-	arduboy.fillScreen(BLACK);
-	arduboy.invert(false);
-	arduboy.setCursor(0, 0);
-	arduboy.print("select speed");
-	arduboy.setCursor(6, 16);
-	arduboy.print("slow");
-	arduboy.setCursor(6, 24);
-	arduboy.print("easy");
-	arduboy.setCursor(6, 32);
-	arduboy.print("leisurely");
-	arduboy.setCursor(6, 40);
-	arduboy.print("normal");
-	arduboy.setCursor(6, 48);
-	arduboy.print("fast");
-	arduboy.setCursor(6, 56);
-	arduboy.print("insane");
-
-	int opt = 3;
-
-	for(;;) {
-		arduboy.setCursor(0, 8 * opt + 16);
-		arduboy.print(">");
-		arduboy.display();
-		if(screencasting)
-			Serial.write(arduboy.getBuffer(), 1024);
-		uint8_t button = 0;
-		for(;;) {
-			uint8_t bs = arduboy.buttonsState();
-			while(arduboy.buttonsState() == bs)
-				;
-			if(arduboy.pressed(UP_BUTTON)) {
-				button = UP_BUTTON;
-				break;
-			}
-			if(arduboy.pressed(DOWN_BUTTON)) {
-				button = DOWN_BUTTON;
-				break;
-			}
-			if(arduboy.pressed(B_BUTTON)) {
-				button = B_BUTTON;
-				break;
-			}
-		}
-		while(arduboy.pressed(button))
-			;
-
-		arduboy.setCursor(0, 8 * opt + 16);
-		arduboy.print(" ");
-
-		if(button == UP_BUTTON && opt > 0)
-			opt--;
-		if(button == DOWN_BUTTON && opt < 5)
-			opt++;
-		if(button == B_BUTTON)
-			break;
-	}
-	switch(opt) {
-	case 0:
-		arduboy.setFrameRate(15);
-		break;
-	case 1:
-		arduboy.setFrameRate(30);
-		break;
-	case 2:
-		arduboy.setFrameRate(45);
-		break;
-	case 3:
-		arduboy.setFrameRate(60);
-		break;
-	case 4:
-		arduboy.setFrameRate(90);
-		break;
-	case 5:
-		arduboy.setFrameRate(120);
-		break;
-	}
-}
-
 void setup() {
 	arduboy.begin();
 
 	if(arduboy.pressed(DOWN_BUTTON)) {
-		screencasting = true;
+		options.screencasting = true;
 		Serial.begin(9600);
 		while(arduboy.pressed(DOWN_BUTTON))
 			;
 	}
 
 	arduboy.initRandomSeed();
-	long int seed = random();
-	seed += EEPROM.read(0);
-	randomSeed(seed);
-	EEPROM.write(0, random());
+	ShmupEeprom::initRandom();
 
 	intro();
 
-	select_fps();
+	options.selectOptions(arduboy);
+
 	arduboy.fillScreen(BLACK);
 	arduboy.display();
-	if(screencasting)
+	if(options.screencasting)
 		Serial.write(arduboy.getBuffer(), 1024);
 	Sprites::invert = false;
 
@@ -201,10 +123,14 @@ int jumpy_down(int age) {
 }
 
 void destroy_enemy_tunes() {
+	if(options.mute)
+		return;
 	arduboy.tunes.tone(4400, 50);
 }
 
 void collision_tunes() {
+	if(options.mute)
+		return;
 	static int freq = 1100;
 	arduboy.tunes.tone(freq, 50);
 	freq *= 2;
@@ -213,6 +139,8 @@ void collision_tunes() {
 }
 
 void beam_tunes() {
+	if(options.mute)
+		return;
 	static int freq = 2200;
 	arduboy.tunes.tone(freq, 50);
 	freq = freq / 1.3;
@@ -221,6 +149,8 @@ void beam_tunes() {
 }
 
 void gameover_tunes() {
+	if(options.mute)
+		return;
 	arduboy.tunes.tone(440, 1000);
 }
 
@@ -267,7 +197,7 @@ void loop() {
 		if(arduboy.pressed(B_BUTTON)) {
 			while(arduboy.pressed(B_BUTTON))
 				;
-			select_fps();
+			options.selectOptions(arduboy);
 			gameover = false;
 			player.x = 0;
 			player.y = 28;
@@ -477,7 +407,7 @@ void loop() {
 
 
 	arduboy.display();
-	if(screencasting)
+	if(options.screencasting)
 		Serial.write(arduboy.getBuffer(), 1024);
 }
 
