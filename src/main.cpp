@@ -125,7 +125,7 @@ int jumpy_down(int age) {
 void destroy_enemy_tunes() {
 	if(options.mute)
 		return;
-	arduboy.tunes.tone(4400, 50);
+	arduboy.tunes.tone(800, 50);
 }
 
 void destroy_bullet_tones() {
