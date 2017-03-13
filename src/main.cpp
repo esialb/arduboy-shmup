@@ -188,6 +188,21 @@ void check_beam() {
 
 }
 
+void pause() {
+	arduboy.fillRect(44, 26, 39, 12, BLACK);
+	arduboy.setCursor(46, 28);
+	arduboy.print("PAUSED");
+	arduboy.drawRect(44, 26, 39, 12, WHITE);
+	arduboy.invert(true);
+	arduboy.display();
+	while(arduboy.buttonsState())
+		;
+	while(!arduboy.pressed(A_BUTTON) || !arduboy.pressed(B_BUTTON))
+		;
+	while(arduboy.buttonsState())
+		;
+}
+
 void loop() {
 	if(!arduboy.nextFrame())
 		return;
@@ -254,7 +269,9 @@ void loop() {
 			}
 		}
 	}
-	if(arduboy.pressed(A_BUTTON)) {
+	if(arduboy.pressed(A_BUTTON) && arduboy.pressed(B_BUTTON)) {
+		pause();
+	} else if(arduboy.pressed(A_BUTTON)) {
 		if(skip_fire == 0) {
 			for(int i = 0; i < player.bullets_size; i++) {
 				Bullet *b = player.bullets + i;
@@ -401,8 +418,10 @@ void loop() {
 		enemies[i].draw(arduboy);
 
 	if(gameover) {
+		arduboy.fillRect(38, 26, 51, 12, BLACK);
 		arduboy.setCursor(40, 28);
 		arduboy.print("GAMEOVER");
+		arduboy.drawRect(38, 26, 51, 12, WHITE);
 	}
 
 
