@@ -19,7 +19,7 @@ public:
 	void selectMute(Arduboy2 &arduboy);
 
 private:
-	void menu(Arduboy2 &arduboy, const char *str, int length, int opt, bool (*handler)(ShmupOptions *options, Arduboy2 &arduboy, int opt));
+	int menu(Arduboy2 &arduboy, const char *str, int length, int opt, bool (*handler)(ShmupOptions *options, Arduboy2 &arduboy, int opt));
 };
 
 #endif /* SRC_SHMUPOPTIONS_H_ */

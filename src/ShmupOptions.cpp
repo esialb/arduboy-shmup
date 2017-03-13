@@ -12,7 +12,7 @@
 
 int index_to_fps(int index);
 
-void ShmupOptions::menu(Arduboy2 &arduboy, const char *str, int length, int opt, bool (*handler)(ShmupOptions *options, Arduboy2 &arduboy, int opt)) {
+int ShmupOptions::menu(Arduboy2 &arduboy, const char *str, int length, int opt, bool (*handler)(ShmupOptions *options, Arduboy2 &arduboy, int opt)) {
 	for(;;) {
 		arduboy.fillScreen(BLACK);
 		arduboy.invert(false);
@@ -35,13 +35,13 @@ void ShmupOptions::menu(Arduboy2 &arduboy, const char *str, int length, int opt,
 		if(arduboy.pressed(A_BUTTON)) {
 			while(arduboy.buttonsState())
 				;
-			return;
+			return -opt -1;
 		}
 		if(arduboy.pressed(B_BUTTON)) {
 			while(arduboy.buttonsState())
 				;
 			if(handler(this, arduboy, opt))
-				return;
+				return opt;
 		}
 	}
 }
@@ -68,7 +68,11 @@ void ShmupOptions::selectOptions(Arduboy2 &arduboy) {
 			" select speed        "
 			" mute audio          "
 			;
-	menu(arduboy, str, 3, 0, options_handler);
+	int opt = 0;
+	while(opt = menu(arduboy, str, 3, opt, options_handler)) {
+		if(opt < 0)
+			opt = -opt - 1;
+	}
 
 	arduboy.setFrameRate(index_to_fps(ShmupEeprom::loadFPS()));
 	this->mute = ShmupEeprom::loadMute();
