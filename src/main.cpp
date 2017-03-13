@@ -23,6 +23,7 @@
 #define BEAM_COST_SCORE -50
 
 Arduboy2 arduboy;
+ArduboyTones tones(arduboy.audio.enabled);
 
 ShmupOptions options;
 
@@ -127,20 +128,20 @@ int jumpy_down(int age) {
 void destroy_enemy_tunes() {
 	if(options.mute)
 		return;
-	ArduboyTones::tone(4400, 50);
+	tones.tone(4400, 50);
 }
 
 void destroy_bullet_tones() {
 	if(options.mute)
 			return;
-	ArduboyTones::tone(8800, 10);
+	tones.tone(8800, 10);
 }
 
 void collision_tunes() {
 	if(options.mute)
 		return;
 	static int freq = 1100;
-	ArduboyTones::tone(freq, 50);
+	tones.tone(freq, 50);
 	freq *= 2;
 	if(freq > 10000)
 		freq = 1100;
@@ -150,7 +151,7 @@ void beam_tunes() {
 	if(options.mute)
 		return;
 	static int freq = 2200;
-	ArduboyTones::tone(freq, 50);
+	tones.tone(freq, 50);
 	freq = freq / 1.3;
 	if(freq < 300)
 		freq = 2200;
@@ -159,7 +160,7 @@ void beam_tunes() {
 void gameover_tunes() {
 	if(options.mute)
 		return;
-	ArduboyTones::tone(440, 1000);
+	tones.tone(440, 1000);
 }
 
 void check_beam() {

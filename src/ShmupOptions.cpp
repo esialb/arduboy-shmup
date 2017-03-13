@@ -76,6 +76,10 @@ void ShmupOptions::selectOptions(Arduboy2 &arduboy) {
 
 	arduboy.setFrameRate(index_to_fps(ShmupEeprom::loadFPS()));
 	this->mute = ShmupEeprom::loadMute();
+	if(this->mute)
+		arduboy.audio.off();
+	else
+		arduboy.audio.on();
 }
 
 int index_to_fps(int index) {
