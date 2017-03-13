@@ -8,7 +8,7 @@
 #ifndef SRC_SHMUPOPTIONS_H_
 #define SRC_SHMUPOPTIONS_H_
 
-#include <Arduboy.h>
+#include <Arduboy2.h>
 
 class ShmupOptions {
 public:
@@ -16,12 +16,12 @@ public:
 	bool screencasting = false;
 	bool mute = false;
 
-	void selectOptions(Arduboy &arduboy);
-	void selectFPS(Arduboy &arduboy);
-	void selectMute(Arduboy &arduboy);
+	void selectOptions(Arduboy2 &arduboy);
+	void selectFPS(Arduboy2 &arduboy);
+	void selectMute(Arduboy2 &arduboy);
 
 private:
-	int menu(Arduboy &arduboy, const char *str, int length, int opt, bool (*handler)(ShmupOptions *options, Arduboy &arduboy, int opt));
+	int menu(Arduboy2 &arduboy, const char *str, int length, int opt, bool (*handler)(ShmupOptions *options, Arduboy2 &arduboy, int opt));
 };
 
 #endif /* SRC_SHMUPOPTIONS_H_ */

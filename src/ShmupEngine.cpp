@@ -7,7 +7,7 @@
 
 #include <ShmupEngine.h>
 
-#include "Sprites.h"
+#include "ShmupSprites.h"
 
 #define DESTROY_ENEMY_SCORE 10
 #define DESTROY_BULLET_SCORE 1
@@ -47,20 +47,20 @@ int jumpy_down(int age) {
 void ShmupEngine::destroy_enemy_tunes() {
 	if(options->mute)
 		return;
-	arduboy->tunes.tone(800, 50);
+	tones->tone(800, 50);
 }
 
 void ShmupEngine::destroy_bullet_tones() {
 	if(options->mute)
 			return;
-	arduboy->tunes.tone(8800, 10);
+	tones->tone(8800, 10);
 }
 
 void ShmupEngine::collision_tunes() {
 	if(options->mute)
 		return;
 	static int freq = 1100;
-	arduboy->tunes.tone(freq, 50);
+	tones->tone(freq, 50);
 	freq *= 2;
 	if(freq > 10000)
 		freq = 1100;
@@ -70,7 +70,7 @@ void ShmupEngine::beam_tunes() {
 	if(options->mute)
 		return;
 	static int freq = 2200;
-	arduboy->tunes.tone(freq, 50);
+	tones->tone(freq, 50);
 	freq = freq / 1.3;
 	if(freq < 300)
 		freq = 2200;
@@ -79,7 +79,7 @@ void ShmupEngine::beam_tunes() {
 void ShmupEngine::gameover_tunes() {
 	if(options->mute)
 		return;
-	arduboy->tunes.tone(440, 1000);
+	tones->tone(440, 1000);
 }
 
 void ShmupEngine::check_beam() {
@@ -92,18 +92,18 @@ void ShmupEngine::check_beam() {
 			beamf--;
 			for(int i = 0; i < enemies_size; i++) {
 				if(enemies[i].active && enemies[i].x > player->x) {
-					if(Sprites::collides(
+					if(ShmupSprites::collides(
 							enemies[i].x, enemies[i].y, enemies[i].mask,
-							enemies[i].x, player->y, Sprites::BEAM_MASK)) {
+							enemies[i].x, player->y, ShmupSprites::BEAM_MASK)) {
 						enemies[i].active = false;
 						score += DESTROY_ENEMY_SCORE;
 					}
 				}
 				for(int j = 0; j < enemies[i].bullets_size; j++) {
 					if(enemies[i].bullets[j].active && enemies[i].bullets[j].x > player->x) {
-						if(Sprites::collides(
+						if(ShmupSprites::collides(
 								enemies[i].bullets[j].x, enemies[i].bullets[j].y, enemies[i].bullets[j].mask,
-								enemies[i].bullets[j].x, player->y, Sprites::BEAM_MASK)) {
+								enemies[i].bullets[j].x, player->y, ShmupSprites::BEAM_MASK)) {
 							enemies[i].bullets[j].active = false;
 							score += DESTROY_BULLET_SCORE;
 						}
@@ -176,7 +176,7 @@ void ShmupEngine::tick() {
 			if(b->active) {
 				for(int j = 0; j < enemies_size; j++) {
 					Enemy *e = enemies + j;
-					if(e->active && Sprites::collides(b->x, b->y, b->mask, e->x, e->y, e->mask)) {
+					if(e->active && ShmupSprites::collides(b->x, b->y, b->mask, e->x, e->y, e->mask)) {
 						e->active = false;
 						b->active = false;
 						score += DESTROY_ENEMY_SCORE;
@@ -186,7 +186,7 @@ void ShmupEngine::tick() {
 					bool nb = true;
 					for(int k = 0; nb && k < e->bullets_size; k++) {
 						Bullet *b2 = e->bullets + k;
-						if(b2->active && Sprites::collides(b->x, b->y, b->mask, b2->x, b2->y, b2->mask)) {
+						if(b2->active && ShmupSprites::collides(b->x, b->y, b->mask, b2->x, b2->y, b2->mask)) {
 							b2->active = false;
 							b->active = false;
 							score += DESTROY_BULLET_SCORE;
@@ -270,7 +270,7 @@ void ShmupEngine::tick() {
 		}
 
 		if(e->active) {
-			if(Sprites::collides(player->x, player->y, player->mask, e->x, e->y, e->mask)) {
+			if(ShmupSprites::collides(player->x, player->y, player->mask, e->x, e->y, e->mask)) {
 				collide = true;
 //				e->active = false;
 			}
@@ -279,7 +279,7 @@ void ShmupEngine::tick() {
 			Bullet *b = e->bullets + j;
 			if(!b->active)
 				continue;
-			if(Sprites::collides(player->x, player->y, player->mask, b->x, b->y, b->mask)) {
+			if(ShmupSprites::collides(player->x, player->y, player->mask, b->x, b->y, b->mask)) {
 				collide = true;
 //				b->active = false;
 			}
@@ -337,10 +337,10 @@ void ShmupEngine::tick() {
 	arduboy->print(buf);
 
 	int lh = 31 - ((arduboy->frameCount >> 3) & 0x1F);
-	arduboy->drawFastVLine(lh, 0, 64, Sprites::invert ? WHITE : BLACK);
-	arduboy->drawFastVLine(32 + lh, 0, 64, Sprites::invert ? WHITE : BLACK);
-	arduboy->drawFastVLine(64 + lh, 0, 64, Sprites::invert ? WHITE : BLACK);
-	arduboy->drawFastVLine(96 + lh, 0, 64, Sprites::invert ? WHITE : BLACK);
+	arduboy->drawFastVLine(lh, 0, 64, ShmupSprites::invert ? WHITE : BLACK);
+	arduboy->drawFastVLine(32 + lh, 0, 64, ShmupSprites::invert ? WHITE : BLACK);
+	arduboy->drawFastVLine(64 + lh, 0, 64, ShmupSprites::invert ? WHITE : BLACK);
+	arduboy->drawFastVLine(96 + lh, 0, 64, ShmupSprites::invert ? WHITE : BLACK);
 
 	player->draw(*arduboy);
 	for(int i = 0; i < enemies_size; i++)

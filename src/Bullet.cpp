@@ -6,19 +6,19 @@
  */
 
 #include <Bullet.h>
-#include "Sprites.h"
+#include "ShmupSprites.h"
 
 Bullet::Bullet() {
 	active = false;
-	sprite = Sprites::BULLET;
-	mask = Sprites::BULLET_MASK;
+	sprite = ShmupSprites::BULLET;
+	mask = ShmupSprites::BULLET_MASK;
 }
 
 Bullet::~Bullet() {
 	// TODO Auto-generated destructor stub
 }
 
-void Bullet::draw(Arduboy &arduboy) {
+void Bullet::draw(Arduboy2 &arduboy) {
 	if(active)
-		Sprites::draw(arduboy, sprite, mask, x, y);
+		ShmupSprites::draw(arduboy, sprite, mask, x, y);
 }

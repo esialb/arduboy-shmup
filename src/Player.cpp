@@ -6,11 +6,11 @@
  */
 
 #include <Player.h>
-#include "Sprites.h"
+#include "ShmupSprites.h"
 
 Player::Player() {
-	sprite = Sprites::PLAYER;
-	mask = Sprites::PLAYER_MASK;
+	sprite = ShmupSprites::PLAYER;
+	mask = ShmupSprites::PLAYER_MASK;
 	x = 0;
 	y = 28;
 	active = true;

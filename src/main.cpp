@@ -5,14 +5,16 @@
  *      Author: robin
  */
 
-#include <Arduboy.h>
-#include "Sprites.h"
+#include <Arduboy2.h>
+#include <ArduboyTones.h>
+#include "ShmupSprites.h"
 #include "Player.h"
 #include "Enemy.h"
 
 #include "ShmupOptions.h"
 #include "ShmupEeprom.h"
 #include "ShmupEngine.h"
+
 
 #include <EEPROM.h>
 
@@ -21,7 +23,8 @@
 #define PLAYER_HIT_SCORE -100
 #define BEAM_COST_SCORE -50
 
-Arduboy arduboy;
+Arduboy2 arduboy;
+ArduboyTones tones(arduboy.audio.enabled);
 
 ShmupOptions options;
 
@@ -34,7 +37,7 @@ void intro() {
 	arduboy.setCursor(37, 28);
 	arduboy.print("ArduSHMUP");
 	Player player;
-	Sprites::invert = true;
+	ShmupSprites::invert = true;
 	player.x = 0;
 	player.y = 28;
 	player.active = true;
@@ -46,7 +49,7 @@ void intro() {
 		enemy.y = i * 16 + 4;
 		enemy.draw(arduboy);
 	}
-	Sprites::invert = false;
+	ShmupSprites::invert = false;
 	arduboy.display();
 	if(options.screencasting)
 		Serial.write(arduboy.getBuffer(), 1024);
@@ -81,7 +84,7 @@ void setup() {
 	arduboy.display();
 	if(options.screencasting)
 		Serial.write(arduboy.getBuffer(), 1024);
-	Sprites::invert = true;
+	ShmupSprites::invert = true;
 
 	arduboy.invert(false);
 }

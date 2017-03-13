@@ -9,7 +9,8 @@
 #define SRC_SHMUPENGINE_H_
 
 #include "ShmupOptions.h"
-#include <Arduboy.h>
+#include <Arduboy2.h>
+#include <ArduboyTones.h>
 #include "Player.h"
 #include "Enemy.h"
 
@@ -18,7 +19,8 @@
 class ShmupEngine {
 public:
 	ShmupOptions *options;
-	Arduboy *arduboy;
+	Arduboy2 *arduboy;
+	ArduboyTones *tones;
 	Player *player;
 	static const int enemies_size = 6;
 	Enemy enemies[enemies_size];

@@ -8,14 +8,14 @@
 #ifndef SRC_BULLET_H_
 #define SRC_BULLET_H_
 
-#include <Arduboy.h>
+#include <Arduboy2.h>
 
 class Bullet {
 public:
 	Bullet();
 	virtual ~Bullet();
 
-	void draw(Arduboy &arduboy);
+	void draw(Arduboy2 &arduboy);
 
 	bool active;
 
