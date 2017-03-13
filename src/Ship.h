@@ -8,7 +8,7 @@
 #ifndef SRC_SHIP_H_
 #define SRC_SHIP_H_
 
-#include <Arduboy.h>
+#include <Arduboy2.h>
 #include "Bullet.h"
 
 class Ship {
@@ -26,7 +26,7 @@ public:
 	Bullet *bullets;
 	size_t bullets_size;
 
-	void draw(Arduboy &arduboy);
+	void draw(Arduboy2 &arduboy);
 private:
 };
 

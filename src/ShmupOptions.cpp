@@ -5,14 +5,14 @@
  *      Author: robin
  */
 
-#include <Arduboy.h>
+#include <Arduboy2.h>
 #include <ShmupOptions.h>
 
 #include "ShmupEeprom.h"
 
 int index_to_fps(int index);
 
-void ShmupOptions::menu(Arduboy &arduboy, const char *str, int length, int opt, bool (*handler)(ShmupOptions *options, Arduboy &arduboy, int opt)) {
+void ShmupOptions::menu(Arduboy2 &arduboy, const char *str, int length, int opt, bool (*handler)(ShmupOptions *options, Arduboy2 &arduboy, int opt)) {
 	for(;;) {
 		arduboy.fillScreen(BLACK);
 		arduboy.invert(false);
@@ -46,7 +46,7 @@ void ShmupOptions::menu(Arduboy &arduboy, const char *str, int length, int opt, 
 	}
 }
 
-bool options_handler(ShmupOptions *options, Arduboy& arduboy, int opt) {
+bool options_handler(ShmupOptions *options, Arduboy2& arduboy, int opt) {
 	switch(opt) {
 	case 0:
 		return true;
@@ -60,7 +60,7 @@ bool options_handler(ShmupOptions *options, Arduboy& arduboy, int opt) {
 	return false;
 }
 
-void ShmupOptions::selectOptions(Arduboy &arduboy) {
+void ShmupOptions::selectOptions(Arduboy2 &arduboy) {
 	const char *str =
 			"options              "
 			"                     "
@@ -86,12 +86,12 @@ int index_to_fps(int index) {
 	return 60;
 }
 
-bool fps_handler(ShmupOptions *options, Arduboy &arduboy, int opt) {
+bool fps_handler(ShmupOptions *options, Arduboy2 &arduboy, int opt) {
 	ShmupEeprom::setFPS(opt);
 	return true;
 }
 
-void ShmupOptions::selectFPS(Arduboy &arduboy) {
+void ShmupOptions::selectFPS(Arduboy2 &arduboy) {
 	const char *str =
 			"select speed         "
 			"                     "
@@ -110,12 +110,12 @@ void ShmupOptions::selectFPS(Arduboy &arduboy) {
 
 }
 
-bool mute_handler(ShmupOptions *options, Arduboy &arduboy, int opt) {
+bool mute_handler(ShmupOptions *options, Arduboy2 &arduboy, int opt) {
 	ShmupEeprom::setMute(opt);
 	return true;
 }
 
-void ShmupOptions::selectMute(Arduboy &arduboy) {
+void ShmupOptions::selectMute(Arduboy2 &arduboy) {
 	const char *str =
 			"select sounds        "
 			"                     "

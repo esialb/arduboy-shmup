@@ -1,4 +1,6 @@
-[submodule "lib/Arduboy"]
-	path = lib/Arduboy
-	url = https://github.com/Arduboy/Arduboy.git
-	branch = stable
+[submodule "lib/Arduboy2"]
+	path = lib/Arduboy2
+	url = https://github.com/MLXXXp/Arduboy2.git
+[submodule "lib/ArduboyTones"]
+	path = lib/ArduboyTones
+	url = https://github.com/MLXXXp/ArduboyTones.git

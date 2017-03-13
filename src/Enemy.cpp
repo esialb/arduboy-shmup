@@ -7,11 +7,11 @@
 
 #include <Enemy.h>
 
-#include "Sprites.h"
+#include "ShmupSprites.h"
 
 Enemy::Enemy() {
-	sprite = Sprites::ENEMY;
-	mask = Sprites::ENEMY_MASK;
+	sprite = ShmupSprites::ENEMY;
+	mask = ShmupSprites::ENEMY_MASK;
 	x = 0;
 	y = 28;
 	active = false;

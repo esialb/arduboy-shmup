@@ -9,7 +9,7 @@
 
 #include <Arduino.h>
 #include <EEPROM.h>
-#include <Arduboy.h>
+#include <Arduboy2.h>
 
 #define SEED_OFFSET (EEPROM_STORAGE_SPACE_START + 0)
 #define FPS_OFFSET (EEPROM_STORAGE_SPACE_START + 1)
