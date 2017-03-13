@@ -128,6 +128,12 @@ void destroy_enemy_tunes() {
 	arduboy.tunes.tone(4400, 50);
 }
 
+void destroy_bullet_tones() {
+	if(options.mute)
+			return;
+	arduboy.tunes.tone(8800, 10);
+}
+
 void collision_tunes() {
 	if(options.mute)
 		return;
@@ -262,6 +268,7 @@ void loop() {
 							b2->active = false;
 							b->active = false;
 							score += DESTROY_BULLET_SCORE;
+							destroy_bullet_tones();
 							nb = false;
 						}
 					}
