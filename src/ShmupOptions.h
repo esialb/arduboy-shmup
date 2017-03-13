@@ -8,6 +8,8 @@
 #ifndef SRC_SHMUPOPTIONS_H_
 #define SRC_SHMUPOPTIONS_H_
 
+#include <Arduboy.h>
+
 class ShmupOptions {
 public:
 	int fps = 60;
