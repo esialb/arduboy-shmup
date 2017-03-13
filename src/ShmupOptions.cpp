@@ -74,6 +74,8 @@ void ShmupOptions::selectOptions(Arduboy &arduboy) {
 			opt = -opt - 1;
 	}
 
+	ShmupEeprom::commit();
+
 	arduboy.setFrameRate(index_to_fps(ShmupEeprom::loadFPS()));
 	this->mute = ShmupEeprom::loadMute();
 }

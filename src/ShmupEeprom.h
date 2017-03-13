@@ -10,6 +10,9 @@
 
 class ShmupEeprom {
 public:
+	static void init();
+	static void commit();
+
 	static void initRandom();
 	static int loadFPS();
 	static void setFPS(int fps);
