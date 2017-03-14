@@ -60,7 +60,11 @@ void intro() {
 }
 
 void setup() {
-	arduboy.begin();
+	arduboy.boot();
+	arduboy.blank();
+	arduboy.flashlight();
+	arduboy.audio.begin();
+	arduboy.bootLogo();
 
 	if(arduboy.pressed(DOWN_BUTTON)) {
 		options.screencasting = true;
@@ -68,6 +72,9 @@ void setup() {
 		while(arduboy.pressed(DOWN_BUTTON))
 			;
 	}
+
+	while(arduboy.buttonsState())
+		;
 
 	engine.arduboy = &arduboy;
 	engine.options = &options;
