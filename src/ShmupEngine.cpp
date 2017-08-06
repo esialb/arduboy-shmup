@@ -9,6 +9,8 @@
 
 #include "ShmupSprites.h"
 
+#include "Constants.h"
+
 #define DESTROY_ENEMY_SCORE 10
 #define DESTROY_BULLET_SCORE 1
 #define PLAYER_HIT_SCORE -100
@@ -121,7 +123,7 @@ void ShmupEngine::pause() {
 	arduboy->setCursor(46, 28);
 	arduboy->print("PAUSED");
 	arduboy->drawRect(44, 26, 39, 12, WHITE);
-	arduboy->invert(true);
+	arduboy->invert(WHITE_ON_BLACK);
 	arduboy->display();
 	while(arduboy->buttonsState())
 		;
@@ -289,13 +291,13 @@ void ShmupEngine::tick() {
 	if(collide) {
 		collision_tunes();
 		if(!inverting) {
-			arduboy->invert(true);
+			arduboy->invert(WHITE_ON_BLACK);
 			inverting = true;
 			score += PLAYER_HIT_SCORE;
 		}
 	} else {
 		inverting = false;
-		arduboy->invert(false);
+		arduboy->invert(!WHITE_ON_BLACK);
 	}
 
 
@@ -329,6 +331,14 @@ void ShmupEngine::tick() {
 	if(beamf > 0) {
 		arduboy->drawFastHLine(player->x + 8, player->y + 3, 128 - player->x - 8, WHITE);
 		arduboy->drawFastHLine(player->x + 8, player->y + 4, 128 - player->x - 8, WHITE);
+		int xoff = arduboy->frameCount % 4;
+		int y = player->y + 3;
+		for(int x = player->x + 8 + xoff; x < 128; x += 4)
+					arduboy->drawPixel(x, y, BLACK);
+		y++;
+		for(int x = player->x + 8 + xoff + 1; x < 128; x += 4)
+					arduboy->drawPixel(x, y, BLACK);
+
 	}
 
 	char buf[12];

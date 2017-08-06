@@ -18,6 +18,8 @@
 
 #include <EEPROM.h>
 
+#include "Constants.h"
+
 #define DESTROY_ENEMY_SCORE 10
 #define DESTROY_BULLET_SCORE 1
 #define PLAYER_HIT_SCORE -100
@@ -83,6 +85,7 @@ void setup() {
 	arduboy.initRandomSeed();
 	ShmupEeprom::initRandom();
 
+	arduboy.invert(!WHITE_ON_BLACK);
 	intro();
 
 	options.selectOptions(arduboy);
@@ -93,7 +96,7 @@ void setup() {
 		Serial.write(arduboy.getBuffer(), 1024);
 	ShmupSprites::invert = true;
 
-	arduboy.invert(false);
+	arduboy.invert(!WHITE_ON_BLACK);
 }
 
 
