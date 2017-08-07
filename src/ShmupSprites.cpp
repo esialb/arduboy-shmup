@@ -85,7 +85,152 @@ const uint8_t ShmupSprites::BEAM_MASK[] PROGMEM = {
 		0b00111100,
 };
 
+const uint8_t ShmupSprites::NUM_NEG[] PROGMEM = {
+		0b00100000,
+		0b00100000,
+		0b00100000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+};
+
+const uint8_t ShmupSprites::NUM_0[] PROGMEM = {
+		0b11111000,
+		0b10001000,
+		0b11111000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+};
+
+const uint8_t ShmupSprites::NUM_1[] PROGMEM = {
+		0b10010000,
+		0b11111000,
+		0b10000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+};
+
+const uint8_t ShmupSprites::NUM_2[] PROGMEM = {
+		0b11001000,
+		0b10101000,
+		0b10010000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+};
+
+const uint8_t ShmupSprites::NUM_3[] PROGMEM = {
+		0b10101000,
+		0b10101000,
+		0b11111000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+};
+
+const uint8_t ShmupSprites::NUM_4[] PROGMEM = {
+		0b00111000,
+		0b00100000,
+		0b11111000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+};
+
+const uint8_t ShmupSprites::NUM_5[] PROGMEM = {
+		0b10111000,
+		0b10101000,
+		0b01001000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+};
+
+const uint8_t ShmupSprites::NUM_6[] PROGMEM = {
+		0b11110000,
+		0b10101000,
+		0b11101000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+};
+
+const uint8_t ShmupSprites::NUM_7[] PROGMEM = {
+		0b10001000,
+		0b01101000,
+		0b00011000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+};
+
+const uint8_t ShmupSprites::NUM_8[] PROGMEM = {
+		0b11011000,
+		0b10101000,
+		0b11011000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+};
+
+const uint8_t ShmupSprites::NUM_9[] PROGMEM = {
+		0b10111000,
+		0b10101000,
+		0b01111000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+};
+
 bool ShmupSprites::invert = false;
+
+void ShmupSprites::drawInt(Arduboy2 &arduboy, int n, int x, int y) {
+	char buf[16];
+	itoa(n, buf, 10);
+	y -= 3;
+	for(char *c = buf; *c; c++) {
+		uint8_t *sprite = NULL;
+		switch(*c) {
+		case '-': sprite = NUM_NEG; break;
+		case '0': sprite = NUM_0; break;
+		case '1': sprite = NUM_1; break;
+		case '2': sprite = NUM_2; break;
+		case '3': sprite = NUM_3; break;
+		case '4': sprite = NUM_4; break;
+		case '5': sprite = NUM_5; break;
+		case '6': sprite = NUM_6; break;
+		case '7': sprite = NUM_7; break;
+		case '8': sprite = NUM_8; break;
+		case '9': sprite = NUM_9; break;
+		}
+		draw(arduboy, sprite, NULL, x, y);
+		x += 4;
+	}
+}
 
 void ShmupSprites::draw(Arduboy2 &arduboy, const uint8_t *sprite, const uint8_t *mask, int x, int y) {
 	if(mask)
