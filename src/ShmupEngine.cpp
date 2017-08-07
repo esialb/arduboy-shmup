@@ -226,7 +226,7 @@ void ShmupEngine::tick() {
 			if(random(0,16) == 0) {
 				if(skip_spawn == 0) {
 					e->x = 120;
-					e->y = random(0, 64 - 8);
+					e->y = random(8, 64 - 16);
 					e->active = true;
 					e->fm = 2 + random(0, 3);
 					e->dyfn = 0;
@@ -331,7 +331,7 @@ void ShmupEngine::tick() {
 	if(beamf > 0) {
 		arduboy->drawFastHLine(player->x + 8, player->y + 3, 128 - player->x - 8, WHITE);
 		arduboy->drawFastHLine(player->x + 8, player->y + 4, 128 - player->x - 8, WHITE);
-		int xoff = arduboy->frameCount % 4;
+		int xoff = (4 + arduboy->frameCount % 4 - player->x % 4) % 4;
 		int y = player->y + 3;
 		for(int x = player->x + 8 + xoff; x < 128; x += 4)
 					arduboy->drawPixel(x, y, BLACK);
@@ -341,16 +341,21 @@ void ShmupEngine::tick() {
 
 	}
 
-	char buf[12];
+	arduboy->drawFastHLine(0, 6, 128, WHITE);
+	char buf[16];
 	itoa(score, buf, 10);
-	arduboy->setCursor(0, 0);
-	arduboy->print(buf);
+	ShmupSprites::drawInt(*arduboy, score, 129 - 4 * strlen(buf), 0);
+
+//	char buf[12];
+//	itoa(score, buf, 10);
+//	arduboy->setCursor(0, 0);
+//	arduboy->print(buf);
 
 	int lh = 31 - ((arduboy->frameCount >> 3) & 0x1F);
-	arduboy->drawFastVLine(lh, 0, 64, ShmupSprites::invert ? WHITE : BLACK);
-	arduboy->drawFastVLine(32 + lh, 0, 64, ShmupSprites::invert ? WHITE : BLACK);
-	arduboy->drawFastVLine(64 + lh, 0, 64, ShmupSprites::invert ? WHITE : BLACK);
-	arduboy->drawFastVLine(96 + lh, 0, 64, ShmupSprites::invert ? WHITE : BLACK);
+	arduboy->drawFastVLine(lh, 7, 57, ShmupSprites::invert ? WHITE : BLACK);
+	arduboy->drawFastVLine(32 + lh, 7, 57, ShmupSprites::invert ? WHITE : BLACK);
+	arduboy->drawFastVLine(64 + lh, 7, 57, ShmupSprites::invert ? WHITE : BLACK);
+	arduboy->drawFastVLine(96 + lh, 7, 57, ShmupSprites::invert ? WHITE : BLACK);
 
 	player->draw(*arduboy);
 	for(int i = 0; i < enemies_size; i++)

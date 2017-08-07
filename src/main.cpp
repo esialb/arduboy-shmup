@@ -66,7 +66,7 @@ void setup() {
 	arduboy.blank();
 	arduboy.flashlight();
 	arduboy.audio.begin();
-	arduboy.bootLogo();
+//	arduboy.bootLogo();
 
 	if(arduboy.pressed(DOWN_BUTTON)) {
 		options.screencasting = true;
