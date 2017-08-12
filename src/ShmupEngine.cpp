@@ -126,11 +126,10 @@ void ShmupEngine::check_beam() {
 }
 
 void ShmupEngine::pause() {
-	arduboy->fillRect(44, 26, 39, 12, BLACK);
+	arduboy->fillRect(44, 26, 39, 12, WHITE);
 	arduboy->setCursor(46, 28);
 	arduboy->print("PAUSED");
-	arduboy->drawRect(44, 26, 39, 12, WHITE);
-	arduboy->invert(WHITE_ON_BLACK);
+	arduboy->drawRect(44, 26, 39, 12, BLACK);
 	arduboy->display();
 	while(arduboy->buttonsState())
 		;
@@ -301,13 +300,13 @@ void ShmupEngine::tick() {
 	if(collide) {
 		collision_tunes();
 		if(!inverting) {
-			arduboy->invert(WHITE_ON_BLACK);
+			arduboy->invert(true);
 			inverting = true;
 			hp += PLAYER_HIT_SCORE;
 		}
 	} else {
 		inverting = false;
-		arduboy->invert(!WHITE_ON_BLACK);
+		arduboy->invert(false);
 	}
 
 
@@ -336,22 +335,22 @@ void ShmupEngine::tick() {
 
 	draw:
 
-	arduboy->fillScreen(BLACK);
+	arduboy->fillScreen(WHITE);
 
 	if(beamf > 0) {
-		arduboy->drawFastHLine(player->x + 8, player->y + 3, 128 - player->x - 8, WHITE);
-		arduboy->drawFastHLine(player->x + 8, player->y + 4, 128 - player->x - 8, WHITE);
+		arduboy->drawFastHLine(player->x + 8, player->y + 3, 128 - player->x - 8, BLACK);
+		arduboy->drawFastHLine(player->x + 8, player->y + 4, 128 - player->x - 8, BLACK);
 		int xoff = (4 + arduboy->frameCount % 4 - player->x % 4) % 4;
 		int y = player->y + 3;
 		for(int x = player->x + 8 + xoff; x < 128; x += 4)
-					arduboy->drawPixel(x, y, BLACK);
+					arduboy->drawPixel(x, y, WHITE);
 		y++;
 		for(int x = player->x + 8 + xoff + 1; x < 128; x += 4)
-					arduboy->drawPixel(x, y, BLACK);
+					arduboy->drawPixel(x, y, WHITE);
 
 	}
 
-	arduboy->drawFastHLine(0, 7, 128, WHITE);
+	arduboy->drawFastHLine(0, 7, 128, BLACK);
 	char buf[16];
 	itoa(hp / 100, buf, 10);
 	ShmupSprites::drawInt(*arduboy, hp / 100, 128 - 4 * strlen(buf), 1);
@@ -363,20 +362,20 @@ void ShmupEngine::tick() {
 //	arduboy->print(buf);
 
 	int lh = 31 - ((arduboy->frameCount >> 3) & 0x1F);
-	arduboy->drawFastVLine(lh, 7, 57, ShmupSprites::invert ? WHITE : BLACK);
-	arduboy->drawFastVLine(32 + lh, 7, 57, ShmupSprites::invert ? WHITE : BLACK);
-	arduboy->drawFastVLine(64 + lh, 7, 57, ShmupSprites::invert ? WHITE : BLACK);
-	arduboy->drawFastVLine(96 + lh, 7, 57, ShmupSprites::invert ? WHITE : BLACK);
+	arduboy->drawFastVLine(lh, 7, 57, BLACK);
+	arduboy->drawFastVLine(32 + lh, 7, 57, BLACK);
+	arduboy->drawFastVLine(64 + lh, 7, 57, BLACK);
+	arduboy->drawFastVLine(96 + lh, 7, 57, BLACK);
 
 	player->draw(*arduboy);
 	for(int i = 0; i < enemies_size; i++)
 		enemies[i].draw(*arduboy);
 
 	if(gameover) {
-		arduboy->fillRect(38, 26, 51, 12, BLACK);
+		arduboy->fillRect(38, 26, 51, 12, WHITE);
 		arduboy->setCursor(40, 28);
 		arduboy->print("GAMEOVER");
-		arduboy->drawRect(38, 26, 51, 12, WHITE);
+		arduboy->drawRect(38, 26, 51, 12, BLACK);
 	}
 
 

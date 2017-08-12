@@ -206,8 +206,6 @@ const uint8_t ShmupSprites::NUM_9[] PROGMEM = {
 		0b00000000,
 };
 
-bool ShmupSprites::invert = false;
-
 void ShmupSprites::drawInt(Arduboy2 &arduboy, int n, int x, int y) {
 	char buf[16];
 	itoa(n, buf, 10);
@@ -234,9 +232,9 @@ void ShmupSprites::drawInt(Arduboy2 &arduboy, int n, int x, int y) {
 
 void ShmupSprites::draw(Arduboy2 &arduboy, const uint8_t *sprite, const uint8_t *mask, int x, int y) {
 	if(mask)
-		arduboy.drawBitmap(x, y, mask, 8, 8, invert ? BLACK : WHITE);
+		arduboy.drawBitmap(x, y, mask, 8, 8, WHITE);
 	if(sprite)
-		arduboy.drawBitmap(x, y, sprite, 8, 8, invert ? WHITE : BLACK);
+		arduboy.drawBitmap(x, y, sprite, 8, 8, BLACK);
 }
 
 bool ShmupSprites::collides(int x1, int y1, const uint8_t *m1, int x2, int y2, const uint8_t *m2) {

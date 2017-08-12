@@ -16,8 +16,9 @@ int index_to_fps(int index);
 
 int ShmupOptions::menu(Arduboy2 &arduboy, const char *str, int length, int opt, bool (*handler)(ShmupOptions *options, Arduboy2 &arduboy, int opt)) {
 	for(;;) {
-		arduboy.fillScreen(BLACK);
-		arduboy.invert(!WHITE_ON_BLACK);
+		arduboy.fillScreen(WHITE);
+		arduboy.setTextColor(BLACK);
+		arduboy.setTextBackground(WHITE);
 		arduboy.setTextWrap(true);
 		arduboy.setCursor(0, 0);
 		arduboy.print(str);

@@ -35,11 +35,12 @@ Player player;
 ShmupEngine engine;
 
 void intro() {
-	arduboy.fillScreen(BLACK);
+	arduboy.fillScreen(WHITE);
 	arduboy.setCursor(37, 28);
+	arduboy.setTextColor(BLACK);
+	arduboy.setTextBackground(WHITE);
 	arduboy.print("ArduSHMUP");
 	Player player;
-	ShmupSprites::invert = true;
 	player.x = 0;
 	player.y = 28;
 	player.active = true;
@@ -51,7 +52,6 @@ void intro() {
 		enemy.y = i * 16 + 4;
 		enemy.draw(arduboy);
 	}
-	ShmupSprites::invert = false;
 	arduboy.display();
 	if(options.screencasting)
 		Serial.write(arduboy.getBuffer(), 1024);
@@ -85,7 +85,6 @@ void setup() {
 	arduboy.initRandomSeed();
 	ShmupEeprom::initRandom();
 
-	arduboy.invert(!WHITE_ON_BLACK);
 	intro();
 
 	options.selectOptions(arduboy);
@@ -94,9 +93,6 @@ void setup() {
 	arduboy.display();
 	if(options.screencasting)
 		Serial.write(arduboy.getBuffer(), 1024);
-	ShmupSprites::invert = true;
-
-	arduboy.invert(!WHITE_ON_BLACK);
 }
 
 
