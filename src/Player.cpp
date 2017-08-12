@@ -16,7 +16,7 @@ Player::Player() {
 	active = true;
 
 	bullets = player_bullets;
-	bullets_size = 4;
+	bullets_size = 6;
 
 	for(int i = 0; i < bullets_size; i++) {
 		bullets[i].dx = 2;

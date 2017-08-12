@@ -27,7 +27,7 @@ void ShmupEngine::update_bullet(Bullet *b) {
 		b->active = false;
 }
 
-int curvy(int age) {
+int8_t curvy(int age) {
 	age = age % 20;
 	if(age < 5)
 		return -age;
@@ -38,11 +38,11 @@ int curvy(int age) {
 	return 20 - age;
 }
 
-int jumpy_up(int age) {
+int8_t jumpy_up(int age) {
 	return sqrt(age % 9) / 2;
 }
 
-int jumpy_down(int age) {
+int8_t jumpy_down(int age) {
 	return -sqrt(age % 9) / 2;
 }
 
@@ -101,10 +101,10 @@ void ShmupEngine::check_beam() {
 						score += DESTROY_ENEMY_SCORE;
 					}
 				}
-				for(int j = 0; j < enemies[i].bullets_size; j++) {
+				for(uint8_t j = 0; j < enemies[i].bullets_size; j++) {
 					if(enemies[i].bullets[j].active && enemies[i].bullets[j].x > player->x) {
 						if(ShmupSprites::collides(
-								enemies[i].bullets[j].x, enemies[i].bullets[j].y, enemies[i].bullets[j].mask,
+								enemies[i].bullets[j].x, enemies[i].bullets[j].y, ShmupSprites::BULLET_MASK,
 								enemies[i].bullets[j].x, player->y, ShmupSprites::BEAM_MASK)) {
 							enemies[i].bullets[j].active = false;
 							score += DESTROY_BULLET_SCORE;
@@ -147,13 +147,13 @@ void ShmupEngine::tick() {
 			player->x = 0;
 			player->y = 28;
 			player->active = true;
-			for(int i = 0; i < player->bullets_size; i++)
+			for(uint8_t i = 0; i < player->bullets_size; i++)
 				player->bullets[i].active = false;
-			for(int i = 0; i < enemies_size; i++) {
+			for(uint8_t i = 0; i < enemies_size; i++) {
 				enemies[i].x = 0;
 				enemies[i].y = 28;
 				enemies[i].active = false;
-				for(int j = 0; j < enemies[i].bullets_size; j++)
+				for(uint8_t j = 0; j < enemies[i].bullets_size; j++)
 					enemies[i].bullets[j].active = false;
 			}
 			score = 300;
@@ -171,14 +171,14 @@ void ShmupEngine::tick() {
 	if(player->y < HEIGHT - 8 && arduboy->pressed(DOWN_BUTTON))
 		player->y++;
 
-	for(int i = 0; i < player->bullets_size; i++) {
+	for(uint8_t i = 0; i < player->bullets_size; i++) {
 		if(player->bullets[i].active) {
 			Bullet *b = player->bullets + i;
 			update_bullet(b);
 			if(b->active) {
 				for(int j = 0; j < enemies_size; j++) {
 					Enemy *e = enemies + j;
-					if(e->active && ShmupSprites::collides(b->x, b->y, b->mask, e->x, e->y, e->mask)) {
+					if(e->active && ShmupSprites::collides(b->x, b->y, ShmupSprites::BULLET_MASK, e->x, e->y, e->mask)) {
 						e->active = false;
 						b->active = false;
 						score += DESTROY_ENEMY_SCORE;
@@ -186,9 +186,9 @@ void ShmupEngine::tick() {
 						break;
 					}
 					bool nb = true;
-					for(int k = 0; nb && k < e->bullets_size; k++) {
+					for(uint8_t k = 0; nb && k < e->bullets_size; k++) {
 						Bullet *b2 = e->bullets + k;
-						if(b2->active && ShmupSprites::collides(b->x, b->y, b->mask, b2->x, b2->y, b2->mask)) {
+						if(b2->active && ShmupSprites::collides(b->x, b->y, ShmupSprites::BULLET_MASK, b2->x, b2->y, ShmupSprites::BULLET_MASK)) {
 							b2->active = false;
 							b->active = false;
 							score += DESTROY_BULLET_SCORE;
@@ -204,7 +204,7 @@ void ShmupEngine::tick() {
 		pause();
 	} else if(arduboy->pressed(A_BUTTON)) {
 		if(skip_fire == 0) {
-			for(int i = 0; i < player->bullets_size; i++) {
+			for(uint8_t i = 0; i < player->bullets_size; i++) {
 				Bullet *b = player->bullets + i;
 				if(b->active)
 					continue;
@@ -220,7 +220,7 @@ void ShmupEngine::tick() {
 		skip_fire = 0;
 	}
 
-	for(int i = 0; i < enemies_size; i++) {
+	for(uint8_t i = 0; i < enemies_size; i++) {
 		Enemy *e = enemies + i;
 		if(!e->active) {
 			if(random(0,16) == 0) {
@@ -277,11 +277,11 @@ void ShmupEngine::tick() {
 //				e->active = false;
 			}
 		}
-		for(int j = 0; j < e->bullets_size; j++) {
+		for(uint8_t j = 0; j < e->bullets_size; j++) {
 			Bullet *b = e->bullets + j;
 			if(!b->active)
 				continue;
-			if(ShmupSprites::collides(player->x, player->y, player->mask, b->x, b->y, b->mask)) {
+			if(ShmupSprites::collides(player->x, player->y, player->mask, b->x, b->y, ShmupSprites::BULLET_MASK)) {
 				collide = true;
 //				b->active = false;
 			}

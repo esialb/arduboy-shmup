@@ -16,11 +16,11 @@ public:
 	Enemy();
 	virtual ~Enemy();
 
-	int (*dyfn)(int frames) = 0;
+	int8_t (*dyfn)(int frames) = 0;
 
-	int dx, dy, fm, age;
+	int8_t dx, dy, fm, age;
 
-	Bullet enemy_bullets[3];
+	Bullet enemy_bullets[4];
 };
 
 #endif /* SRC_ENEMY_H_ */

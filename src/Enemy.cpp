@@ -17,7 +17,7 @@ Enemy::Enemy() {
 	active = false;
 
 	bullets = enemy_bullets;
-	bullets_size = 3;
+	bullets_size = 4;
 
 	for(int i = 0; i < bullets_size; i++) {
 		bullets[i].dx = -1;

@@ -10,6 +10,8 @@
 
 #include <Arduboy2.h>
 
+#include "ShmupSprites.h"
+
 class Bullet {
 public:
 	Bullet();
@@ -19,11 +21,8 @@ public:
 
 	bool active;
 
-	int x, y;
-	int dx, dy, fm;
-
-	unsigned char *sprite;
-	unsigned char *mask;
+	uint8_t x, y;
+	int8_t dx, dy, fm;
 };
 
 #endif /* SRC_BULLET_H_ */

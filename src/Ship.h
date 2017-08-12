@@ -19,8 +19,8 @@ public:
 	const unsigned char *sprite;
 	const unsigned char *mask;
 
-	int x;
-	int y;
+	uint8_t x;
+	uint8_t y;
 	bool active;
 
 	Bullet *bullets;
