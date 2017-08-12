@@ -22,6 +22,6 @@ void Ship::draw(Arduboy2 &arduboy) {
 	if(active)
 		ShmupSprites::draw(arduboy, sprite, mask, x, y);
 
-	for(int i = 0; i < bullets_size; i++)
+	for(uint8_t i = 0; i < bullets_size; i++)
 		bullets[i].draw(arduboy);
 }
