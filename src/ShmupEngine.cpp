@@ -39,11 +39,18 @@ int8_t curvy(int age) {
 }
 
 int8_t jumpy_up(int age) {
-	return sqrt(age % 9) / 2;
+	age = age % 12;
+	if(age == 11)
+		return 3;
+	if(age > 9)
+		return 2;
+	if(age > 5)
+		return 1;
+	return 0;
 }
 
 int8_t jumpy_down(int age) {
-	return -sqrt(age % 9) / 2;
+	return -jumpy_up(age);
 }
 
 void ShmupEngine::destroy_enemy_tunes() {
