@@ -14,7 +14,7 @@
 #include "Player.h"
 #include "Enemy.h"
 
-#define INITIAL_SCORE 300
+#define INITIAL_HP 300
 
 class ShmupEngine {
 public:
@@ -24,7 +24,8 @@ public:
 	Player *player;
 	static const uint8_t enemies_size = 8;
 	Enemy enemies[enemies_size];
-	int score = INITIAL_SCORE;
+	int hp = INITIAL_HP;
+	int score = 0;
 	bool gameover = false;
 
 	void tick();

@@ -185,9 +185,9 @@ const uint8_t ShmupSprites::NUM_7[] PROGMEM = {
 };
 
 const uint8_t ShmupSprites::NUM_8[] PROGMEM = {
-		0b11011000,
+		0b11111000,
 		0b10101000,
-		0b11011000,
+		0b11111000,
 		0b00000000,
 		0b00000000,
 		0b00000000,

@@ -86,8 +86,8 @@ void ShmupEngine::gameover_tunes() {
 
 void ShmupEngine::check_beam() {
 	if(arduboy->pressed(B_BUTTON)) {
-		if(beamf == -1 && score >= 50) {
-			score += BEAM_COST_SCORE;
+		if(beamf == -1 && hp >= 50) {
+			hp += BEAM_COST_SCORE;
 			beamf = 20;
 		} else if(beamf > 0) {
 			beam_tunes();
@@ -98,7 +98,7 @@ void ShmupEngine::check_beam() {
 							enemies[i].x, enemies[i].y, ShmupSprites::ENEMY_MASK,
 							enemies[i].x, player->y, ShmupSprites::BEAM_MASK)) {
 						enemies[i].active = false;
-						score += DESTROY_ENEMY_SCORE;
+						hp += DESTROY_ENEMY_SCORE;
 					}
 				}
 				for(uint8_t j = 0; j < enemies[i].bullets_size; j++) {
@@ -107,7 +107,7 @@ void ShmupEngine::check_beam() {
 								enemies[i].bullets[j].x, enemies[i].bullets[j].y, ShmupSprites::BULLET_MASK,
 								enemies[i].bullets[j].x, player->y, ShmupSprites::BEAM_MASK)) {
 							enemies[i].bullets[j].active = false;
-							score += DESTROY_BULLET_SCORE;
+							hp += DESTROY_BULLET_SCORE;
 						}
 					}
 				}
@@ -156,7 +156,8 @@ void ShmupEngine::tick() {
 				for(uint8_t j = 0; j < enemies[i].bullets_size; j++)
 					enemies[i].bullets[j].active = false;
 			}
-			score = 300;
+			hp = 300;
+			score = 0;
 		}
 
 		goto draw;
@@ -181,6 +182,7 @@ void ShmupEngine::tick() {
 					if(e->active && ShmupSprites::collides(b->x, b->y, ShmupSprites::BULLET_MASK, e->x, e->y, ShmupSprites::ENEMY_MASK)) {
 						e->active = false;
 						b->active = false;
+						hp += DESTROY_ENEMY_SCORE;
 						score += DESTROY_ENEMY_SCORE;
 						destroy_enemy_tunes();
 						break;
@@ -191,6 +193,7 @@ void ShmupEngine::tick() {
 						if(b2->active && ShmupSprites::collides(b->x, b->y, ShmupSprites::BULLET_MASK, b2->x, b2->y, ShmupSprites::BULLET_MASK)) {
 							b2->active = false;
 							b->active = false;
+							hp += DESTROY_BULLET_SCORE;
 							score += DESTROY_BULLET_SCORE;
 							destroy_bullet_tones();
 							nb = false;
@@ -293,7 +296,7 @@ void ShmupEngine::tick() {
 		if(!inverting) {
 			arduboy->invert(WHITE_ON_BLACK);
 			inverting = true;
-			score += PLAYER_HIT_SCORE;
+			hp += PLAYER_HIT_SCORE;
 		}
 	} else {
 		inverting = false;
@@ -306,23 +309,23 @@ void ShmupEngine::tick() {
 
 
 
-	if(score < 0) {
+	if(hp < 0) {
 		gameover_tunes();
 		gameover = true;
 	}
 
 	if(beamf > 0)
 		arduboy->setRGBled(0, 0, arduboy->frameCount & 1 ? 255 : 0);
-	else if(score < 0)
+	else if(hp < 0)
 		arduboy->setRGBled(0, 0, 0);
-	else if(score < 50)
+	else if(hp < 50)
 		arduboy->setRGBled(255, 0, 0);
-	else if(score < 100)
+	else if(hp < 100)
 		arduboy->setRGBled(255, 255, 0);
-	else if(score < 150)
+	else if(hp < 150)
 		arduboy->setRGBled(0, 255, 0);
 	else
-		arduboy->setRGBled(0, 255, 255);
+		arduboy->setRGBled(0, 0, 0);
 
 	draw:
 
@@ -343,8 +346,9 @@ void ShmupEngine::tick() {
 
 	arduboy->drawFastHLine(0, 7, 128, WHITE);
 	char buf[16];
-	itoa(score, buf, 10);
-	ShmupSprites::drawInt(*arduboy, score, 128 - 4 * strlen(buf), 1);
+	itoa(hp / 100, buf, 10);
+	ShmupSprites::drawInt(*arduboy, hp / 100, 128 - 4 * strlen(buf), 1);
+	ShmupSprites::drawInt(*arduboy, score, 1, 1);
 
 //	char buf[12];
 //	itoa(score, buf, 10);
