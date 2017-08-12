@@ -8,7 +8,7 @@
 #ifndef SRC_CONSTANTS_H_
 #define SRC_CONSTANTS_H_
 
-#define WHITE_ON_BLACK true
+#define WHITE_ON_BLACK false
 
 
 
