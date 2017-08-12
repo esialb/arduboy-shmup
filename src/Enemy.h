@@ -8,10 +8,9 @@
 #ifndef SRC_ENEMY_H_
 #define SRC_ENEMY_H_
 
-#include <Ship.h>
 #include "Bullet.h"
 
-class Enemy: public Ship {
+class Enemy {
 public:
 	Enemy();
 	virtual ~Enemy();
@@ -20,7 +19,14 @@ public:
 
 	int8_t dx, dy, fm, age;
 
-	Bullet enemy_bullets[4];
+	uint8_t x;
+	uint8_t y;
+	bool active;
+
+	static const uint8_t bullets_size = 4;
+	Bullet bullets[bullets_size];
+
+	void draw(Arduboy2 &arduboy);
 };
 
 #endif /* SRC_ENEMY_H_ */

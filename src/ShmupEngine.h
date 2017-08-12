@@ -22,7 +22,7 @@ public:
 	Arduboy2 *arduboy;
 	ArduboyTones *tones;
 	Player *player;
-	static const int enemies_size = 7;
+	static const uint8_t enemies_size = 8;
 	Enemy enemies[enemies_size];
 	int score = INITIAL_SCORE;
 	bool gameover = false;

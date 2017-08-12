@@ -95,7 +95,7 @@ void ShmupEngine::check_beam() {
 			for(int i = 0; i < enemies_size; i++) {
 				if(enemies[i].active && enemies[i].x > player->x) {
 					if(ShmupSprites::collides(
-							enemies[i].x, enemies[i].y, enemies[i].mask,
+							enemies[i].x, enemies[i].y, ShmupSprites::ENEMY_MASK,
 							enemies[i].x, player->y, ShmupSprites::BEAM_MASK)) {
 						enemies[i].active = false;
 						score += DESTROY_ENEMY_SCORE;
@@ -178,7 +178,7 @@ void ShmupEngine::tick() {
 			if(b->active) {
 				for(int j = 0; j < enemies_size; j++) {
 					Enemy *e = enemies + j;
-					if(e->active && ShmupSprites::collides(b->x, b->y, ShmupSprites::BULLET_MASK, e->x, e->y, e->mask)) {
+					if(e->active && ShmupSprites::collides(b->x, b->y, ShmupSprites::BULLET_MASK, e->x, e->y, ShmupSprites::ENEMY_MASK)) {
 						e->active = false;
 						b->active = false;
 						score += DESTROY_ENEMY_SCORE;
@@ -272,7 +272,7 @@ void ShmupEngine::tick() {
 		}
 
 		if(e->active) {
-			if(ShmupSprites::collides(player->x, player->y, player->mask, e->x, e->y, e->mask)) {
+			if(ShmupSprites::collides(player->x, player->y, ShmupSprites::PLAYER_MASK, e->x, e->y, ShmupSprites::ENEMY_MASK)) {
 				collide = true;
 //				e->active = false;
 			}
@@ -281,7 +281,7 @@ void ShmupEngine::tick() {
 			Bullet *b = e->bullets + j;
 			if(!b->active)
 				continue;
-			if(ShmupSprites::collides(player->x, player->y, player->mask, b->x, b->y, ShmupSprites::BULLET_MASK)) {
+			if(ShmupSprites::collides(player->x, player->y, ShmupSprites::PLAYER_MASK, b->x, b->y, ShmupSprites::BULLET_MASK)) {
 				collide = true;
 //				b->active = false;
 			}
