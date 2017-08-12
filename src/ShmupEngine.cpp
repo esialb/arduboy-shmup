@@ -202,7 +202,7 @@ void ShmupEngine::tick() {
 	}
 	if(arduboy->pressed(A_BUTTON) && arduboy->pressed(B_BUTTON)) {
 		pause();
-	} else if(arduboy->pressed(A_BUTTON)) {
+	} else if(!arduboy->pressed(A_BUTTON)) {
 		if(skip_fire == 0) {
 			for(uint8_t i = 0; i < player->bullets_size; i++) {
 				Bullet *b = player->bullets + i;
@@ -341,10 +341,10 @@ void ShmupEngine::tick() {
 
 	}
 
-	arduboy->drawFastHLine(0, 6, 128, WHITE);
+	arduboy->drawFastHLine(0, 7, 128, WHITE);
 	char buf[16];
 	itoa(score, buf, 10);
-	ShmupSprites::drawInt(*arduboy, score, 129 - 4 * strlen(buf), 0);
+	ShmupSprites::drawInt(*arduboy, score, 128 - 4 * strlen(buf), 1);
 
 //	char buf[12];
 //	itoa(score, buf, 10);
