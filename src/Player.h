@@ -21,7 +21,7 @@ public:
 	uint8_t y;
 	bool active;
 
-	static const uint8_t bullets_size = 4;
+	static const uint8_t bullets_size = 6;
 	Bullet bullets[bullets_size];
 
 	void draw(Arduboy2 &arduboy);
