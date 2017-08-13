@@ -42,10 +42,12 @@ int8_t jumpy_up(int age) {
 	age = age % 12;
 	if(age == 11)
 		return 3;
-	if(age > 9)
+	if(age == 10)
 		return 2;
-	if(age > 5)
+	if(age >= 6)
 		return 1;
+	if(age >= 4)
+		return -1;
 	return 0;
 }
 
