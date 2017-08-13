@@ -382,7 +382,7 @@ void ShmupEngine::tick() {
 
 
 	arduboy->display();
-	if(options->screencasting)
+	if(options->screencasting && (arduboy->frameCount % 4) == 0)
 		Serial.write(arduboy->getBuffer(), 1024);
 }
 
