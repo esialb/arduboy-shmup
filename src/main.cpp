@@ -41,15 +41,20 @@ void intro() {
 	arduboy.setTextBackground(WHITE);
 	arduboy.print("ArduSHMUP");
 	Player player;
-	player.x = 0;
+	player.x = 1;
 	player.y = 28;
 	player.active = true;
 	player.draw(arduboy);
 	Enemy enemy;
-	enemy.x = 120;
+	enemy.x = 119;
 	enemy.active = true;
 	for(int i = 0; i < 4; i++) {
 		enemy.y = i * 16 + 4;
+		enemy.draw(arduboy);
+	}
+	enemy.x = 111;
+	for(int i = 0; i < 3; i++) {
+		enemy.y = i * 16 + 12;
 		enemy.draw(arduboy);
 	}
 	arduboy.display();
@@ -66,7 +71,7 @@ void setup() {
 	arduboy.blank();
 	arduboy.flashlight();
 	arduboy.audio.begin();
-//	arduboy.bootLogo();
+	//	arduboy.bootLogo();
 
 	if(arduboy.pressed(DOWN_BUTTON)) {
 		options.screencasting = true;
