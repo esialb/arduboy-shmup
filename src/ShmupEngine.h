@@ -39,6 +39,10 @@ private:
 	void gameover_tunes();
 	void check_beam();
 	void check_gameover();
+	void check_collide();
+	void check_destroy();
+	void update_player();
+	void update_enemies();
 	void pause();
 };
 

@@ -149,29 +149,41 @@ void ShmupEngine::check_gameover() {
 	}
 }
 
-void ShmupEngine::tick() {
-	if(!arduboy.nextFrame())
-		return;
-	collide = false;
-
-	if(gameover) {
-		check_gameover();
-		return;
+void ShmupEngine::check_collide() {
+	for(uint8_t i = 0; i < ENEMIES_SIZE; i++) {
+		Enemy *e = enemies + i;
+		if(e->active) {
+			if(ShmupSprites::collides(player.x, player.y, ShmupSprites::PLAYER_MASK, e->x, e->y, ShmupSprites::ENEMY_MASK)) {
+				collide = true;
+			}
+		}
+		for(uint8_t j = 0; j < e->bullets_size; j++) {
+			Bullet *b = e->bullets + j;
+			if(!b->active)
+				continue;
+			if(ShmupSprites::collides(player.x, player.y, ShmupSprites::PLAYER_MASK, b->x, b->y, ShmupSprites::BULLET_MASK)) {
+				collide = true;
+			}
+		}
 	}
 
-	if(player.x > 0 && arduboy.pressed(LEFT_BUTTON))
-		player.x--;
-	if(player.x < WIDTH - 8 && arduboy.pressed(RIGHT_BUTTON))
-		player.x++;
-	if(player.y > 0 && arduboy.pressed(UP_BUTTON))
-		player.y--;
-	if(player.y < HEIGHT - 8 && arduboy.pressed(DOWN_BUTTON))
-		player.y++;
+	if(collide) {
+		collision_tunes();
+		if(!inverting) {
+			arduboy.invert(true);
+			inverting = true;
+			hp += PLAYER_HIT_SCORE;
+		}
+	} else {
+		inverting = false;
+		arduboy.invert(false);
+	}
+}
 
+void ShmupEngine::check_destroy() {
 	for(uint8_t i = 0; i < player.bullets_size; i++) {
 		if(player.bullets[i].active) {
 			Bullet *b = player.bullets + i;
-			b->tick();
 			if(b->active) {
 				for(int j = 0; j < ENEMIES_SIZE; j++) {
 					Enemy *e = enemies + j;
@@ -199,26 +211,27 @@ void ShmupEngine::tick() {
 			}
 		}
 	}
-	if(arduboy.pressed(A_BUTTON) && arduboy.pressed(B_BUTTON)) {
-		pause();
-	} else if(!arduboy.pressed(A_BUTTON)) {
-		if(skip_fire == 0) {
-			for(uint8_t i = 0; i < player.bullets_size; i++) {
-				Bullet *b = player.bullets + i;
-				if(b->active)
-					continue;
-				b->active = true;
-				b->x = player.x + 8;
-				b->y = player.y;
-				break;
-			}
-			skip_fire = 5;
-		} else
-			skip_fire--;
-	} else {
-		skip_fire = 0;
-	}
+}
 
+void ShmupEngine::update_player() {
+	if(player.x > 0 && arduboy.pressed(LEFT_BUTTON))
+		player.x--;
+	if(player.x < WIDTH - 8 && arduboy.pressed(RIGHT_BUTTON))
+		player.x++;
+	if(player.y > 0 && arduboy.pressed(UP_BUTTON))
+		player.y--;
+	if(player.y < HEIGHT - 8 && arduboy.pressed(DOWN_BUTTON))
+		player.y++;
+
+	for(uint8_t i = 0; i < player.bullets_size; i++) {
+		if(player.bullets[i].active) {
+			Bullet *b = player.bullets + i;
+			b->tick();
+		}
+	}
+}
+
+void ShmupEngine::update_enemies() {
 	for(uint8_t i = 0; i < ENEMIES_SIZE; i++) {
 		Enemy *e = enemies + i;
 		if(!e->active) {
@@ -269,36 +282,46 @@ void ShmupEngine::tick() {
 				break;
 			}
 		}
+	}
+}
 
-		if(e->active) {
-			if(ShmupSprites::collides(player.x, player.y, ShmupSprites::PLAYER_MASK, e->x, e->y, ShmupSprites::ENEMY_MASK)) {
-				collide = true;
-//				e->active = false;
-			}
-		}
-		for(uint8_t j = 0; j < e->bullets_size; j++) {
-			Bullet *b = e->bullets + j;
-			if(!b->active)
-				continue;
-			if(ShmupSprites::collides(player.x, player.y, ShmupSprites::PLAYER_MASK, b->x, b->y, ShmupSprites::BULLET_MASK)) {
-				collide = true;
-//				b->active = false;
-			}
-		}
+void ShmupEngine::tick() {
+	if(!arduboy.nextFrame())
+		return;
+	collide = false;
+
+	if(gameover) {
+		check_gameover();
+		return;
 	}
 
-	if(collide) {
-		collision_tunes();
-		if(!inverting) {
-			arduboy.invert(true);
-			inverting = true;
-			hp += PLAYER_HIT_SCORE;
-		}
+	update_player();
+
+	check_destroy();
+
+	if(arduboy.pressed(A_BUTTON) && arduboy.pressed(B_BUTTON)) {
+		pause();
+	} else if(!arduboy.pressed(A_BUTTON)) {
+		if(skip_fire == 0) {
+			for(uint8_t i = 0; i < player.bullets_size; i++) {
+				Bullet *b = player.bullets + i;
+				if(b->active)
+					continue;
+				b->active = true;
+				b->x = player.x + 8;
+				b->y = player.y;
+				break;
+			}
+			skip_fire = 5;
+		} else
+			skip_fire--;
 	} else {
-		inverting = false;
-		arduboy.invert(false);
+		skip_fire = 0;
 	}
 
+	update_enemies();
+
+	check_collide();
 
 	check_beam();
 
@@ -314,12 +337,10 @@ void ShmupEngine::tick() {
 		arduboy.setRGBled(0, 0, arduboy.frameCount & 1 ? 255 : 0);
 	else if(hp < 0)
 		arduboy.setRGBled(0, 0, 0);
-	else if(hp < 50)
-		arduboy.setRGBled(255, 0, 0);
 	else if(hp < 100)
+		arduboy.setRGBled(255, 0, 0);
+	else if(hp < 200)
 		arduboy.setRGBled(255, 255, 0);
-	else if(hp < 150)
-		arduboy.setRGBled(0, 255, 0);
 	else
 		arduboy.setRGBled(0, 0, 0);
 }
