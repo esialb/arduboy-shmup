@@ -21,7 +21,7 @@ public:
 
   void Tick();
 
-  bool active_ = false;
+  bool active = false;
 
   uint8_t x = 0, y = 0;
   int8_t dx = 0, dy = 0, fm = 0;

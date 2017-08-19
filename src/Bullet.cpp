@@ -19,7 +19,7 @@ Bullet::~Bullet() {
 }
 
 void Bullet::Draw() {
-  if (active_)
+  if (active)
     ShmupSprites::Draw(ShmupSprites::BULLET, ShmupSprites::BULLET_MASK, x, y);
 }
 
@@ -29,5 +29,5 @@ void Bullet::Tick() {
     y += dy;
   }
   if (x <= -8 || x >= 128 || y <= -8 || y >= 64)
-    active_ = false;
+    active = false;
 }
