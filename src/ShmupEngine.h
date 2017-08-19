@@ -16,8 +16,6 @@
 #include "Player.h"
 #include "Enemy.h"
 
-#define INITIAL_HP 300
-
 class ShmupEngine {
 public:
 	int hp = INITIAL_HP;
@@ -27,12 +25,12 @@ public:
 	void tick();
 
 private:
-	int skip_spawn = 0;
-	int skip_fire = 0;
+	int8_t skip_spawn = 0;
+	int8_t skip_fire = 0;
 	bool inverting = false;
-	int beamf = 0;
+	int8_t beamf = 0;
+	bool collide = false;
 
-	void update_bullet(Bullet *b);
 	void destroy_enemy_tunes();
 	void destroy_bullet_tones();
 	void collision_tunes();

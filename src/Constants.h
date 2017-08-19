@@ -8,13 +8,18 @@
 #ifndef SRC_CONSTANTS_H_
 #define SRC_CONSTANTS_H_
 
-#define ENEMIES_SIZE 8
-
 #include <Arduboy2.h>
 #include <ArduboyTones.h>
 #include "ShmupOptions.h"
 #include "Player.h"
 #include "Enemy.h"
+
+#define ENEMIES_SIZE 8
+#define INITIAL_HP 300
+#define DESTROY_ENEMY_SCORE 10
+#define DESTROY_BULLET_SCORE 1
+#define PLAYER_HIT_SCORE -100
+#define BEAM_COST_SCORE -50
 
 extern Arduboy2 arduboy;
 extern ArduboyTones tones;

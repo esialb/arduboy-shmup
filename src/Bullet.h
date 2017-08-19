@@ -19,6 +19,8 @@ public:
 
 	void draw();
 
+	void tick();
+
 	bool active;
 
 	uint8_t x, y;

@@ -11,22 +11,6 @@
 
 #include "Constants.h"
 
-#define DESTROY_ENEMY_SCORE 10
-#define DESTROY_BULLET_SCORE 1
-#define PLAYER_HIT_SCORE -100
-#define BEAM_COST_SCORE -50
-
-
-
-void ShmupEngine::update_bullet(Bullet *b) {
-	if(arduboy.frameCount % b->fm == 0) {
-		b->x += b->dx;
-		b->y += b->dy;
-	}
-	if(b->x <= -8 || b->x >= 128 || b->y <= -8 || b->y >= 64)
-		b->active = false;
-}
-
 int8_t curvy(int age) {
 	age = age % 20;
 	if(age < 5)
@@ -144,7 +128,7 @@ void ShmupEngine::pause() {
 void ShmupEngine::tick() {
 	if(!arduboy.nextFrame())
 		return;
-	bool collide = false;
+	collide = false;
 
 	if(gameover) {
 		if(arduboy.pressed(B_BUTTON)) {
@@ -183,7 +167,7 @@ void ShmupEngine::tick() {
 	for(uint8_t i = 0; i < player.bullets_size; i++) {
 		if(player.bullets[i].active) {
 			Bullet *b = player.bullets + i;
-			update_bullet(b);
+			b->tick();
 			if(b->active) {
 				for(int j = 0; j < ENEMIES_SIZE; j++) {
 					Enemy *e = enemies + j;
@@ -267,7 +251,7 @@ void ShmupEngine::tick() {
 			e->active = false;
 		}
 		for(size_t j = 0; j < e->bullets_size; j++) {
-			update_bullet(e->bullets + j);
+			e->bullets[j].tick();
 		}
 		for(size_t j = 0; j < e->bullets_size; j++) {
 			if(e->active && !e->bullets[j].active) {
