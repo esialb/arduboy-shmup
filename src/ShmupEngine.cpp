@@ -78,7 +78,7 @@ void ShmupEngine::GameOverTone() {
 }
 
 void ShmupEngine::BeamCheck() {
-	if(arduboy_.pressed(B_BUTTON)) {
+	if(arduboy_.pressed(A_BUTTON)) {
 		if(beamf_ == -1 && hp_ >= 50) {
 			hp_ += BEAM_COST_SCORE;
 			beamf_ = 20;
@@ -111,7 +111,9 @@ void ShmupEngine::BeamCheck() {
 
 }
 
-void ShmupEngine::Pause() {
+void ShmupEngine::PauseCheck() {
+	if(!arduboy_.pressed(B_BUTTON))
+		return;
 	arduboy_.fillRect(44, 26, 39, 12, WHITE);
 	arduboy_.setCursor(46, 28);
 	arduboy_.print("PAUSED");
@@ -119,7 +121,7 @@ void ShmupEngine::Pause() {
 	arduboy_.display();
 	while(arduboy_.buttonsState())
 		;
-	while(!arduboy_.pressed(A_BUTTON) || !arduboy_.pressed(B_BUTTON))
+	while(!arduboy_.pressed(B_BUTTON))
 		;
 	while(arduboy_.buttonsState())
 		;
@@ -299,25 +301,21 @@ void ShmupEngine::Tick() {
 
 	DestroyCheck();
 
-	if(arduboy_.pressed(A_BUTTON) && arduboy_.pressed(B_BUTTON)) {
-		Pause();
-	} else if(!arduboy_.pressed(A_BUTTON)) {
-		if(skip_fire_ == 0) {
-			for(uint8_t i = 0; i < player_.BULLETS_SIZE; i++) {
-				Bullet *b = player_.bullets_ + i;
-				if(b->active_)
-					continue;
-				b->active_ = true;
-				b->x_ = player_.x_ + 8;
-				b->y_ = player_.y_;
-				break;
-			}
-			skip_fire_ = 5;
-		} else
-			skip_fire_--;
-	} else {
-		skip_fire_ = 0;
-	}
+	PauseCheck();
+
+	if(skip_fire_ == 0) {
+		for(uint8_t i = 0; i < player_.BULLETS_SIZE; i++) {
+			Bullet *b = player_.bullets_ + i;
+			if(b->active_)
+				continue;
+			b->active_ = true;
+			b->x_ = player_.x_ + 8;
+			b->y_ = player_.y_;
+			break;
+		}
+		skip_fire_ = 5;
+	} else
+		skip_fire_--;
 
 	EnemiesUpdate();
 

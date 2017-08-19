@@ -43,7 +43,7 @@ private:
 	void DestroyCheck();
 	void PlayerUpdate();
 	void EnemiesUpdate();
-	void Pause();
+	void PauseCheck();
 };
 
 #endif /* SRC_SHMUPENGINE_H_ */
