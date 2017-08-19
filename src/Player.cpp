@@ -10,14 +10,14 @@
 #include "Constants.h"
 
 Player::Player() {
-	x = 0;
-	y = 28;
-	active = true;
+	x_ = 0;
+	y_ = 28;
+	active_ = true;
 
-	for(uint8_t i = 0; i < bullets_size; i++) {
-		bullets[i].dx = 2;
-		bullets[i].dy = 0;
-		bullets[i].fm = 1;
+	for(uint8_t i = 0; i < BULLETS_SIZE; i++) {
+		bullets_[i].dx_ = 2;
+		bullets_[i].dy_ = 0;
+		bullets_[i].fm_ = 1;
 	}
 }
 
@@ -25,10 +25,10 @@ Player::~Player() {
 	// TODO Auto-generated destructor stub
 }
 
-void Player::draw() {
-	if(active)
-		ShmupSprites::draw(ShmupSprites::PLAYER, ShmupSprites::PLAYER_MASK, x, y);
+void Player::Draw() {
+	if(active_)
+		ShmupSprites::Draw(ShmupSprites::PLAYER, ShmupSprites::PLAYER_MASK, x_, y_);
 
-	for(uint8_t i = 0; i < bullets_size; i++)
-		bullets[i].draw();
+	for(uint8_t i = 0; i < BULLETS_SIZE; i++)
+		bullets_[i].Draw();
 }

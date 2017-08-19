@@ -208,7 +208,7 @@ const uint8_t ShmupSprites::NUM_9[] PROGMEM = {
 		0b00000000,
 };
 
-void ShmupSprites::drawInt(int n, int x, int y) {
+void ShmupSprites::DrawInt(int n, int x, int y) {
 	char buf[16];
 	itoa(n, buf, 10);
 	y -= 3;
@@ -227,19 +227,19 @@ void ShmupSprites::drawInt(int n, int x, int y) {
 		case '8': sprite = NUM_8; break;
 		case '9': sprite = NUM_9; break;
 		}
-		draw(sprite, NULL, x, y);
+		Draw(sprite, NULL, x, y);
 		x += 4;
 	}
 }
 
-void ShmupSprites::draw(const uint8_t *sprite, const uint8_t *mask, int x, int y) {
+void ShmupSprites::Draw(const uint8_t *sprite, const uint8_t *mask, int x, int y) {
 	if(mask)
-		arduboy.drawBitmap(x, y, mask, 8, 8, WHITE);
+		arduboy_.drawBitmap(x, y, mask, 8, 8, WHITE);
 	if(sprite)
-		arduboy.drawBitmap(x, y, sprite, 8, 8, BLACK);
+		arduboy_.drawBitmap(x, y, sprite, 8, 8, BLACK);
 }
 
-bool ShmupSprites::collides(int x1, int y1, const uint8_t *m1, int x2, int y2, const uint8_t *m2) {
+bool ShmupSprites::Collides(int x1, int y1, const uint8_t *m1, int x2, int y2, const uint8_t *m2) {
 	if(x1 - x2 >= 8 || x2 - x1 >= 8 || y1 - y2 >= 8 || y2 - y1 >= 8)
 		return false;
 	int xoff = x2 - x1;

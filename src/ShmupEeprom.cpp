@@ -15,34 +15,34 @@
 #define FPS_OFFSET (EEPROM_STORAGE_SPACE_START + 1)
 #define MUTE_OFFSET (EEPROM_STORAGE_SPACE_START + 2)
 
-void ShmupEeprom::init() {
+void ShmupEeprom::Init() {
 	EEPROM.begin();
 }
 
-void ShmupEeprom::commit() {
+void ShmupEeprom::Commit() {
 	EEPROM.end();
 	EEPROM.begin();
 }
 
-void ShmupEeprom::initRandom() {
+void ShmupEeprom::InitRandom() {
 	long int seed = random();
 	seed += EEPROM.read(SEED_OFFSET);
 	randomSeed(seed);
 	EEPROM.write(SEED_OFFSET, random());
 }
 
-int ShmupEeprom::loadFPS() {
+int ShmupEeprom::LoadFps() {
 	return EEPROM.read(FPS_OFFSET);
 }
 
-void ShmupEeprom::setFPS(int fps) {
+void ShmupEeprom::SetFps(int fps) {
 	EEPROM.update(FPS_OFFSET, fps);
 }
 
-bool ShmupEeprom::loadMute() {
+bool ShmupEeprom::LoadMute() {
 	return EEPROM.read(MUTE_OFFSET);
 }
 
-void ShmupEeprom::setMute(bool mute) {
+void ShmupEeprom::SetMute(bool mute) {
 	EEPROM.update(MUTE_OFFSET, mute);
 }

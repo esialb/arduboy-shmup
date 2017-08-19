@@ -10,14 +10,14 @@
 
 class ShmupEeprom {
 public:
-	static void init();
-	static void commit();
+	static void Init();
+	static void Commit();
 
-	static void initRandom();
-	static int loadFPS();
-	static void setFPS(int fps);
-	static bool loadMute();
-	static void setMute(bool mute);
+	static void InitRandom();
+	static int LoadFps();
+	static void SetFps(int fps);
+	static bool LoadMute();
+	static void SetMute(bool mute);
 };
 
 #endif /* SRC_SHMUPEEPROM_H_ */

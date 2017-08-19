@@ -21,10 +21,10 @@
 #define PLAYER_HIT_SCORE -100
 #define BEAM_COST_SCORE -50
 
-extern Arduboy2 arduboy;
-extern ArduboyTones tones;
-extern ShmupOptions options;
-extern Player player;
-extern Enemy enemies[ENEMIES_SIZE];
+extern Arduboy2 arduboy_;
+extern ArduboyTones tones_;
+extern ShmupOptions options_;
+extern Player player_;
+extern Enemy enemies_[ENEMIES_SIZE];
 
 #endif /* SRC_CONSTANTS_H_ */

@@ -15,18 +15,18 @@ public:
 	Enemy();
 	virtual ~Enemy();
 
-	int8_t (*dyfn)(int frames) = 0;
+	int8_t (*dyfn_)(int frames) = 0;
 
-	int8_t dx, dy, fm, age;
+	int8_t dx_, dy_, fm_, age_;
 
-	uint8_t x;
-	uint8_t y;
-	bool active;
+	uint8_t x_;
+	uint8_t y_;
+	bool active_;
 
-	static const uint8_t bullets_size = 4;
-	Bullet bullets[bullets_size];
+	static const uint8_t BULLETS_SIZE = 4;
+	Bullet bullets_[BULLETS_SIZE];
 
-	void draw();
+	void Draw();
 };
 
 #endif /* SRC_ENEMY_H_ */

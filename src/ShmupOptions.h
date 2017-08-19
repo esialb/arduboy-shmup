@@ -12,16 +12,16 @@
 
 class ShmupOptions {
 public:
-	int fps = 60;
-	bool screencasting = false;
-	bool mute = false;
+	int fps_ = 60;
+	bool screencasting_ = false;
+	bool mute_ = false;
 
-	void selectOptions();
-	void selectFPS();
-	void selectMute();
+	void SelectOptions();
+	void SelectFps();
+	void SelectMute();
 
 private:
-	int menu(const char *str, int length, int opt, bool (*handler)(int opt));
+	int Menu(const char *str, int length, int opt, bool (*handler)(int opt));
 };
 
 #endif /* SRC_SHMUPOPTIONS_H_ */

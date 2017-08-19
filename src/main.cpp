@@ -23,79 +23,79 @@
 #define PLAYER_HIT_SCORE -100
 #define BEAM_COST_SCORE -50
 
-Arduboy2 arduboy;
-ArduboyTones tones(arduboy.audio.enabled);
-ShmupOptions options;
-Player player;
-Enemy enemies[ENEMIES_SIZE];
+Arduboy2 arduboy_;
+ArduboyTones tones_(arduboy_.audio.enabled);
+ShmupOptions options_;
+Player player_;
+Enemy enemies_[ENEMIES_SIZE];
 
 ShmupEngine engine;
 
 void intro() {
-	arduboy.fillScreen(WHITE);
-	arduboy.setCursor(37, 28);
-	arduboy.setTextColor(BLACK);
-	arduboy.setTextBackground(WHITE);
-	arduboy.print("ArduSHMUP");
+	arduboy_.fillScreen(WHITE);
+	arduboy_.setCursor(37, 28);
+	arduboy_.setTextColor(BLACK);
+	arduboy_.setTextBackground(WHITE);
+	arduboy_.print("ArduSHMUP");
 	Player player;
-	player.x = 1;
-	player.y = 28;
-	player.active = true;
-	player.draw();
+	player.x_ = 1;
+	player.y_ = 28;
+	player.active_ = true;
+	player.Draw();
 	Enemy enemy;
-	enemy.x = 119;
-	enemy.active = true;
+	enemy.x_ = 119;
+	enemy.active_ = true;
 	for(int i = 0; i < 4; i++) {
-		enemy.y = i * 16 + 4;
-		enemy.draw();
+		enemy.y_ = i * 16 + 4;
+		enemy.Draw();
 	}
-	enemy.x = 111;
+	enemy.x_ = 111;
 	for(int i = 0; i < 3; i++) {
-		enemy.y = i * 16 + 12;
-		enemy.draw();
+		enemy.y_ = i * 16 + 12;
+		enemy.Draw();
 	}
-	arduboy.display();
-	if(options.screencasting)
-		Serial.write(arduboy.getBuffer(), 1024);
-	while(arduboy.buttonsState() == 0)
+	arduboy_.display();
+	if(options_.screencasting_)
+		Serial.write(arduboy_.getBuffer(), 1024);
+	while(arduboy_.buttonsState() == 0)
 		;
-	while(arduboy.buttonsState() != 0)
+	while(arduboy_.buttonsState() != 0)
 		;
 }
 
 void setup() {
-	arduboy.boot();
-	arduboy.blank();
-	arduboy.flashlight();
-	arduboy.audio.begin();
+	arduboy_.boot();
+	arduboy_.blank();
+	arduboy_.flashlight();
+	arduboy_.audio.begin();
 	//	arduboy.bootLogo();
 
-	if(arduboy.pressed(DOWN_BUTTON)) {
-		options.screencasting = true;
+	if(arduboy_.pressed(DOWN_BUTTON)) {
+		options_.screencasting_ = true;
 		Serial.begin(9600);
-		while(arduboy.pressed(DOWN_BUTTON))
+		while(arduboy_.pressed(DOWN_BUTTON))
 			;
 	}
 
-	while(arduboy.buttonsState())
+	while(arduboy_.buttonsState())
 		;
 
-	arduboy.initRandomSeed();
-	ShmupEeprom::initRandom();
+	arduboy_.initRandomSeed();
+	ShmupEeprom::InitRandom();
 
 	intro();
 
-	options.selectOptions();
+	options_.SelectOptions();
 
-	arduboy.fillScreen(BLACK);
-	arduboy.display();
-	if(options.screencasting)
-		Serial.write(arduboy.getBuffer(), 1024);
+	arduboy_.fillScreen(BLACK);
+	arduboy_.display();
+	if(options_.screencasting_)
+		Serial.write(arduboy_.getBuffer(), 1024);
 }
 
 
 
 void loop() {
-	engine.tick();
-	engine.draw();
+	engine.Tick();
+	engine.Draw();
 }

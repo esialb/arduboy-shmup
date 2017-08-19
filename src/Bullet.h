@@ -17,14 +17,14 @@ public:
 	Bullet();
 	virtual ~Bullet();
 
-	void draw();
+	void Draw();
 
-	void tick();
+	void Tick();
 
-	bool active;
+	bool active_;
 
-	uint8_t x, y;
-	int8_t dx, dy, fm;
+	uint8_t x_, y_;
+	int8_t dx_, dy_, fm_;
 };
 
 #endif /* SRC_BULLET_H_ */

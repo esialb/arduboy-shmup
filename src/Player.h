@@ -17,14 +17,14 @@ public:
 	Player();
 	virtual ~Player();
 
-	uint8_t x;
-	uint8_t y;
-	bool active;
+	uint8_t x_;
+	uint8_t y_;
+	bool active_;
 
-	static const uint8_t bullets_size = 6;
-	Bullet bullets[bullets_size];
+	static const uint8_t BULLETS_SIZE = 6;
+	Bullet bullets_[BULLETS_SIZE];
 
-	void draw();
+	void Draw();
 };
 
 #endif /* SRC_PLAYER_H_ */

@@ -11,23 +11,23 @@
 #include "Constants.h"
 
 Bullet::Bullet() {
-	active = false;
+	active_ = false;
 }
 
 Bullet::~Bullet() {
 	// TODO Auto-generated destructor stub
 }
 
-void Bullet::draw() {
-	if(active)
-		ShmupSprites::draw(ShmupSprites::BULLET, ShmupSprites::BULLET_MASK, x, y);
+void Bullet::Draw() {
+	if(active_)
+		ShmupSprites::Draw(ShmupSprites::BULLET, ShmupSprites::BULLET_MASK, x_, y_);
 }
 
-void Bullet::tick() {
-	if(arduboy.frameCount % fm == 0) {
-		x += dx;
-		y += dy;
+void Bullet::Tick() {
+	if(arduboy_.frameCount % fm_ == 0) {
+		x_ += dx_;
+		y_ += dy_;
 	}
-	if(x <= -8 || x >= 128 || y <= -8 || y >= 64)
-		active = false;
+	if(x_ <= -8 || x_ >= 128 || y_ <= -8 || y_ >= 64)
+		active_ = false;
 }
