@@ -56,19 +56,19 @@ int8_t jumpy_down(int age) {
 }
 
 void ShmupEngine::destroy_enemy_tunes() {
-	if(options->mute)
+	if(options.mute)
 		return;
 	tones.tone(800, 50);
 }
 
 void ShmupEngine::destroy_bullet_tones() {
-	if(options->mute)
+	if(options.mute)
 			return;
 	tones.tone(8800, 10);
 }
 
 void ShmupEngine::collision_tunes() {
-	if(options->mute)
+	if(options.mute)
 		return;
 	static int freq = 1100;
 	tones.tone(freq, 50);
@@ -78,7 +78,7 @@ void ShmupEngine::collision_tunes() {
 }
 
 void ShmupEngine::beam_tunes() {
-	if(options->mute)
+	if(options.mute)
 		return;
 	static int freq = 2200;
 	tones.tone(freq, 50);
@@ -88,7 +88,7 @@ void ShmupEngine::beam_tunes() {
 }
 
 void ShmupEngine::gameover_tunes() {
-	if(options->mute)
+	if(options.mute)
 		return;
 	tones.tone(440, 1000);
 }
@@ -101,20 +101,20 @@ void ShmupEngine::check_beam() {
 		} else if(beamf > 0) {
 			beam_tunes();
 			beamf--;
-			for(int i = 0; i < enemies_size; i++) {
-				if(enemies[i].active && enemies[i].x > player->x) {
+			for(int i = 0; i < ENEMIES_SIZE; i++) {
+				if(enemies[i].active && enemies[i].x > player.x) {
 					if(ShmupSprites::collides(
 							enemies[i].x, enemies[i].y, ShmupSprites::ENEMY_MASK,
-							enemies[i].x, player->y, ShmupSprites::BEAM_MASK)) {
+							enemies[i].x, player.y, ShmupSprites::BEAM_MASK)) {
 						enemies[i].active = false;
 						hp += DESTROY_ENEMY_SCORE;
 					}
 				}
 				for(uint8_t j = 0; j < enemies[i].bullets_size; j++) {
-					if(enemies[i].bullets[j].active && enemies[i].bullets[j].x > player->x) {
+					if(enemies[i].bullets[j].active && enemies[i].bullets[j].x > player.x) {
 						if(ShmupSprites::collides(
 								enemies[i].bullets[j].x, enemies[i].bullets[j].y, ShmupSprites::BULLET_MASK,
-								enemies[i].bullets[j].x, player->y, ShmupSprites::BEAM_MASK)) {
+								enemies[i].bullets[j].x, player.y, ShmupSprites::BEAM_MASK)) {
 							enemies[i].bullets[j].active = false;
 							hp += DESTROY_BULLET_SCORE;
 						}
@@ -150,14 +150,14 @@ void ShmupEngine::tick() {
 		if(arduboy.pressed(B_BUTTON)) {
 			while(arduboy.pressed(B_BUTTON))
 				;
-			options->selectOptions();
+			options.selectOptions();
 			gameover = false;
-			player->x = 0;
-			player->y = 28;
-			player->active = true;
-			for(uint8_t i = 0; i < player->bullets_size; i++)
-				player->bullets[i].active = false;
-			for(uint8_t i = 0; i < enemies_size; i++) {
+			player.x = 0;
+			player.y = 28;
+			player.active = true;
+			for(uint8_t i = 0; i < player.bullets_size; i++)
+				player.bullets[i].active = false;
+			for(uint8_t i = 0; i < ENEMIES_SIZE; i++) {
 				enemies[i].x = 0;
 				enemies[i].y = 28;
 				enemies[i].active = false;
@@ -171,21 +171,21 @@ void ShmupEngine::tick() {
 		goto draw;
 	}
 
-	if(player->x > 0 && arduboy.pressed(LEFT_BUTTON))
-		player->x--;
-	if(player->x < WIDTH - 8 && arduboy.pressed(RIGHT_BUTTON))
-		player->x++;
-	if(player->y > 0 && arduboy.pressed(UP_BUTTON))
-		player->y--;
-	if(player->y < HEIGHT - 8 && arduboy.pressed(DOWN_BUTTON))
-		player->y++;
+	if(player.x > 0 && arduboy.pressed(LEFT_BUTTON))
+		player.x--;
+	if(player.x < WIDTH - 8 && arduboy.pressed(RIGHT_BUTTON))
+		player.x++;
+	if(player.y > 0 && arduboy.pressed(UP_BUTTON))
+		player.y--;
+	if(player.y < HEIGHT - 8 && arduboy.pressed(DOWN_BUTTON))
+		player.y++;
 
-	for(uint8_t i = 0; i < player->bullets_size; i++) {
-		if(player->bullets[i].active) {
-			Bullet *b = player->bullets + i;
+	for(uint8_t i = 0; i < player.bullets_size; i++) {
+		if(player.bullets[i].active) {
+			Bullet *b = player.bullets + i;
 			update_bullet(b);
 			if(b->active) {
-				for(int j = 0; j < enemies_size; j++) {
+				for(int j = 0; j < ENEMIES_SIZE; j++) {
 					Enemy *e = enemies + j;
 					if(e->active && ShmupSprites::collides(b->x, b->y, ShmupSprites::BULLET_MASK, e->x, e->y, ShmupSprites::ENEMY_MASK)) {
 						e->active = false;
@@ -215,13 +215,13 @@ void ShmupEngine::tick() {
 		pause();
 	} else if(!arduboy.pressed(A_BUTTON)) {
 		if(skip_fire == 0) {
-			for(uint8_t i = 0; i < player->bullets_size; i++) {
-				Bullet *b = player->bullets + i;
+			for(uint8_t i = 0; i < player.bullets_size; i++) {
+				Bullet *b = player.bullets + i;
 				if(b->active)
 					continue;
 				b->active = true;
-				b->x = player->x + 8;
-				b->y = player->y;
+				b->x = player.x + 8;
+				b->y = player.y;
 				break;
 			}
 			skip_fire = 5;
@@ -231,7 +231,7 @@ void ShmupEngine::tick() {
 		skip_fire = 0;
 	}
 
-	for(uint8_t i = 0; i < enemies_size; i++) {
+	for(uint8_t i = 0; i < ENEMIES_SIZE; i++) {
 		Enemy *e = enemies + i;
 		if(!e->active) {
 			if(random(0,16) == 0) {
@@ -283,7 +283,7 @@ void ShmupEngine::tick() {
 		}
 
 		if(e->active) {
-			if(ShmupSprites::collides(player->x, player->y, ShmupSprites::PLAYER_MASK, e->x, e->y, ShmupSprites::ENEMY_MASK)) {
+			if(ShmupSprites::collides(player.x, player.y, ShmupSprites::PLAYER_MASK, e->x, e->y, ShmupSprites::ENEMY_MASK)) {
 				collide = true;
 //				e->active = false;
 			}
@@ -292,7 +292,7 @@ void ShmupEngine::tick() {
 			Bullet *b = e->bullets + j;
 			if(!b->active)
 				continue;
-			if(ShmupSprites::collides(player->x, player->y, ShmupSprites::PLAYER_MASK, b->x, b->y, ShmupSprites::BULLET_MASK)) {
+			if(ShmupSprites::collides(player.x, player.y, ShmupSprites::PLAYER_MASK, b->x, b->y, ShmupSprites::BULLET_MASK)) {
 				collide = true;
 //				b->active = false;
 			}
@@ -340,14 +340,14 @@ void ShmupEngine::tick() {
 	arduboy.fillScreen(WHITE);
 
 	if(beamf > 0) {
-		arduboy.drawFastHLine(player->x + 8, player->y + 3, 128 - player->x - 8, BLACK);
-		arduboy.drawFastHLine(player->x + 8, player->y + 4, 128 - player->x - 8, BLACK);
-		int xoff = (4 + arduboy.frameCount % 4 - player->x % 4) % 4;
-		int y = player->y + 3;
-		for(int x = player->x + 8 + xoff; x < 128; x += 4)
+		arduboy.drawFastHLine(player.x + 8, player.y + 3, 128 - player.x - 8, BLACK);
+		arduboy.drawFastHLine(player.x + 8, player.y + 4, 128 - player.x - 8, BLACK);
+		int xoff = (4 + arduboy.frameCount % 4 - player.x % 4) % 4;
+		int y = player.y + 3;
+		for(int x = player.x + 8 + xoff; x < 128; x += 4)
 					arduboy.drawPixel(x, y, WHITE);
 		y++;
-		for(int x = player->x + 8 + xoff + 1; x < 128; x += 4)
+		for(int x = player.x + 8 + xoff + 1; x < 128; x += 4)
 					arduboy.drawPixel(x, y, WHITE);
 
 	}
@@ -369,8 +369,8 @@ void ShmupEngine::tick() {
 	arduboy.drawFastVLine(64 + lh, 7, 57, BLACK);
 	arduboy.drawFastVLine(96 + lh, 7, 57, BLACK);
 
-	player->draw();
-	for(int i = 0; i < enemies_size; i++)
+	player.draw();
+	for(int i = 0; i < ENEMIES_SIZE; i++)
 		enemies[i].draw();
 
 	if(gameover) {
@@ -382,7 +382,7 @@ void ShmupEngine::tick() {
 
 
 	arduboy.display();
-	if(options->screencasting && (arduboy.frameCount % 4) == 0)
+	if(options.screencasting && (arduboy.frameCount % 4) == 0)
 		Serial.write(arduboy.getBuffer(), 1024);
 }
 

@@ -25,10 +25,9 @@
 
 Arduboy2 arduboy;
 ArduboyTones tones(arduboy.audio.enabled);
-
 ShmupOptions options;
-
 Player player;
+Enemy enemies[ENEMIES_SIZE];
 
 ShmupEngine engine;
 
@@ -80,9 +79,6 @@ void setup() {
 
 	while(arduboy.buttonsState())
 		;
-
-	engine.options = &options;
-	engine.player = &player;
 
 	arduboy.initRandomSeed();
 	ShmupEeprom::initRandom();

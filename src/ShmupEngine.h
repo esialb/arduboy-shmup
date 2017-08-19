@@ -20,10 +20,6 @@
 
 class ShmupEngine {
 public:
-	ShmupOptions *options;
-	Player *player;
-	static const uint8_t enemies_size = 8;
-	Enemy enemies[enemies_size];
 	int hp = INITIAL_HP;
 	int score = 0;
 	bool gameover = false;
