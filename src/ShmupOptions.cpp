@@ -17,6 +17,7 @@ int index_to_fps(int index);
 
 int ShmupOptions::Menu(const char *str, int length, int opt,
     bool (*handler)(int opt)) {
+  arduboy.invert(true);
   for (;;) {
     arduboy.fillScreen(WHITE);
     arduboy.setTextColor(BLACK);
@@ -40,13 +41,16 @@ int ShmupOptions::Menu(const char *str, int length, int opt,
     if (arduboy.pressed(A_BUTTON)) {
       while (arduboy.buttonsState())
         ;
+      arduboy.invert(false);
       return -opt - 1;
     }
     if (arduboy.pressed(B_BUTTON)) {
       while (arduboy.buttonsState())
         ;
-      if (handler(opt))
+      if (handler(opt)) {
+        arduboy.invert(false);
         return opt;
+      }
     }
   }
 }
