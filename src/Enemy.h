@@ -12,21 +12,20 @@
 
 class Enemy {
 public:
-	Enemy();
-	virtual ~Enemy();
+  Enemy();
+  virtual ~Enemy();
 
-	int8_t (*dyfn_)(int frames) = 0;
+  int8_t (*dyfn_)(int frames) = 0;
 
-	int8_t dx_, dy_, fm_, age_;
+  int8_t dx_, dy_, fm_, age_;
 
-	uint8_t x_;
-	uint8_t y_;
-	bool active_;
+  uint8_t x_;
+  uint8_t y_;bool active_;
 
-	static const uint8_t BULLETS_SIZE = 4;
-	Bullet bullets_[BULLETS_SIZE];
+  static const uint8_t BULLETS_SIZE = 4;
+  Bullet bullets_[BULLETS_SIZE];
 
-	void Draw();
+  void Draw();
 };
 
 #endif /* SRC_ENEMY_H_ */
