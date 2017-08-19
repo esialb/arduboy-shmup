@@ -8,6 +8,8 @@
 #include <ShmupSprites.h>
 #include <avr/pgmspace.h>
 
+#include "Constants.h"
+
 const uint8_t ShmupSprites::PLAYER[] PROGMEM = {
 		0b00011000,
 		0b11100111,
@@ -206,7 +208,7 @@ const uint8_t ShmupSprites::NUM_9[] PROGMEM = {
 		0b00000000,
 };
 
-void ShmupSprites::drawInt(Arduboy2 &arduboy, int n, int x, int y) {
+void ShmupSprites::drawInt(int n, int x, int y) {
 	char buf[16];
 	itoa(n, buf, 10);
 	y -= 3;
@@ -225,12 +227,12 @@ void ShmupSprites::drawInt(Arduboy2 &arduboy, int n, int x, int y) {
 		case '8': sprite = NUM_8; break;
 		case '9': sprite = NUM_9; break;
 		}
-		draw(arduboy, sprite, NULL, x, y);
+		draw(sprite, NULL, x, y);
 		x += 4;
 	}
 }
 
-void ShmupSprites::draw(Arduboy2 &arduboy, const uint8_t *sprite, const uint8_t *mask, int x, int y) {
+void ShmupSprites::draw(const uint8_t *sprite, const uint8_t *mask, int x, int y) {
 	if(mask)
 		arduboy.drawBitmap(x, y, mask, 8, 8, WHITE);
 	if(sprite)

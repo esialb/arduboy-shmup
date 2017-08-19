@@ -19,7 +19,7 @@
 
 
 void ShmupEngine::update_bullet(Bullet *b) {
-	if(arduboy->frameCount % b->fm == 0) {
+	if(arduboy.frameCount % b->fm == 0) {
 		b->x += b->dx;
 		b->y += b->dy;
 	}
@@ -58,20 +58,20 @@ int8_t jumpy_down(int age) {
 void ShmupEngine::destroy_enemy_tunes() {
 	if(options->mute)
 		return;
-	tones->tone(800, 50);
+	tones.tone(800, 50);
 }
 
 void ShmupEngine::destroy_bullet_tones() {
 	if(options->mute)
 			return;
-	tones->tone(8800, 10);
+	tones.tone(8800, 10);
 }
 
 void ShmupEngine::collision_tunes() {
 	if(options->mute)
 		return;
 	static int freq = 1100;
-	tones->tone(freq, 50);
+	tones.tone(freq, 50);
 	freq *= 2;
 	if(freq > 10000)
 		freq = 1100;
@@ -81,7 +81,7 @@ void ShmupEngine::beam_tunes() {
 	if(options->mute)
 		return;
 	static int freq = 2200;
-	tones->tone(freq, 50);
+	tones.tone(freq, 50);
 	freq = freq / 1.3;
 	if(freq < 300)
 		freq = 2200;
@@ -90,11 +90,11 @@ void ShmupEngine::beam_tunes() {
 void ShmupEngine::gameover_tunes() {
 	if(options->mute)
 		return;
-	tones->tone(440, 1000);
+	tones.tone(440, 1000);
 }
 
 void ShmupEngine::check_beam() {
-	if(arduboy->pressed(B_BUTTON)) {
+	if(arduboy.pressed(B_BUTTON)) {
 		if(beamf == -1 && hp >= 50) {
 			hp += BEAM_COST_SCORE;
 			beamf = 20;
@@ -128,29 +128,29 @@ void ShmupEngine::check_beam() {
 }
 
 void ShmupEngine::pause() {
-	arduboy->fillRect(44, 26, 39, 12, WHITE);
-	arduboy->setCursor(46, 28);
-	arduboy->print("PAUSED");
-	arduboy->drawRect(44, 26, 39, 12, BLACK);
-	arduboy->display();
-	while(arduboy->buttonsState())
+	arduboy.fillRect(44, 26, 39, 12, WHITE);
+	arduboy.setCursor(46, 28);
+	arduboy.print("PAUSED");
+	arduboy.drawRect(44, 26, 39, 12, BLACK);
+	arduboy.display();
+	while(arduboy.buttonsState())
 		;
-	while(!arduboy->pressed(A_BUTTON) || !arduboy->pressed(B_BUTTON))
+	while(!arduboy.pressed(A_BUTTON) || !arduboy.pressed(B_BUTTON))
 		;
-	while(arduboy->buttonsState())
+	while(arduboy.buttonsState())
 		;
 }
 
 void ShmupEngine::tick() {
-	if(!arduboy->nextFrame())
+	if(!arduboy.nextFrame())
 		return;
 	bool collide = false;
 
 	if(gameover) {
-		if(arduboy->pressed(B_BUTTON)) {
-			while(arduboy->pressed(B_BUTTON))
+		if(arduboy.pressed(B_BUTTON)) {
+			while(arduboy.pressed(B_BUTTON))
 				;
-			options->selectOptions(*arduboy);
+			options->selectOptions();
 			gameover = false;
 			player->x = 0;
 			player->y = 28;
@@ -171,13 +171,13 @@ void ShmupEngine::tick() {
 		goto draw;
 	}
 
-	if(player->x > 0 && arduboy->pressed(LEFT_BUTTON))
+	if(player->x > 0 && arduboy.pressed(LEFT_BUTTON))
 		player->x--;
-	if(player->x < WIDTH - 8 && arduboy->pressed(RIGHT_BUTTON))
+	if(player->x < WIDTH - 8 && arduboy.pressed(RIGHT_BUTTON))
 		player->x++;
-	if(player->y > 0 && arduboy->pressed(UP_BUTTON))
+	if(player->y > 0 && arduboy.pressed(UP_BUTTON))
 		player->y--;
-	if(player->y < HEIGHT - 8 && arduboy->pressed(DOWN_BUTTON))
+	if(player->y < HEIGHT - 8 && arduboy.pressed(DOWN_BUTTON))
 		player->y++;
 
 	for(uint8_t i = 0; i < player->bullets_size; i++) {
@@ -211,9 +211,9 @@ void ShmupEngine::tick() {
 			}
 		}
 	}
-	if(arduboy->pressed(A_BUTTON) && arduboy->pressed(B_BUTTON)) {
+	if(arduboy.pressed(A_BUTTON) && arduboy.pressed(B_BUTTON)) {
 		pause();
-	} else if(!arduboy->pressed(A_BUTTON)) {
+	} else if(!arduboy.pressed(A_BUTTON)) {
 		if(skip_fire == 0) {
 			for(uint8_t i = 0; i < player->bullets_size; i++) {
 				Bullet *b = player->bullets + i;
@@ -256,7 +256,7 @@ void ShmupEngine::tick() {
 					skip_spawn--;
 			}
 		}
-		if(arduboy->frameCount % e->fm == 0) {
+		if(arduboy.frameCount % e->fm == 0) {
 			e->x += e->dx;
 			e->y += e->dy;
 			e->age++;
@@ -302,13 +302,13 @@ void ShmupEngine::tick() {
 	if(collide) {
 		collision_tunes();
 		if(!inverting) {
-			arduboy->invert(true);
+			arduboy.invert(true);
 			inverting = true;
 			hp += PLAYER_HIT_SCORE;
 		}
 	} else {
 		inverting = false;
-		arduboy->invert(false);
+		arduboy.invert(false);
 	}
 
 
@@ -323,67 +323,67 @@ void ShmupEngine::tick() {
 	}
 
 	if(beamf > 0)
-		arduboy->setRGBled(0, 0, arduboy->frameCount & 1 ? 255 : 0);
+		arduboy.setRGBled(0, 0, arduboy.frameCount & 1 ? 255 : 0);
 	else if(hp < 0)
-		arduboy->setRGBled(0, 0, 0);
+		arduboy.setRGBled(0, 0, 0);
 	else if(hp < 50)
-		arduboy->setRGBled(255, 0, 0);
+		arduboy.setRGBled(255, 0, 0);
 	else if(hp < 100)
-		arduboy->setRGBled(255, 255, 0);
+		arduboy.setRGBled(255, 255, 0);
 	else if(hp < 150)
-		arduboy->setRGBled(0, 255, 0);
+		arduboy.setRGBled(0, 255, 0);
 	else
-		arduboy->setRGBled(0, 0, 0);
+		arduboy.setRGBled(0, 0, 0);
 
 	draw:
 
-	arduboy->fillScreen(WHITE);
+	arduboy.fillScreen(WHITE);
 
 	if(beamf > 0) {
-		arduboy->drawFastHLine(player->x + 8, player->y + 3, 128 - player->x - 8, BLACK);
-		arduboy->drawFastHLine(player->x + 8, player->y + 4, 128 - player->x - 8, BLACK);
-		int xoff = (4 + arduboy->frameCount % 4 - player->x % 4) % 4;
+		arduboy.drawFastHLine(player->x + 8, player->y + 3, 128 - player->x - 8, BLACK);
+		arduboy.drawFastHLine(player->x + 8, player->y + 4, 128 - player->x - 8, BLACK);
+		int xoff = (4 + arduboy.frameCount % 4 - player->x % 4) % 4;
 		int y = player->y + 3;
 		for(int x = player->x + 8 + xoff; x < 128; x += 4)
-					arduboy->drawPixel(x, y, WHITE);
+					arduboy.drawPixel(x, y, WHITE);
 		y++;
 		for(int x = player->x + 8 + xoff + 1; x < 128; x += 4)
-					arduboy->drawPixel(x, y, WHITE);
+					arduboy.drawPixel(x, y, WHITE);
 
 	}
 
-	arduboy->drawFastHLine(0, 7, 128, BLACK);
+	arduboy.drawFastHLine(0, 7, 128, BLACK);
 	char buf[16];
 	itoa(hp / 100, buf, 10);
-	ShmupSprites::drawInt(*arduboy, hp / 100, 128 - 4 * strlen(buf), 1);
-	ShmupSprites::drawInt(*arduboy, score, 1, 1);
+	ShmupSprites::drawInt(hp / 100, 128 - 4 * strlen(buf), 1);
+	ShmupSprites::drawInt(score, 1, 1);
 
 //	char buf[12];
 //	itoa(score, buf, 10);
-//	arduboy->setCursor(0, 0);
-//	arduboy->print(buf);
+//	arduboy.setCursor(0, 0);
+//	arduboy.print(buf);
 
-	int lh = 31 - ((arduboy->frameCount >> 3) & 0x1F);
-	arduboy->drawFastVLine(lh, 7, 57, BLACK);
-	arduboy->drawFastVLine(32 + lh, 7, 57, BLACK);
-	arduboy->drawFastVLine(64 + lh, 7, 57, BLACK);
-	arduboy->drawFastVLine(96 + lh, 7, 57, BLACK);
+	int lh = 31 - ((arduboy.frameCount >> 3) & 0x1F);
+	arduboy.drawFastVLine(lh, 7, 57, BLACK);
+	arduboy.drawFastVLine(32 + lh, 7, 57, BLACK);
+	arduboy.drawFastVLine(64 + lh, 7, 57, BLACK);
+	arduboy.drawFastVLine(96 + lh, 7, 57, BLACK);
 
-	player->draw(*arduboy);
+	player->draw();
 	for(int i = 0; i < enemies_size; i++)
-		enemies[i].draw(*arduboy);
+		enemies[i].draw();
 
 	if(gameover) {
-		arduboy->fillRect(38, 26, 51, 12, WHITE);
-		arduboy->setCursor(40, 28);
-		arduboy->print("GAMEOVER");
-		arduboy->drawRect(38, 26, 51, 12, BLACK);
+		arduboy.fillRect(38, 26, 51, 12, WHITE);
+		arduboy.setCursor(40, 28);
+		arduboy.print("GAMEOVER");
+		arduboy.drawRect(38, 26, 51, 12, BLACK);
 	}
 
 
-	arduboy->display();
-	if(options->screencasting && (arduboy->frameCount % 4) == 0)
-		Serial.write(arduboy->getBuffer(), 1024);
+	arduboy.display();
+	if(options->screencasting && (arduboy.frameCount % 4) == 0)
+		Serial.write(arduboy.getBuffer(), 1024);
 }
 
 

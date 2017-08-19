@@ -16,7 +16,7 @@ Bullet::~Bullet() {
 	// TODO Auto-generated destructor stub
 }
 
-void Bullet::draw(Arduboy2 &arduboy) {
+void Bullet::draw() {
 	if(active)
-		ShmupSprites::draw(arduboy, ShmupSprites::BULLET, ShmupSprites::BULLET_MASK, x, y);
+		ShmupSprites::draw(ShmupSprites::BULLET, ShmupSprites::BULLET_MASK, x, y);
 }

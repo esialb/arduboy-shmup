@@ -26,7 +26,7 @@ public:
 	static const uint8_t bullets_size = 4;
 	Bullet bullets[bullets_size];
 
-	void draw(Arduboy2 &arduboy);
+	void draw();
 };
 
 #endif /* SRC_ENEMY_H_ */

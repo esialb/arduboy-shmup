@@ -17,7 +17,7 @@ public:
 	Bullet();
 	virtual ~Bullet();
 
-	void draw(Arduboy2 &arduboy);
+	void draw();
 
 	bool active;
 

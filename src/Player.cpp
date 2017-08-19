@@ -7,6 +7,7 @@
 
 #include <Player.h>
 #include "ShmupSprites.h"
+#include "Constants.h"
 
 Player::Player() {
 	x = 0;
@@ -24,10 +25,10 @@ Player::~Player() {
 	// TODO Auto-generated destructor stub
 }
 
-void Player::draw(Arduboy2 &arduboy) {
+void Player::draw() {
 	if(active)
-		ShmupSprites::draw(arduboy, ShmupSprites::PLAYER, ShmupSprites::PLAYER_MASK, x, y);
+		ShmupSprites::draw(ShmupSprites::PLAYER, ShmupSprites::PLAYER_MASK, x, y);
 
 	for(uint8_t i = 0; i < bullets_size; i++)
-		bullets[i].draw(arduboy);
+		bullets[i].draw();
 }

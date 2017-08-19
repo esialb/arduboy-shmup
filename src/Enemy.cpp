@@ -30,11 +30,11 @@ Enemy::~Enemy() {
 	// TODO Auto-generated destructor stub
 }
 
-void Enemy::draw(Arduboy2 &arduboy) {
+void Enemy::draw() {
 	if(active)
-		ShmupSprites::draw(arduboy, ShmupSprites::ENEMY, ShmupSprites::ENEMY_MASK, x, y);
+		ShmupSprites::draw(ShmupSprites::ENEMY, ShmupSprites::ENEMY_MASK, x, y);
 
 	for(uint8_t i = 0; i < bullets_size; i++)
-		bullets[i].draw(arduboy);
+		bullets[i].draw();
 }
 

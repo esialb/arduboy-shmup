@@ -16,8 +16,6 @@
 #include "ShmupEngine.h"
 
 
-#include <EEPROM.h>
-
 #include "Constants.h"
 
 #define DESTROY_ENEMY_SCORE 10
@@ -44,18 +42,18 @@ void intro() {
 	player.x = 1;
 	player.y = 28;
 	player.active = true;
-	player.draw(arduboy);
+	player.draw();
 	Enemy enemy;
 	enemy.x = 119;
 	enemy.active = true;
 	for(int i = 0; i < 4; i++) {
 		enemy.y = i * 16 + 4;
-		enemy.draw(arduboy);
+		enemy.draw();
 	}
 	enemy.x = 111;
 	for(int i = 0; i < 3; i++) {
 		enemy.y = i * 16 + 12;
-		enemy.draw(arduboy);
+		enemy.draw();
 	}
 	arduboy.display();
 	if(options.screencasting)
@@ -83,7 +81,6 @@ void setup() {
 	while(arduboy.buttonsState())
 		;
 
-	engine.arduboy = &arduboy;
 	engine.options = &options;
 	engine.player = &player;
 
@@ -92,7 +89,7 @@ void setup() {
 
 	intro();
 
-	options.selectOptions(arduboy);
+	options.selectOptions();
 
 	arduboy.fillScreen(BLACK);
 	arduboy.display();

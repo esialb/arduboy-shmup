@@ -14,7 +14,7 @@
 
 int index_to_fps(int index);
 
-int ShmupOptions::menu(Arduboy2 &arduboy, const char *str, int length, int opt, bool (*handler)(ShmupOptions *options, Arduboy2 &arduboy, int opt)) {
+int ShmupOptions::menu(const char *str, int length, int opt, bool (*handler)(int opt)) {
 	for(;;) {
 		arduboy.fillScreen(WHITE);
 		arduboy.setTextColor(BLACK);
@@ -43,27 +43,27 @@ int ShmupOptions::menu(Arduboy2 &arduboy, const char *str, int length, int opt, 
 		if(arduboy.pressed(B_BUTTON)) {
 			while(arduboy.buttonsState())
 				;
-			if(handler(this, arduboy, opt))
+			if(handler(opt))
 				return opt;
 		}
 	}
 }
 
-bool options_handler(ShmupOptions *options, Arduboy2& arduboy, int opt) {
+bool options_handler(int opt) {
 	switch(opt) {
 	case 0:
 		return true;
 	case 1:
-		options->selectFPS(arduboy);
+		options.selectFPS();
 		return false;
 	case 2:
-		options->selectMute(arduboy);
+		options.selectMute();
 		return false;
 	}
 	return false;
 }
 
-void ShmupOptions::selectOptions(Arduboy2 &arduboy) {
+void ShmupOptions::selectOptions() {
 	const char *str =
 			"options              "
 			"                     "
@@ -72,7 +72,7 @@ void ShmupOptions::selectOptions(Arduboy2 &arduboy) {
 			" mute audio          "
 			;
 	int opt = 0;
-	while(opt = menu(arduboy, str, 3, opt, options_handler)) {
+	while(opt = menu(str, 3, opt, options_handler)) {
 		if(opt < 0)
 			opt = -opt - 1;
 	}
@@ -99,12 +99,12 @@ int index_to_fps(int index) {
 	return 60;
 }
 
-bool fps_handler(ShmupOptions *options, Arduboy2 &arduboy, int opt) {
+bool fps_handler(int opt) {
 	ShmupEeprom::setFPS(opt);
 	return true;
 }
 
-void ShmupOptions::selectFPS(Arduboy2 &arduboy) {
+void ShmupOptions::selectFPS() {
 	const char *str =
 			"select speed         "
 			"                     "
@@ -119,16 +119,16 @@ void ShmupOptions::selectFPS(Arduboy2 &arduboy) {
 	int opt = ShmupEeprom::loadFPS();
 	if(opt < 0 || opt > 5)
 		opt = 3;
-	menu(arduboy, str, 6, opt, fps_handler);
+	menu(str, 6, opt, fps_handler);
 
 }
 
-bool mute_handler(ShmupOptions *options, Arduboy2 &arduboy, int opt) {
+bool mute_handler(int opt) {
 	ShmupEeprom::setMute(opt);
 	return true;
 }
 
-void ShmupOptions::selectMute(Arduboy2 &arduboy) {
+void ShmupOptions::selectMute() {
 	const char *str =
 			"select sounds        "
 			"                     "
@@ -138,5 +138,5 @@ void ShmupOptions::selectMute(Arduboy2 &arduboy) {
 	int opt = ShmupEeprom::loadMute();
 	if(opt < 0 || opt > 1)
 		opt = 0;
-	menu(arduboy, str, 2, opt, mute_handler);
+	menu(str, 2, opt, mute_handler);
 }

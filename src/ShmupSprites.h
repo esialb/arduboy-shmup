@@ -36,9 +36,9 @@ public:
 	static const uint8_t NUM_8[];
 	static const uint8_t NUM_9[];
 
-	static void drawInt(Arduboy2 &arduboy, int n, int x, int y);
+	static void drawInt(int n, int x, int y);
 
-	static void draw(Arduboy2 &arduboy, const uint8_t *sprite, const uint8_t *mask, int x, int y);
+	static void draw(const uint8_t *sprite, const uint8_t *mask, int x, int y);
 	static bool collides(int x1, int y1, const uint8_t *m1, int x2, int y2, const uint8_t *m2);
 };
 

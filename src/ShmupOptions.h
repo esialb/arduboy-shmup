@@ -16,12 +16,12 @@ public:
 	bool screencasting = false;
 	bool mute = false;
 
-	void selectOptions(Arduboy2 &arduboy);
-	void selectFPS(Arduboy2 &arduboy);
-	void selectMute(Arduboy2 &arduboy);
+	void selectOptions();
+	void selectFPS();
+	void selectMute();
 
 private:
-	int menu(Arduboy2 &arduboy, const char *str, int length, int opt, bool (*handler)(ShmupOptions *options, Arduboy2 &arduboy, int opt));
+	int menu(const char *str, int length, int opt, bool (*handler)(int opt));
 };
 
 #endif /* SRC_SHMUPOPTIONS_H_ */

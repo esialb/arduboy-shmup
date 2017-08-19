@@ -11,6 +11,8 @@
 #include "ShmupOptions.h"
 #include <Arduboy2.h>
 #include <ArduboyTones.h>
+#include "Constants.h"
+
 #include "Player.h"
 #include "Enemy.h"
 
@@ -19,8 +21,6 @@
 class ShmupEngine {
 public:
 	ShmupOptions *options;
-	Arduboy2 *arduboy;
-	ArduboyTones *tones;
 	Player *player;
 	static const uint8_t enemies_size = 8;
 	Enemy enemies[enemies_size];
