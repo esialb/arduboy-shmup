@@ -97,4 +97,5 @@ void setup() {
 
 void loop() {
 	engine.tick();
+	engine.draw();
 }

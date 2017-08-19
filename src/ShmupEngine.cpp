@@ -125,34 +125,38 @@ void ShmupEngine::pause() {
 		;
 }
 
+void ShmupEngine::check_gameover() {
+	if(arduboy.pressed(B_BUTTON)) {
+		while(arduboy.pressed(B_BUTTON))
+			;
+		arduboy.invert(false);
+		options.selectOptions();
+		gameover = false;
+		player.x = 0;
+		player.y = 28;
+		player.active = true;
+		for(uint8_t i = 0; i < player.bullets_size; i++)
+			player.bullets[i].active = false;
+		for(uint8_t i = 0; i < ENEMIES_SIZE; i++) {
+			enemies[i].x = 0;
+			enemies[i].y = 28;
+			enemies[i].active = false;
+			for(uint8_t j = 0; j < enemies[i].bullets_size; j++)
+				enemies[i].bullets[j].active = false;
+		}
+		hp = 300;
+		score = 0;
+	}
+}
+
 void ShmupEngine::tick() {
 	if(!arduboy.nextFrame())
 		return;
 	collide = false;
 
 	if(gameover) {
-		if(arduboy.pressed(B_BUTTON)) {
-			while(arduboy.pressed(B_BUTTON))
-				;
-			options.selectOptions();
-			gameover = false;
-			player.x = 0;
-			player.y = 28;
-			player.active = true;
-			for(uint8_t i = 0; i < player.bullets_size; i++)
-				player.bullets[i].active = false;
-			for(uint8_t i = 0; i < ENEMIES_SIZE; i++) {
-				enemies[i].x = 0;
-				enemies[i].y = 28;
-				enemies[i].active = false;
-				for(uint8_t j = 0; j < enemies[i].bullets_size; j++)
-					enemies[i].bullets[j].active = false;
-			}
-			hp = 300;
-			score = 0;
-		}
-
-		goto draw;
+		check_gameover();
+		return;
 	}
 
 	if(player.x > 0 && arduboy.pressed(LEFT_BUTTON))
@@ -318,9 +322,10 @@ void ShmupEngine::tick() {
 		arduboy.setRGBled(0, 255, 0);
 	else
 		arduboy.setRGBled(0, 0, 0);
+}
 
-	draw:
 
+void ShmupEngine::draw() {
 	arduboy.fillScreen(WHITE);
 
 	if(beamf > 0) {
@@ -369,5 +374,3 @@ void ShmupEngine::tick() {
 	if(options.screencasting && (arduboy.frameCount % 4) == 0)
 		Serial.write(arduboy.getBuffer(), 1024);
 }
-
-

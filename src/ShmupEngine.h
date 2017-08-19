@@ -23,6 +23,7 @@ public:
 	bool gameover = false;
 
 	void tick();
+	void draw();
 
 private:
 	int8_t skip_spawn = 0;
@@ -37,6 +38,7 @@ private:
 	void beam_tunes();
 	void gameover_tunes();
 	void check_beam();
+	void check_gameover();
 	void pause();
 };
 
