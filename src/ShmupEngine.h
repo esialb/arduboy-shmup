@@ -44,6 +44,9 @@ private:
 	void PlayerUpdate();
 	void EnemiesUpdate();
 	void PauseCheck();
+	void WeaponCheck();
+	void WeaponFire();
+	void WeaponClear();
 };
 
 #endif /* SRC_SHMUPENGINE_H_ */
