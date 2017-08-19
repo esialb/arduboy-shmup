@@ -18,8 +18,8 @@
 
 class ShmupEngine {
 public:
-  int hp_ = INITIAL_HP;
-  int score_ = 0;bool gameover_ = false;
+  int hp = INITIAL_HP;
+  int score = 0;bool gameover = false;
 
   void Tick();
   void Draw();

@@ -18,32 +18,32 @@ int index_to_fps(int index);
 int ShmupOptions::Menu(const char *str, int length, int opt,
     bool (*handler)(int opt)) {
   for (;;) {
-    arduboy_.fillScreen(WHITE);
-    arduboy_.setTextColor(BLACK);
-    arduboy_.setTextBackground(WHITE);
-    arduboy_.setTextWrap(true);
-    arduboy_.setCursor(0, 0);
-    arduboy_.print(str);
-    arduboy_.setCursor(0, 16 + 8 * opt);
-    arduboy_.print(">");
-    arduboy_.display();
-    if (screencasting_)
-      Serial.write(arduboy_.getBuffer(), 1024);
-    while (arduboy_.buttonsState() != 0)
+    arduboy.fillScreen(WHITE);
+    arduboy.setTextColor(BLACK);
+    arduboy.setTextBackground(WHITE);
+    arduboy.setTextWrap(true);
+    arduboy.setCursor(0, 0);
+    arduboy.print(str);
+    arduboy.setCursor(0, 16 + 8 * opt);
+    arduboy.print(">");
+    arduboy.display();
+    if (screencasting)
+      Serial.write(arduboy.getBuffer(), 1024);
+    while (arduboy.buttonsState() != 0)
       ;
-    while (arduboy_.buttonsState() == 0)
+    while (arduboy.buttonsState() == 0)
       ;
-    if (arduboy_.pressed(UP_BUTTON) && opt > 0)
+    if (arduboy.pressed(UP_BUTTON) && opt > 0)
       opt--;
-    if (arduboy_.pressed(DOWN_BUTTON) && opt < length - 1)
+    if (arduboy.pressed(DOWN_BUTTON) && opt < length - 1)
       opt++;
-    if (arduboy_.pressed(A_BUTTON)) {
-      while (arduboy_.buttonsState())
+    if (arduboy.pressed(A_BUTTON)) {
+      while (arduboy.buttonsState())
         ;
       return -opt - 1;
     }
-    if (arduboy_.pressed(B_BUTTON)) {
-      while (arduboy_.buttonsState())
+    if (arduboy.pressed(B_BUTTON)) {
+      while (arduboy.buttonsState())
         ;
       if (handler(opt))
         return opt;
@@ -56,10 +56,10 @@ bool options_handler(int opt) {
   case 0:
     return true;
   case 1:
-    options_.SelectFps();
+    options.SelectFps();
     return false;
   case 2:
-    options_.SelectMute();
+    options.SelectMute();
     return false;
   }
   return false;
@@ -79,12 +79,12 @@ void ShmupOptions::SelectOptions() {
 
   ShmupEeprom::Commit();
 
-  arduboy_.setFrameRate(index_to_fps(ShmupEeprom::LoadFps()));
-  this->mute_ = ShmupEeprom::LoadMute();
-  if (this->mute_)
-    arduboy_.audio.off();
+  arduboy.setFrameRate(index_to_fps(ShmupEeprom::LoadFps()));
+  this->mute = ShmupEeprom::LoadMute();
+  if (this->mute)
+    arduboy.audio.off();
   else
-    arduboy_.audio.on();
+    arduboy.audio.on();
 }
 
 int index_to_fps(int index) {

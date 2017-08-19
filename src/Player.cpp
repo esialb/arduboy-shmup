@@ -10,14 +10,14 @@
 #include "Constants.h"
 
 Player::Player() {
-  x_ = 0;
-  y_ = 28;
-  active_ = true;
+  x = 0;
+  y = 28;
+  active = true;
 
   for (uint8_t i = 0; i < PLAYER_BULLETS_SIZE; i++) {
-    bullets_[i].dx_ = 2;
-    bullets_[i].dy_ = 0;
-    bullets_[i].fm_ = 1;
+    bullets[i].dx = 2;
+    bullets[i].dy = 0;
+    bullets[i].fm = 1;
   }
 }
 
@@ -26,9 +26,9 @@ Player::~Player() {
 }
 
 void Player::Draw() {
-  if (active_)
-    ShmupSprites::Draw(ShmupSprites::PLAYER, ShmupSprites::PLAYER_MASK, x_, y_);
+  if (active)
+    ShmupSprites::Draw(ShmupSprites::PLAYER, ShmupSprites::PLAYER_MASK, x, y);
 
   for (uint8_t i = 0; i < PLAYER_BULLETS_SIZE; i++)
-    bullets_[i].Draw();
+    bullets[i].Draw();
 }

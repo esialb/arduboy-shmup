@@ -19,10 +19,10 @@ public:
   Player();
   virtual ~Player();
 
-  uint8_t x_;
-  uint8_t y_;bool active_;
+  uint8_t x;
+  uint8_t y;bool active;
 
-  Bullet bullets_[PLAYER_BULLETS_SIZE];
+  Bullet bullets[PLAYER_BULLETS_SIZE];
 
   void Draw();
 };

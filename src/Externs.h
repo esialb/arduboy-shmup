@@ -16,11 +16,11 @@
 #include "Enemy.h"
 
 
-extern Arduboy2 arduboy_;
-extern ArduboyTones tones_;
-extern ShmupOptions options_;
-extern Player player_;
-extern Enemy enemies_[ENEMIES_SIZE];
+extern Arduboy2 arduboy;
+extern ArduboyTones tones;
+extern ShmupOptions options;
+extern Player player;
+extern Enemy enemies[ENEMIES_SIZE];
 
 
 

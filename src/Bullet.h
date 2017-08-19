@@ -21,10 +21,10 @@ public:
 
   void Tick();
 
-  bool active_;
+  bool active_ = false;
 
-  uint8_t x_, y_;
-  int8_t dx_, dy_, fm_;
+  uint8_t x = 0, y = 0;
+  int8_t dx = 0, dy = 0, fm = 0;
 };
 
 #endif /* SRC_BULLET_H_ */

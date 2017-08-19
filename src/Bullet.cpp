@@ -12,7 +12,6 @@
 #include "Externs.h"
 
 Bullet::Bullet() {
-  active_ = false;
 }
 
 Bullet::~Bullet() {
@@ -21,14 +20,14 @@ Bullet::~Bullet() {
 
 void Bullet::Draw() {
   if (active_)
-    ShmupSprites::Draw(ShmupSprites::BULLET, ShmupSprites::BULLET_MASK, x_, y_);
+    ShmupSprites::Draw(ShmupSprites::BULLET, ShmupSprites::BULLET_MASK, x, y);
 }
 
 void Bullet::Tick() {
-  if (arduboy_.frameCount % fm_ == 0) {
-    x_ += dx_;
-    y_ += dy_;
+  if (arduboy.frameCount % fm == 0) {
+    x += dx;
+    y += dy;
   }
-  if (x_ <= -8 || x_ >= 128 || y_ <= -8 || y_ >= 64)
+  if (x <= -8 || x >= 128 || y <= -8 || y >= 64)
     active_ = false;
 }

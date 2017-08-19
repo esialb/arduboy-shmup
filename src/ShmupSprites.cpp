@@ -114,9 +114,9 @@ void ShmupSprites::DrawInt(int n, int x, int y) {
 void ShmupSprites::Draw(const uint8_t *sprite, const uint8_t *mask, int x,
     int y) {
   if (mask)
-    arduboy_.drawBitmap(x, y, mask, 8, 8, WHITE);
+    arduboy.drawBitmap(x, y, mask, 8, 8, WHITE);
   if (sprite)
-    arduboy_.drawBitmap(x, y, sprite, 8, 8, BLACK);
+    arduboy.drawBitmap(x, y, sprite, 8, 8, BLACK);
 }
 
 bool ShmupSprites::Collides(int x1, int y1, const uint8_t *m1, int x2, int y2,

@@ -12,7 +12,7 @@
 
 class ShmupOptions {
 public:
-  int fps_ = 60;bool screencasting_ = false;bool mute_ = false;
+  int fps = 60;bool screencasting = false;bool mute = false;
 
   void SelectOptions();
   void SelectFps();
