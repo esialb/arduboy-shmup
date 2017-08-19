@@ -10,6 +10,7 @@
 #include "ShmupSprites.h"
 
 #include "Constants.h"
+#include "Externs.h"
 
 int8_t curvy(int age) {
   age = age % 20;
@@ -92,21 +93,23 @@ void ShmupEngine::WeaponFire() {
     BeamTone();
     beamf_--;
     for (int i = 0; i < ENEMIES_SIZE; i++) {
-      if (enemies_[i].active_ && enemies_[i].x_ > player_.x_) {
+      Enemy& e = enemies_[i];
+      if (e.active_ && e.x_ > player_.x_) {
         if (ShmupSprites::Collides(
-            enemies_[i].x_, enemies_[i].y_, ShmupSprites::ENEMY_MASK,
-            enemies_[i].x_, player_.y_, ShmupSprites::BEAM_MASK)) {
-          enemies_[i].active_ = false;
+            e.x_, e.y_, ShmupSprites::ENEMY_MASK,
+            e.x_, player_.y_, ShmupSprites::BEAM_MASK)) {
+          e.active_ = false;
           hp_ += DESTROY_ENEMY_SCORE;
         }
       }
-      for (uint8_t j = 0; j < enemies_[i].BULLETS_SIZE; j++) {
-        if (enemies_[i].bullets_[j].active_
-            && enemies_[i].bullets_[j].x_ > player_.x_) {
+      for (uint8_t j = 0; j < ENEMY_BULLETS_SIZE; j++) {
+        Bullet& b = e.bullets_[j];
+        if (b.active_
+            && b.x_ > player_.x_) {
           if (ShmupSprites::Collides(
-              enemies_[i].bullets_[j].x_, enemies_[i].bullets_[j].y_, ShmupSprites::BULLET_MASK,
-              enemies_[i].bullets_[j].x_, player_.y_, ShmupSprites::BEAM_MASK)) {
-            enemies_[i].bullets_[j].active_ = false;
+              b.x_, b.y_, ShmupSprites::BULLET_MASK,
+              b.x_, player_.y_, ShmupSprites::BEAM_MASK)) {
+            b.active_ = false;
             hp_ += DESTROY_BULLET_SCORE;
           }
         }
@@ -145,13 +148,13 @@ void ShmupEngine::GameOverCheck() {
     player_.x_ = 0;
     player_.y_ = 28;
     player_.active_ = true;
-    for (uint8_t i = 0; i < player_.BULLETS_SIZE; i++)
+    for (uint8_t i = 0; i < PLAYER_BULLETS_SIZE; i++)
       player_.bullets_[i].active_ = false;
     for (uint8_t i = 0; i < ENEMIES_SIZE; i++) {
       enemies_[i].x_ = 0;
       enemies_[i].y_ = 28;
       enemies_[i].active_ = false;
-      for (uint8_t j = 0; j < enemies_[i].BULLETS_SIZE; j++)
+      for (uint8_t j = 0; j < ENEMY_BULLETS_SIZE; j++)
         enemies_[i].bullets_[j].active_ = false;
     }
     hp_ = 300;
@@ -161,15 +164,15 @@ void ShmupEngine::GameOverCheck() {
 
 void ShmupEngine::CollideCheck() {
   for (uint8_t i = 0; i < ENEMIES_SIZE; i++) {
-    Enemy *e = enemies_ + i;
-    if (e->active_) {
+    Enemy& e = enemies_[i];
+    if (e.active_) {
       if (ShmupSprites::Collides(player_.x_, player_.y_,
-          ShmupSprites::PLAYER_MASK, e->x_, e->y_, ShmupSprites::ENEMY_MASK)) {
+          ShmupSprites::PLAYER_MASK, e.x_, e.y_, ShmupSprites::ENEMY_MASK)) {
         collide_ = true;
       }
     }
-    for (uint8_t j = 0; j < e->BULLETS_SIZE; j++) {
-      Bullet *b = e->bullets_ + j;
+    for (uint8_t j = 0; j < ENEMY_BULLETS_SIZE; j++) {
+      Bullet *b = e.bullets_ + j;
       if (!b->active_)
         continue;
       if (ShmupSprites::Collides(player_.x_, player_.y_,
@@ -193,7 +196,7 @@ void ShmupEngine::CollideCheck() {
 }
 
 void ShmupEngine::DestroyCheck() {
-  for (uint8_t i = 0; i < player_.BULLETS_SIZE; i++) {
+  for (uint8_t i = 0; i < PLAYER_BULLETS_SIZE; i++) {
     if (player_.bullets_[i].active_) {
       Bullet *b = player_.bullets_ + i;
       if (b->active_) {
@@ -210,7 +213,7 @@ void ShmupEngine::DestroyCheck() {
             break;
           }
           bool nb = true;
-          for (uint8_t k = 0; nb && k < e->BULLETS_SIZE; k++) {
+          for (uint8_t k = 0; nb && k < ENEMY_BULLETS_SIZE; k++) {
             Bullet *b2 = e->bullets_ + k;
             if (b2->active_
                 && ShmupSprites::Collides(b->x_, b->y_,
@@ -240,7 +243,7 @@ void ShmupEngine::PlayerUpdate() {
   if (player_.y_ < HEIGHT - 8 && arduboy_.pressed(DOWN_BUTTON))
     player_.y_++;
 
-  for (uint8_t i = 0; i < player_.BULLETS_SIZE; i++) {
+  for (uint8_t i = 0; i < PLAYER_BULLETS_SIZE; i++) {
     if (player_.bullets_[i].active_) {
       Bullet *b = player_.bullets_ + i;
       b->Tick();
@@ -284,10 +287,10 @@ void ShmupEngine::EnemiesUpdate() {
     if (e->x_ <= -8 || e->x_ >= 128 || e->y_ <= -8 || e->y_ >= 64) {
       e->active_ = false;
     }
-    for (size_t j = 0; j < e->BULLETS_SIZE; j++) {
+    for (size_t j = 0; j < ENEMY_BULLETS_SIZE; j++) {
       e->bullets_[j].Tick();
     }
-    for (size_t j = 0; j < e->BULLETS_SIZE; j++) {
+    for (size_t j = 0; j < ENEMY_BULLETS_SIZE; j++) {
       if (e->active_ && !e->bullets_[j].active_) {
         if (random(0, 90) != 0)
           continue;
@@ -320,7 +323,7 @@ void ShmupEngine::Tick() {
   PauseCheck();
 
   if (skip_fire_ == 0) {
-    for (uint8_t i = 0; i < player_.BULLETS_SIZE; i++) {
+    for (uint8_t i = 0; i < PLAYER_BULLETS_SIZE; i++) {
       Bullet *b = player_.bullets_ + i;
       if (b->active_)
         continue;

@@ -16,6 +16,7 @@
 #include "ShmupEngine.h"
 
 #include "Constants.h"
+#include "Externs.h"
 
 #define DESTROY_ENEMY_SCORE 10
 #define DESTROY_BULLET_SCORE 1

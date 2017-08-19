@@ -9,6 +9,7 @@
 #include <avr/pgmspace.h>
 
 #include "Constants.h"
+#include "Externs.h"
 
 const uint8_t ShmupSprites::PLAYER[] PROGMEM = { 0b00011000, 0b11100111,
     0b10000001, 0b01000010, 0b00100100, 0b00100100, 0b00100100, 0b00011000, };
@@ -69,7 +70,7 @@ void ShmupSprites::DrawInt(int n, int x, int y) {
   itoa(n, buf, 10);
   y -= 3;
   for (char *c = buf; *c; c++) {
-    uint8_t *sprite = NULL;
+    const uint8_t *sprite = NULL;
     switch (*c) {
     case '-':
       sprite = NUM_NEG;

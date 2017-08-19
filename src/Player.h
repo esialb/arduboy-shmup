@@ -1,5 +1,5 @@
 /*
- lll * Player.h
+ * Player.h
  *
  *  Created on: Dec 6, 2016
  *      Author: robin
@@ -12,6 +12,8 @@
 
 #include "Bullet.h"
 
+#include "Constants.h"
+
 class Player {
 public:
   Player();
@@ -20,8 +22,7 @@ public:
   uint8_t x_;
   uint8_t y_;bool active_;
 
-  static const uint8_t BULLETS_SIZE = 6;
-  Bullet bullets_[BULLETS_SIZE];
+  Bullet bullets_[PLAYER_BULLETS_SIZE];
 
   void Draw();
 };

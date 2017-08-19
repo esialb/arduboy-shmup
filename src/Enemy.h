@@ -10,6 +10,8 @@
 
 #include "Bullet.h"
 
+#include "Constants.h"
+
 class Enemy {
 public:
   Enemy();
@@ -22,8 +24,7 @@ public:
   uint8_t x_;
   uint8_t y_;bool active_;
 
-  static const uint8_t BULLETS_SIZE = 4;
-  Bullet bullets_[BULLETS_SIZE];
+  Bullet bullets_[ENEMY_BULLETS_SIZE];
 
   void Draw();
 };

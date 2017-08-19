@@ -15,7 +15,7 @@ Enemy::Enemy() {
   y_ = 28;
   active_ = false;
 
-  for (uint8_t i = 0; i < BULLETS_SIZE; i++) {
+  for (uint8_t i = 0; i < ENEMY_BULLETS_SIZE; i++) {
     bullets_[i].dx_ = -1;
     bullets_[i].dy_ = 0;
     bullets_[i].fm_ = 2;
@@ -34,7 +34,7 @@ void Enemy::Draw() {
   if (active_)
     ShmupSprites::Draw(ShmupSprites::ENEMY, ShmupSprites::ENEMY_MASK, x_, y_);
 
-  for (uint8_t i = 0; i < BULLETS_SIZE; i++)
+  for (uint8_t i = 0; i < ENEMY_BULLETS_SIZE; i++)
     bullets_[i].Draw();
 }
 

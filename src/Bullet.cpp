@@ -9,6 +9,7 @@
 #include "ShmupSprites.h"
 
 #include "Constants.h"
+#include "Externs.h"
 
 Bullet::Bullet() {
   active_ = false;

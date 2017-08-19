@@ -11,6 +11,7 @@
 #include "ShmupEeprom.h"
 
 #include "Constants.h"
+#include "Externs.h"
 
 int index_to_fps(int index);
 
@@ -71,7 +72,7 @@ void ShmupOptions::SelectOptions() {
       " select speed        "
       " mute audio          ";
   int opt = 0;
-  while (opt = Menu(str, 3, opt, options_handler)) {
+  while ((opt = Menu(str, 3, opt, options_handler))) {
     if (opt < 0)
       opt = -opt - 1;
   }

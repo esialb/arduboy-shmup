@@ -14,7 +14,7 @@ Player::Player() {
   y_ = 28;
   active_ = true;
 
-  for (uint8_t i = 0; i < BULLETS_SIZE; i++) {
+  for (uint8_t i = 0; i < PLAYER_BULLETS_SIZE; i++) {
     bullets_[i].dx_ = 2;
     bullets_[i].dy_ = 0;
     bullets_[i].fm_ = 1;
@@ -29,6 +29,6 @@ void Player::Draw() {
   if (active_)
     ShmupSprites::Draw(ShmupSprites::PLAYER, ShmupSprites::PLAYER_MASK, x_, y_);
 
-  for (uint8_t i = 0; i < BULLETS_SIZE; i++)
+  for (uint8_t i = 0; i < PLAYER_BULLETS_SIZE; i++)
     bullets_[i].Draw();
 }
