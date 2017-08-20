@@ -69,8 +69,8 @@ const uint8_t ShmupSprites::WAVE[] PROGMEM = {
     0b00000000,
     0b00000000,
     0b00000000,
-    0b00000000,
-    0b00000000,
+    0b10000001,
+    0b01111110,
     0b00000000,
     0b10000001,
     0b01111110,
@@ -80,8 +80,8 @@ const uint8_t ShmupSprites::WAVE_MASK[] PROGMEM = {
     0b00000000,
     0b00000000,
     0b00000000,
-    0b00000000,
-    0b00000000,
+    0b10000001,
+    0b01111110,
     0b00000000,
     0b10000001,
     0b01111110,
@@ -92,7 +92,7 @@ void ShmupSprites::DrawInt(int n, int x, int y) {
   itoa(n, buf, 10);
   y -= 3;
   for (char *c = buf; *c; c++) {
-    const uint8_t *sprite = NULL;
+    const uint8_t *sprite = 0;
     switch (*c) {
     case '-':
       sprite = NUM_NEG;
@@ -128,7 +128,7 @@ void ShmupSprites::DrawInt(int n, int x, int y) {
       sprite = NUM_9;
       break;
     }
-    Draw(sprite, NULL, x, y);
+    Draw(sprite, 0, x, y);
     x += 4;
   }
 }
