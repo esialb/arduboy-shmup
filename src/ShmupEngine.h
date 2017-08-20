@@ -16,6 +16,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Beam.h"
+#include "Wave.h"
 
 class ShmupEngine {
 public:
@@ -25,6 +26,7 @@ public:
 
   uint8_t weapon = 0;
   Beam beam;
+  Wave wave;
 
   void Tick();
   void Draw();

@@ -75,12 +75,15 @@ void ShmupEngine::WeaponCheck() {
 }
 
 void ShmupEngine::WeaponFire() {
-  if(weapon == 1)
+  if (weapon == 1)
     beam.Fire();
+  if (weapon == 2)
+    wave.Fire();
 }
 
 void ShmupEngine::WeaponTick() {
   beam.Tick();
+  wave.Tick();
 }
 
 void ShmupEngine::MenuCheck() {
@@ -93,10 +96,13 @@ void ShmupEngine::MenuCheck() {
       arduboy.setTextBackground(BLACK);
       switch(weapon) {
       case 0:
-        arduboy.print("PAUSE");
+        arduboy.print("PAUZ");
         break;
       case 1:
-        arduboy.print("BEAM ");
+        arduboy.print("BEAM");
+        break;
+      case 2:
+        arduboy.print("WAVE");
         break;
       }
       arduboy.display();
@@ -107,8 +113,8 @@ void ShmupEngine::MenuCheck() {
       while(arduboy.pressed(UP_BUTTON) || arduboy.pressed(DOWN_BUTTON))
         ;
       if(weapon == 255)
-        weapon = 1;
-      if (weapon == 2)
+        weapon = 2;
+      if (weapon == 3)
         weapon = 0;
     }
   } while(weapon == 0);
@@ -334,6 +340,7 @@ void ShmupEngine::Tick() {
 
 void ShmupEngine::WeaponDraw() {
   beam.Draw();
+  wave.Draw();
 }
 
 void ShmupEngine::Draw() {

@@ -65,6 +65,28 @@ const uint8_t ShmupSprites::NUM_8[] PROGMEM = { 0b11111000, 0b10101000,
 const uint8_t ShmupSprites::NUM_9[] PROGMEM = { 0b10111000, 0b10101000,
     0b01111000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, };
 
+const uint8_t ShmupSprites::WAVE[] PROGMEM = {
+    0b00000000,
+    0b00000000,
+    0b00000000,
+    0b00000000,
+    0b00000000,
+    0b00000000,
+    0b10000001,
+    0b01111110,
+};
+
+const uint8_t ShmupSprites::WAVE_MASK[] PROGMEM = {
+    0b00000000,
+    0b00000000,
+    0b00000000,
+    0b00000000,
+    0b00000000,
+    0b00000000,
+    0b10000001,
+    0b01111110,
+};
+
 void ShmupSprites::DrawInt(int n, int x, int y) {
   char buf[16];
   itoa(n, buf, 10);

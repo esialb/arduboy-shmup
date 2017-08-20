@@ -39,6 +39,7 @@ void Beam::Tick() {
             e.x, player.y, ShmupSprites::BEAM_MASK)) {
           e.active = false;
           engine.hp += DESTROY_ENEMY_SCORE;
+          engine.score += DESTROY_ENEMY_SCORE;
         }
       }
       for (uint8_t j = 0; j < ENEMY_BULLETS_SIZE; j++) {
@@ -50,6 +51,7 @@ void Beam::Tick() {
               b.x, player.y, ShmupSprites::BEAM_MASK)) {
             b.active = false;
             engine.hp += DESTROY_BULLET_SCORE;
+            engine.score += DESTROY_BULLET_SCORE;
           }
         }
       }

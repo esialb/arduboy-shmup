@@ -24,6 +24,9 @@ public:
 
   static const uint8_t BEAM_MASK[];
 
+  static const uint8_t WAVE[];
+  static const uint8_t WAVE_MASK[];
+
   static const uint8_t NUM_NEG[];
   static const uint8_t NUM_0[];
   static const uint8_t NUM_1[];
