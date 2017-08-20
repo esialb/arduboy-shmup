@@ -16,6 +16,6 @@
 #define BEAM_COST_SCORE -50
 #define PLAYER_BULLETS_SIZE 6
 #define ENEMY_BULLETS_SIZE 4
-#define WAVE_SIZE 3
+#define WAVE_SIZE 2
 
 #endif /* SRC_CONSTANTS_H_ */
