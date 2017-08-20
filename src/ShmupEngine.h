@@ -23,6 +23,7 @@ public:
   int score = 0;
   bool gameover = false;
 
+  uint8_t weapon = 0;
   Beam beam;
 
   void Tick();
@@ -45,7 +46,7 @@ private:
   void DestroyCheck();
   void PlayerUpdate();
   void EnemiesUpdate();
-  void PauseCheck();
+  void MenuCheck();
   void WeaponCheck();
   void WeaponFire();
   void WeaponTick();

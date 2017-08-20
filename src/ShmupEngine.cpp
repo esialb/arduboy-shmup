@@ -75,27 +75,45 @@ void ShmupEngine::WeaponCheck() {
 }
 
 void ShmupEngine::WeaponFire() {
-  beam.Fire();
+  if(weapon == 1)
+    beam.Fire();
 }
 
 void ShmupEngine::WeaponTick() {
   beam.Tick();
 }
 
-void ShmupEngine::PauseCheck() {
+void ShmupEngine::MenuCheck() {
   if (!arduboy.pressed(B_BUTTON))
     return;
-  arduboy.fillRect(44, 26, 39, 12, WHITE);
-  arduboy.setCursor(46, 28);
-  arduboy.print("PAUSED");
-  arduboy.drawRect(44, 26, 39, 12, BLACK);
-  arduboy.display();
-  while (arduboy.pressed(B_BUTTON))
-    ;
-  while (!arduboy.pressed(B_BUTTON))
-    ;
-  while (arduboy.pressed(B_BUTTON))
-    ;
+  do {
+    while (arduboy.pressed(B_BUTTON)) {
+      arduboy.setCursor(0, 0);
+      arduboy.setTextColor(WHITE);
+      arduboy.setTextBackground(BLACK);
+      switch(weapon) {
+      case 0:
+        arduboy.print("PAUSE");
+        break;
+      case 1:
+        arduboy.print("BEAM ");
+        break;
+      }
+      arduboy.display();
+      if (arduboy.pressed(UP_BUTTON))
+        weapon--;
+      if (arduboy.pressed(DOWN_BUTTON))
+        weapon++;
+      while(arduboy.pressed(UP_BUTTON) || arduboy.pressed(DOWN_BUTTON))
+        ;
+      if(weapon == 255)
+        weapon = 1;
+      if (weapon == 2)
+        weapon = 0;
+    }
+  } while(weapon == 0);
+  arduboy.setTextColor(BLACK);
+  arduboy.setTextBackground(WHITE);
 }
 
 void ShmupEngine::GameOverCheck() {
@@ -279,7 +297,7 @@ void ShmupEngine::Tick() {
   DestroyCheck();
   WeaponCheck();
 
-  PauseCheck();
+  MenuCheck();
 
   if (skip_fire_ == 0) {
     for (uint8_t i = 0; i < PLAYER_BULLETS_SIZE; i++) {
