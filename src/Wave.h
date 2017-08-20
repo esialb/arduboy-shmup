@@ -21,6 +21,7 @@ private:
   uint8_t x[WAVE_SIZE], y[WAVE_SIZE];
   bool active[WAVE_SIZE];
   uint8_t wait = 0;
+  uint8_t age[WAVE_SIZE];
 };
 
 #endif /* SRC_WAVE_H_ */

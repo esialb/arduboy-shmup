@@ -20,6 +20,7 @@ void Wave::Fire() {
     active[i] = true;
     x[i] = player.x;
     y[i] = player.y;
+    age[i] = 0;
     wait = 10;
     return;
   }
@@ -34,13 +35,16 @@ void Wave::Draw() {
 }
 
 void Wave::Tick() {
+  bool any = false;
   for (uint8_t w = 0; w < WAVE_SIZE; w++) {
-    if (x[w] >= 120) {
+    if (age[w] >= 64) {
       active[w] = false;
     }
     if (!active[w])
       continue;
     x[w]++;
+    age[w]++;
+    any = true;
 
     for (int i = 0; i < ENEMIES_SIZE; i++) {
       Enemy& e = enemies[i];
@@ -67,5 +71,9 @@ void Wave::Tick() {
         }
       }
     }
+  }
+
+  if (any) {
+    tones.tone((arduboy.frameCount % 2) ? 200 : 100, 10);
   }
 }
