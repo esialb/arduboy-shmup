@@ -8,6 +8,7 @@
 #ifndef SRC_SHMUPENGINE_H_
 #define SRC_SHMUPENGINE_H_
 
+#include <Arduino.h>
 #include "ShmupOptions.h"
 #include <Arduboy2.h>
 #include <ArduboyTones.h>
@@ -24,7 +25,7 @@ public:
   int score = 0;
   bool gameover = false;
 
-  uint8_t weapon = 0;
+  uint8_t weapon = 1;
   Beam beam;
   Wave wave;
 

@@ -96,13 +96,13 @@ void ShmupEngine::MenuCheck() {
       arduboy.setTextBackground(BLACK);
       switch(weapon) {
       case 0:
-        arduboy.print("PAUZ");
+        arduboy.print("PAUSE ");
         break;
       case 1:
-        arduboy.print("BEAM");
+        arduboy.print("BEAM  ");
         break;
       case 2:
-        arduboy.print("WAVE");
+        arduboy.print("WAVE  ");
         break;
       }
       arduboy.display();
@@ -270,10 +270,10 @@ void ShmupEngine::EnemiesUpdate() {
     if (e.x <= -8 || e.x >= 128 || e.y <= -8 || e.y >= 64) {
       e.active = false;
     }
-    for (size_t j = 0; j < ENEMY_BULLETS_SIZE; j++) {
+    for (uint8_t j = 0; j < ENEMY_BULLETS_SIZE; j++) {
       e.bullets[j].Tick();
     }
-    for (size_t j = 0; j < ENEMY_BULLETS_SIZE; j++) {
+    for (uint8_t j = 0; j < ENEMY_BULLETS_SIZE; j++) {
       if (e.active && !e.bullets[j].active) {
         if (random(0, 90) != 0)
           continue;
