@@ -62,16 +62,6 @@ void ShmupEngine::CollisionTone() {
     freq = 1100;
 }
 
-void ShmupEngine::BeamTone() {
-  if (options.mute)
-    return;
-  static int freq = 2200;
-  tones.tone(freq, 50);
-  freq = freq / 1.3;
-  if (freq < 300)
-    freq = 2200;
-}
-
 void ShmupEngine::GameOverTone() {
   if (options.mute)
     return;
@@ -81,45 +71,15 @@ void ShmupEngine::GameOverTone() {
 void ShmupEngine::WeaponCheck() {
   if (arduboy.pressed(A_BUTTON))
     WeaponFire();
-  else
-    WeaponClear();
+  WeaponTick();
 }
 
 void ShmupEngine::WeaponFire() {
-  if (beamf_ == -1 && hp >= 50) {
-    hp += BEAM_COST_SCORE;
-    beamf_ = 20;
-  } else if (beamf_ > 0) {
-    BeamTone();
-    beamf_--;
-    for (int i = 0; i < ENEMIES_SIZE; i++) {
-      Enemy& e = enemies[i];
-      if (e.active && e.x > player.x) {
-        if (ShmupSprites::Collides(
-            e.x, e.y, ShmupSprites::ENEMY_MASK,
-            e.x, player.y, ShmupSprites::BEAM_MASK)) {
-          e.active = false;
-          hp += DESTROY_ENEMY_SCORE;
-        }
-      }
-      for (uint8_t j = 0; j < ENEMY_BULLETS_SIZE; j++) {
-        Bullet& b = e.bullets[j];
-        if (b.active
-            && b.x > player.x) {
-          if (ShmupSprites::Collides(
-              b.x, b.y, ShmupSprites::BULLET_MASK,
-              b.x, player.y, ShmupSprites::BEAM_MASK)) {
-            b.active = false;
-            hp += DESTROY_BULLET_SCORE;
-          }
-        }
-      }
-    }
-  }
+  beam.Fire();
 }
 
-void ShmupEngine::WeaponClear() {
-  beamf_ = -1;
+void ShmupEngine::WeaponTick() {
+  beam.Tick();
 }
 
 void ShmupEngine::PauseCheck() {
@@ -344,9 +304,7 @@ void ShmupEngine::Tick() {
     gameover = true;
   }
 
-  if (beamf_ > 0)
-    arduboy.setRGBled(0, 0, arduboy.frameCount & 1 ? 255 : 0);
-  else if (hp < 0)
+  if (hp < 0)
     arduboy.setRGBled(0, 0, 0);
   else if (hp < 100)
     arduboy.setRGBled(255, 0, 0);
@@ -356,23 +314,14 @@ void ShmupEngine::Tick() {
     arduboy.setRGBled(0, 0, 0);
 }
 
+void ShmupEngine::WeaponDraw() {
+  beam.Draw();
+}
+
 void ShmupEngine::Draw() {
   arduboy.fillScreen(WHITE);
 
-  if (beamf_ > 0) {
-    arduboy.drawFastHLine(player.x + 8, player.y + 3, 128 - player.x - 8,
-                           BLACK);
-    arduboy.drawFastHLine(player.x + 8, player.y + 4, 128 - player.x - 8,
-                           BLACK);
-    int xoff = (4 + arduboy.frameCount % 4 - player.x % 4) % 4;
-    int y = player.y + 3;
-    for (int x = player.x + 8 + xoff; x < 128; x += 4)
-      arduboy.drawPixel(x, y, WHITE);
-    y++;
-    for (int x = player.x + 8 + xoff + 1; x < 128; x += 4)
-      arduboy.drawPixel(x, y, WHITE);
-
-  }
+  WeaponDraw();
 
   arduboy.drawFastHLine(0, 7, 128, BLACK);
   char buf[16];

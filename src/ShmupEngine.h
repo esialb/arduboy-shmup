@@ -15,19 +15,24 @@
 
 #include "Player.h"
 #include "Enemy.h"
+#include "Beam.h"
 
 class ShmupEngine {
 public:
   int hp = INITIAL_HP;
-  int score = 0;bool gameover = false;
+  int score = 0;
+  bool gameover = false;
+
+  Beam beam;
 
   void Tick();
   void Draw();
 
 private:
   int8_t skip_spawn_ = 0;
-  int8_t skip_fire_ = 0;bool inverting_ = false;
-  int8_t beamf_ = 0;bool collide_ = false;
+  int8_t skip_fire_ = 0;
+  bool inverting_ = false;
+  bool collide_ = false;
 
   void DestroyEnemyTone();
   void DestroyBulletTone();
@@ -43,7 +48,8 @@ private:
   void PauseCheck();
   void WeaponCheck();
   void WeaponFire();
-  void WeaponClear();
+  void WeaponTick();
+  void WeaponDraw();
 };
 
 #endif /* SRC_SHMUPENGINE_H_ */

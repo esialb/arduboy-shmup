@@ -14,6 +14,7 @@
 #include "ShmupOptions.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "ShmupEngine.h"
 
 
 extern Arduboy2 arduboy;
@@ -22,6 +23,7 @@ extern ShmupOptions options;
 extern Player player;
 extern Enemy enemies[ENEMIES_SIZE];
 
+extern ShmupEngine engine;
 
 
 #endif /* SRC_EXTERNS_H_ */
