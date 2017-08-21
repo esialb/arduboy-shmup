@@ -18,6 +18,7 @@ public:
   Enemy();
   virtual ~Enemy();
 
+  int8_t (*dxfn)(int frames) = 0;
   int8_t (*dyfn)(int frames) = 0;
 
   int8_t dx, dy, fm, age;

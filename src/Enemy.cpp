@@ -39,6 +39,32 @@ int8_t jumpy_down(int age) {
   return -jumpy_up(age);
 }
 
+int8_t circle_x(int age) {
+  age %= 32;
+  if (age < 8)
+    return -1;
+  if (age < 16)
+    return 0;
+  if (age < 24)
+    return 1;
+  return 0;
+}
+
+int8_t circle_y(int age) {
+  age %= 32;
+  if (age < 8)
+    return 0;
+  if (age < 16)
+    return -1;
+  if (age < 24)
+    return 0;
+  return 1;
+}
+
+int8_t circle_ny(int age) {
+  return -circle_y(age);
+}
+
 Enemy::Enemy() {
   age = 0;
   x = 0;
@@ -80,6 +106,7 @@ void Enemy::Tick() {
         active = true;
         fm = 2 + random(0, 3);
         dyfn = 0;
+        dxfn = 0;
         age = 0;
         dy = 0;
         int ry = random(0, 5);
@@ -89,6 +116,13 @@ void Enemy::Tick() {
           dyfn = jumpy_up;
         else if (ry == 2)
           dyfn = curvy;
+        else if (ry == 3) {
+          dxfn = circle_x;
+          if (random(0, 2))
+            dyfn = circle_y;
+          else
+            dyfn = circle_ny;
+        }
 
         engine.skip_spawn = 3 + random(0, 6);
       } else
@@ -101,6 +135,8 @@ void Enemy::Tick() {
     age++;
     if (dyfn)
       dy = dyfn(age);
+    if (dxfn)
+      x += dxfn(age);
   }
   if (x <= -8 || x >= 128 || y <= -8 || y >= 64) {
     active = false;
