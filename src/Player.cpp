@@ -76,7 +76,7 @@ void Player::Tick() {
                   e.x, e.y, ShmupSprites::ENEMY_MASK)) {
             e.active = false;
             b.active = false;
-            engine.hp += DESTROY_ENEMY_SCORE + engine.level;
+            engine.hp += DESTROY_ENEMY_SCORE;
             engine.score += DESTROY_ENEMY_SCORE + engine.level;
             if (!options.mute)
               tones.tone(800, 50);

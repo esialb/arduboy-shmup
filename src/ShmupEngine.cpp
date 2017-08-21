@@ -147,7 +147,7 @@ void ShmupEngine::Tick() {
       b.y = player.y;
       break;
     }
-    skip_fire = 10;
+    skip_fire = 6;
   } else
     skip_fire--;
 
@@ -161,7 +161,7 @@ void ShmupEngine::Tick() {
   }
 
   uint8_t tmp_level = 0;
-  int tmp_score = score;
+  uint32_t tmp_score = score;
   while(tmp_score >= 500 * tmp_level) {
     tmp_score -= 500 * tmp_level;
     tmp_level++;
