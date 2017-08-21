@@ -104,8 +104,10 @@ void Player::Tick() {
   }
 
   beam.Tick();
-  for (int i = 0; i < WAVE_SIZE; i++)
+  for (int i = 0; i < WAVE_SIZE; i++) {
     wave[i].Tick();
+    wave[i].Collide();
+  }
 
 }
 
