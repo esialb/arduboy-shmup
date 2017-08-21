@@ -96,7 +96,7 @@ void ShmupEngine::GameOverCheck() {
     }
     hp = INITIAL_HP;
     score = 0;
-    level = DEFAULT_LEVEL;
+    level = 0;
   }
 }
 
@@ -160,10 +160,17 @@ void ShmupEngine::Tick() {
     gameover = true;
   }
 
-  uint8_t was_level = level;
-  level = min(DEFAULT_LEVEL + score / 500, ENEMIES_SIZE);
-  if(level != was_level)
+  uint8_t tmp_level = 0;
+  int tmp_score = score;
+  while(tmp_score > 500 * tmp_level) {
+    tmp_score -= 500 * tmp_level;
+    tmp_level++;
+  }
+  tmp_level += DEFAULT_LEVEL - 1;
+
+  if(level != tmp_level)
     arduboy.setFrameRate(options.fps + 3 * level);
+  level = tmp_level;
 
   if (hp < 0)
     arduboy.setRGBled(0, 0, 0);
