@@ -27,16 +27,17 @@ public:
 
   uint8_t weapon = 1;
   Beam beam;
-  Wave wave;
+  Wave wave[WAVE_SIZE];
 
   void Tick();
   void Draw();
 
-private:
-  int8_t skip_spawn_ = 0;
-  int8_t skip_fire_ = 0;
-  bool inverting_ = false;
-  bool collide_ = false;
+  uint8_t weapon_skip_fire = 0;
+
+  int8_t skip_spawn = 0;
+  int8_t skip_fire = 0;
+  bool inverting = false;
+  bool collide = false;
 
   void DestroyEnemyTone();
   void DestroyBulletTone();

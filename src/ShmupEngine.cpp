@@ -69,21 +69,33 @@ void ShmupEngine::GameOverTone() {
 }
 
 void ShmupEngine::WeaponCheck() {
+  if (weapon_skip_fire > 0)
+    weapon_skip_fire--;
   if (arduboy.pressed(A_BUTTON))
     WeaponFire();
   WeaponTick();
 }
 
 void ShmupEngine::WeaponFire() {
+  if (weapon_skip_fire > 0)
+    return;
+  weapon_skip_fire = 8;
   if (weapon == 1)
     beam.Fire();
-  if (weapon == 2)
-    wave.Fire();
+  if (weapon == 2) {
+    for (int i = 0; i < WAVE_SIZE; i++) {
+      if (!wave[i].active) {
+        wave[i].Fire();
+        break;
+      }
+    }
+  }
 }
 
 void ShmupEngine::WeaponTick() {
   beam.Tick();
-  wave.Tick();
+  for (int i = 0; i < WAVE_SIZE; i++)
+    wave[i].Tick();
 }
 
 void ShmupEngine::MenuCheck() {
@@ -152,7 +164,7 @@ void ShmupEngine::CollideCheck() {
     if (e.active) {
       if (ShmupSprites::Collides(player.x, player.y,
           ShmupSprites::PLAYER_MASK, e.x, e.y, ShmupSprites::ENEMY_MASK)) {
-        collide_ = true;
+        collide = true;
       }
     }
     for (uint8_t j = 0; j < ENEMY_BULLETS_SIZE; j++) {
@@ -161,20 +173,20 @@ void ShmupEngine::CollideCheck() {
         continue;
       if (ShmupSprites::Collides(player.x, player.y,
           ShmupSprites::PLAYER_MASK, b.x, b.y, ShmupSprites::BULLET_MASK)) {
-        collide_ = true;
+        collide = true;
       }
     }
   }
 
-  if (collide_) {
+  if (collide) {
     CollisionTone();
-    if (!inverting_) {
+    if (!inverting) {
       arduboy.invert(true);
-      inverting_ = true;
+      inverting = true;
       hp += PLAYER_HIT_SCORE;
     }
   } else {
-    inverting_ = false;
+    inverting = false;
     arduboy.invert(false);
   }
 }
@@ -239,7 +251,7 @@ void ShmupEngine::EnemiesUpdate() {
     Enemy& e = enemies[i];
     if (!e.active) {
       if (random(0, 16) == 0) {
-        if (skip_spawn_ == 0) {
+        if (skip_spawn == 0) {
           e.x = 120;
           e.y = random(8, 64 - 16);
           e.active = true;
@@ -255,9 +267,9 @@ void ShmupEngine::EnemiesUpdate() {
           else if (ry == 2)
             e.dyfn = curvy;
 
-          skip_spawn_ = 3 + random(0, 6);
+          skip_spawn = 3 + random(0, 6);
         } else
-          skip_spawn_--;
+          skip_spawn--;
       }
     }
     if (arduboy.frameCount % e.fm == 0) {
@@ -291,7 +303,7 @@ void ShmupEngine::EnemiesUpdate() {
 void ShmupEngine::Tick() {
   if (!arduboy.nextFrame())
     return;
-  collide_ = false;
+  collide = false;
 
   if (gameover) {
     GameOverCheck();
@@ -305,7 +317,7 @@ void ShmupEngine::Tick() {
 
   MenuCheck();
 
-  if (skip_fire_ == 0) {
+  if (skip_fire == 0) {
     for (uint8_t i = 0; i < PLAYER_BULLETS_SIZE; i++) {
       Bullet& b = player.bullets[i];
       if (b.active)
@@ -315,9 +327,9 @@ void ShmupEngine::Tick() {
       b.y = player.y;
       break;
     }
-    skip_fire_ = 5;
+    skip_fire = 5;
   } else
-    skip_fire_--;
+    skip_fire--;
 
   EnemiesUpdate();
 
@@ -340,7 +352,8 @@ void ShmupEngine::Tick() {
 
 void ShmupEngine::WeaponDraw() {
   beam.Draw();
-  wave.Draw();
+  for (int i = 0; i < WAVE_SIZE; i++)
+    wave[i].Draw();
 }
 
 void ShmupEngine::Draw() {
