@@ -81,6 +81,17 @@ void ShmupEngine::GameOverCheck() {
   if (arduboy.pressed(B_BUTTON)) {
     while (arduboy.pressed(B_BUTTON))
       ;
+    if (score > ShmupEeprom::LoadHighScore()) {
+      ShmupEeprom::setHighScore(score);
+      arduboy.fillScreen(WHITE);
+      arduboy.setCursor(19, 29);
+      arduboy.print("New High Score!");
+      arduboy.display();
+      while (!arduboy.buttonsState());
+        ;
+      while (arduboy.buttonsState())
+        ;
+    }
     arduboy.invert(false);
     intro();
     options.SelectOptions();
@@ -159,8 +170,6 @@ void ShmupEngine::Tick() {
   if (hp < 0) {
     GameOverTone();
     gameover = true;
-    if (score > ShmupEeprom::LoadHighScore())
-      ShmupEeprom::setHighScore(score);
   }
 
   while (score >= next_level_score) {

@@ -16,6 +16,7 @@ class Wave {
 public:
   void Fire();
   void Tick();
+  void Collide();
   void Draw();
 
   int8_t dx = 1;

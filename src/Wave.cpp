@@ -41,9 +41,11 @@ void Wave::Tick() {
     return;
   x += dx;
   age++;
+}
 
-
-
+void Wave::Collide() {
+  if(!active)
+    return;
   if (dx > 0) {
     for (int i = 0; i < ENEMIES_SIZE; i++) {
       Enemy& e = enemies[i];

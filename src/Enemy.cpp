@@ -192,5 +192,6 @@ void Enemy::Tick() {
       }
     }
   }
+  wave.Collide();
 
 }
