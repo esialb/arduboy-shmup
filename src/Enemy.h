@@ -24,7 +24,8 @@ public:
   int8_t dx, dy, fm, age;
 
   uint8_t x;
-  uint8_t y;bool active;
+  uint8_t y;
+  bool active = false;
 
   Bullet bullets[ENEMY_BULLETS_SIZE];
   Wave wave;

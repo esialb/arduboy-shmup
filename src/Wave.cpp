@@ -45,8 +45,8 @@ void Wave::Tick() {
             e.x, e.y, ShmupSprites::ENEMY_MASK,
             x, y, ShmupSprites::WAVE_MASK)) {
           e.active = false;
-          engine.hp += DESTROY_ENEMY_SCORE;
-          engine.score += DESTROY_ENEMY_SCORE;
+          engine.hp += DESTROY_ENEMY_SCORE + engine.level;
+          engine.score += DESTROY_ENEMY_SCORE + engine.level;
         }
       }
       for (uint8_t j = 0; j < ENEMY_BULLETS_SIZE; j++) {

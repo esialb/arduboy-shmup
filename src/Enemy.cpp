@@ -99,7 +99,7 @@ void Enemy::Draw() {
 
 void Enemy::Tick() {
   if (!active) {
-    if (random(0, 16) == 0) {
+    if (random(0, 8) == 0) {
       if (engine.skip_spawn == 0) {
         x = 120;
         y = random(8, 64 - 16);

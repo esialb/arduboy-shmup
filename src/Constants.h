@@ -17,5 +17,6 @@
 #define PLAYER_BULLETS_SIZE 3
 #define ENEMY_BULLETS_SIZE 4
 #define WAVE_SIZE 3
+#define DEFAULT_LEVEL 3
 
 #endif /* SRC_CONSTANTS_H_ */

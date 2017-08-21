@@ -94,8 +94,9 @@ void ShmupEngine::GameOverCheck() {
       for (uint8_t j = 0; j < ENEMY_BULLETS_SIZE; j++)
         enemies[i].bullets[j].active = false;
     }
-    hp = 300;
+    hp = INITIAL_HP;
     score = 0;
+    level = DEFAULT_LEVEL;
   }
 }
 
@@ -114,7 +115,7 @@ void ShmupEngine::CollideCheck() {
 }
 
 void ShmupEngine::EnemiesUpdate() {
-  for (uint8_t i = 0; i < ENEMIES_SIZE; i++) {
+  for (uint8_t i = 0; i < level; i++) {
     Enemy& e = enemies[i];
     e.Tick();
   }
@@ -159,6 +160,8 @@ void ShmupEngine::Tick() {
     gameover = true;
   }
 
+  level = min(DEFAULT_LEVEL + score / 500, ENEMIES_SIZE);
+
   if (hp < 0)
     arduboy.setRGBled(0, 0, 0);
   else if (hp < 100)
@@ -182,6 +185,16 @@ void ShmupEngine::Draw() {
   //	itoa(score, buf, 10);
   //	arduboy.setCursor(0, 0);
   //	arduboy.print(buf);
+
+  arduboy.drawLine(56, 1, 56, 5, BLACK);
+  arduboy.drawLine(56, 5, 58, 5, BLACK);
+  arduboy.drawLine(60, 1, 60, 4, BLACK);
+  arduboy.drawPixel(61, 5, BLACK);
+  arduboy.drawLine(62, 1, 62, 4, BLACK);
+  arduboy.drawLine(64, 1, 64, 5, BLACK);
+  arduboy.drawLine(64, 5, 66, 5, BLACK);
+
+  ShmupSprites::DrawInt(level, 68, 1);
 
   int lh = 31 - ((arduboy.frameCount >> 3) & 0x1F);
   arduboy.drawFastVLine(lh, 7, 57, BLACK);
