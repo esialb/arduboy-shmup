@@ -115,7 +115,7 @@ void ShmupEngine::CollideCheck() {
 }
 
 void ShmupEngine::EnemiesUpdate() {
-  for (uint8_t i = 0; i < level; i++) {
+  for (uint8_t i = 0; i < min(level, ENEMIES_SIZE); i++) {
     Enemy& e = enemies[i];
     e.Tick();
   }
