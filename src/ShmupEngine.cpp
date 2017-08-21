@@ -31,31 +31,12 @@ void ShmupEngine::GameOverTone() {
 void ShmupEngine::WeaponCheck() {
   if (weapon_skip_fire > 0)
     weapon_skip_fire--;
-  if (arduboy.pressed(A_BUTTON))
-    WeaponFire();
-  WeaponTick();
-}
-
-void ShmupEngine::WeaponFire() {
+  if (!arduboy.pressed(A_BUTTON))
+    return;
   if (weapon_skip_fire > 0)
     return;
   weapon_skip_fire = 8;
-  if (weapon == 1)
-    beam.Fire();
-  if (weapon == 2) {
-    for (int i = 0; i < WAVE_SIZE; i++) {
-      if (!wave[i].active) {
-        wave[i].Fire();
-        break;
-      }
-    }
-  }
-}
-
-void ShmupEngine::WeaponTick() {
-  beam.Tick();
-  for (int i = 0; i < WAVE_SIZE; i++)
-    wave[i].Tick();
+  player.Fire();
 }
 
 void ShmupEngine::MenuCheck() {
@@ -66,7 +47,7 @@ void ShmupEngine::MenuCheck() {
       arduboy.setCursor(0, 0);
       arduboy.setTextColor(WHITE);
       arduboy.setTextBackground(BLACK);
-      switch(weapon) {
+      switch(player.weapon) {
       case 0:
         arduboy.print("PAUSE ");
         break;
@@ -79,17 +60,17 @@ void ShmupEngine::MenuCheck() {
       }
       arduboy.display();
       if (arduboy.pressed(UP_BUTTON))
-        weapon--;
+        player.weapon--;
       if (arduboy.pressed(DOWN_BUTTON))
-        weapon++;
+        player.weapon++;
       while(arduboy.pressed(UP_BUTTON) || arduboy.pressed(DOWN_BUTTON))
         ;
-      if(weapon == 255)
-        weapon = 2;
-      if (weapon == 3)
-        weapon = 0;
+      if(player.weapon == 255)
+        player.weapon = 2;
+      if (player.weapon == 3)
+        player.weapon = 0;
     }
-  } while(weapon == 0);
+  } while(player.weapon == 0);
   arduboy.setTextColor(BLACK);
   arduboy.setTextBackground(WHITE);
 }
@@ -165,7 +146,7 @@ void ShmupEngine::Tick() {
       b.y = player.y;
       break;
     }
-    skip_fire = 8;
+    skip_fire = 10;
   } else
     skip_fire--;
 
@@ -188,16 +169,8 @@ void ShmupEngine::Tick() {
     arduboy.setRGBled(0, 0, 0);
 }
 
-void ShmupEngine::WeaponDraw() {
-  beam.Draw();
-  for (int i = 0; i < WAVE_SIZE; i++)
-    wave[i].Draw();
-}
-
 void ShmupEngine::Draw() {
   arduboy.fillScreen(WHITE);
-
-  WeaponDraw();
 
   arduboy.drawFastHLine(0, 7, 128, BLACK);
   char buf[16];

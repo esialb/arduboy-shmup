@@ -25,9 +25,6 @@ public:
   int score = 0;
   bool gameover = false;
 
-  uint8_t weapon = 1;
-  Beam beam;
-  Wave wave[WAVE_SIZE];
 
   void Tick();
   void Draw();
@@ -48,9 +45,6 @@ public:
   void EnemiesUpdate();
   void MenuCheck();
   void WeaponCheck();
-  void WeaponFire();
-  void WeaponTick();
-  void WeaponDraw();
 };
 
 #endif /* SRC_SHMUPENGINE_H_ */

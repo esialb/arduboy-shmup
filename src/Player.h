@@ -11,6 +11,8 @@
 #include <Arduboy2.h>
 
 #include "Bullet.h"
+#include "Beam.h"
+#include "Wave.h"
 
 #include "Constants.h"
 
@@ -20,11 +22,15 @@ public:
   virtual ~Player();
 
   void Tick();
+  void Fire();
 
   uint8_t x;
   uint8_t y;bool active;
 
   Bullet bullets[PLAYER_BULLETS_SIZE];
+  uint8_t weapon = 1;
+  Beam beam;
+  Wave wave[WAVE_SIZE];
 
   void Draw();
 };

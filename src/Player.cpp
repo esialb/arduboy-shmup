@@ -32,6 +32,22 @@ void Player::Draw() {
 
   for (uint8_t i = 0; i < PLAYER_BULLETS_SIZE; i++)
     bullets[i].Draw();
+  beam.Draw();
+  for (int i = 0; i < WAVE_SIZE; i++)
+    wave[i].Draw();
+}
+
+void Player::Fire() {
+  if (weapon == 1)
+    beam.Fire();
+  if (weapon == 2) {
+    for (int i = 0; i < WAVE_SIZE; i++) {
+      if (!wave[i].active) {
+        wave[i].Fire();
+        break;
+      }
+    }
+  }
 }
 
 void Player::Tick() {
@@ -49,7 +65,6 @@ void Player::Tick() {
       player.bullets[i].Tick();
     }
   }
-
   for (uint8_t i = 0; i < PLAYER_BULLETS_SIZE; i++) {
     if (player.bullets[i].active) {
       Bullet& b = player.bullets[i];
@@ -87,4 +102,9 @@ void Player::Tick() {
       }
     }
   }
+
+  beam.Tick();
+  for (int i = 0; i < WAVE_SIZE; i++)
+    wave[i].Tick();
+
 }
