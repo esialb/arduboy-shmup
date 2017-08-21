@@ -109,6 +109,7 @@ void ShmupEngine::GameOverCheck() {
     score = 0;
     level = 0;
     next_level_score = 0;
+    arduboy.setFrameRate(options.fps);
   }
 }
 
@@ -173,6 +174,7 @@ void ShmupEngine::Tick() {
   }
 
   while (score >= next_level_score) {
+    arduboy.setFrameRate(options.fps + 3 * level);
     level++;
     next_level_score += 500 * level;
   }
