@@ -82,6 +82,7 @@ void ShmupEngine::GameOverCheck() {
     while (arduboy.pressed(B_BUTTON))
       ;
     arduboy.invert(false);
+    intro();
     options.SelectOptions();
     gameover = false;
     player.x = 0;
