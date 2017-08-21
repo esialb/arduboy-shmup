@@ -29,8 +29,6 @@ ShmupOptions options;
 Player player;
 Enemy enemies[ENEMIES_SIZE];
 
-ShmupEngine engine;
-
 void intro() {
   arduboy.fillScreen(WHITE);
   arduboy.setCursor(37, 28);
@@ -100,6 +98,6 @@ void setup() {
 }
 
 void loop() {
-  engine.Tick();
-  engine.Draw();
+  ShmupEngine::Tick();
+  ShmupEngine::Draw();
 }

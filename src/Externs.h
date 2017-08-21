@@ -23,8 +23,6 @@ extern ShmupOptions options;
 extern Player player;
 extern Enemy enemies[ENEMIES_SIZE];
 
-extern ShmupEngine engine;
-
 void intro();
 
 #endif /* SRC_EXTERNS_H_ */

@@ -11,8 +11,8 @@
 #include "Externs.h"
 
 void Beam::Fire() {
-  if (beamf == 0 && engine.hp + BEAM_COST_SCORE > 0) {
-    engine.hp += BEAM_COST_SCORE;
+  if (beamf == 0 && ShmupEngine::hp + BEAM_COST_SCORE > 0) {
+    ShmupEngine::hp += BEAM_COST_SCORE;
     beamf = 20;
   }
 }
@@ -38,8 +38,8 @@ void Beam::Tick() {
             e.x, e.y, ShmupSprites::ENEMY_MASK,
             e.x, player.y, ShmupSprites::BEAM_MASK)) {
           e.active = false;
-          engine.hp += DESTROY_ENEMY_SCORE;
-          engine.score += DESTROY_ENEMY_SCORE + engine.level;
+          ShmupEngine::hp += DESTROY_ENEMY_SCORE;
+          ShmupEngine::score += DESTROY_ENEMY_SCORE + ShmupEngine::level;
         }
       }
       for (uint8_t j = 0; j < ENEMY_BULLETS_SIZE; j++) {
@@ -50,8 +50,8 @@ void Beam::Tick() {
               b.x, b.y, ShmupSprites::BULLET_MASK,
               b.x, player.y, ShmupSprites::BEAM_MASK)) {
             b.active = false;
-            engine.hp += DESTROY_BULLET_SCORE;
-            engine.score += DESTROY_BULLET_SCORE;
+            ShmupEngine::hp += DESTROY_BULLET_SCORE;
+            ShmupEngine::score += DESTROY_BULLET_SCORE;
           }
         }
       }

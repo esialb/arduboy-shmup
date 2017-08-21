@@ -107,7 +107,7 @@ void Enemy::Draw() {
 void Enemy::Tick() {
   if (!active) {
     if (random(0, 8) == 0) {
-      if (engine.skip_spawn == 0) {
+      if (ShmupEngine::skip_spawn == 0) {
         x = 120;
         y = random(8, 64 - 16);
         active = true;
@@ -131,9 +131,9 @@ void Enemy::Tick() {
             dyfn = circle_ny;
         }
 
-        engine.skip_spawn = 3 + random(0, 6);
+        ShmupEngine::skip_spawn = 3 + random(0, 6);
       } else
-        engine.skip_spawn--;
+        ShmupEngine::skip_spawn--;
     }
   }
   if (arduboy.frameCount % fm == 0) {
@@ -178,7 +178,7 @@ void Enemy::Tick() {
       if (ShmupSprites::Collides(
           player.x, player.y, ShmupSprites::PLAYER_MASK,
           e.x, e.y, ShmupSprites::ENEMY_MASK)) {
-        engine.collide = true;
+        ShmupEngine::collide = true;
       }
     }
     for (uint8_t j = 0; j < ENEMY_BULLETS_SIZE; j++) {
@@ -188,7 +188,7 @@ void Enemy::Tick() {
       if (ShmupSprites::Collides(
           player.x, player.y, ShmupSprites::PLAYER_MASK,
           b.x, b.y, ShmupSprites::BULLET_MASK)) {
-        engine.collide = true;
+        ShmupEngine::collide = true;
       }
     }
   }

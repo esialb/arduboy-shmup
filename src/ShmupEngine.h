@@ -21,31 +21,31 @@
 
 class ShmupEngine {
 public:
-  int hp = INITIAL_HP;
-  uint32_t score = 0;
-  bool gameover = false;
-  uint8_t level = 0;
-  uint32_t next_level_score = 0;
+  static int hp;
+  static uint32_t score;
+  static bool gameover;
+  static uint8_t level;
+  static  uint32_t next_level_score;
 
-  void Tick();
-  void Draw();
+  static void Tick();
+  static void Draw();
 
-  uint8_t weapon_skip_fire = 0;
+  static uint8_t weapon_skip_fire;
 
-  int8_t skip_spawn = 0;
-  int8_t skip_fire = 0;
-  bool inverting = false;
-  bool collide = false;
+  static int8_t skip_spawn;
+  static int8_t skip_fire;
+  static bool inverting;
+  static bool collide;
 
-  void CollisionTone();
-  void BeamTone();
-  void GameOverTone();
-  void BeamCheck();
-  void GameOverCheck();
-  void CollideCheck();
-  void EnemiesUpdate();
-  void MenuCheck();
-  void WeaponCheck();
+  static void CollisionTone();
+  static void BeamTone();
+  static void GameOverTone();
+  static void BeamCheck();
+  static void GameOverCheck();
+  static void CollideCheck();
+  static void EnemiesUpdate();
+  static void MenuCheck();
+  static void WeaponCheck();
 };
 
 #endif /* SRC_SHMUPENGINE_H_ */

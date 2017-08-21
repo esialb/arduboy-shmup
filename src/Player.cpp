@@ -76,8 +76,8 @@ void Player::Tick() {
                   e.x, e.y, ShmupSprites::ENEMY_MASK)) {
             e.active = false;
             b.active = false;
-            engine.hp += DESTROY_ENEMY_SCORE;
-            engine.score += DESTROY_ENEMY_SCORE + engine.level;
+            ShmupEngine::hp += DESTROY_ENEMY_SCORE;
+            ShmupEngine::score += DESTROY_ENEMY_SCORE + ShmupEngine::level;
             if (!options.mute)
               tones.tone(800, 50);
             break;
@@ -91,8 +91,8 @@ void Player::Tick() {
                     ShmupSprites::BULLET_MASK)) {
               b2.active = false;
               b.active = false;
-              engine.hp += DESTROY_BULLET_SCORE;
-              engine.score += DESTROY_BULLET_SCORE;
+              ShmupEngine::hp += DESTROY_BULLET_SCORE;
+              ShmupEngine::score += DESTROY_BULLET_SCORE;
               if (!options.mute)
                 tones.tone(8800, 10);
               nb = false;

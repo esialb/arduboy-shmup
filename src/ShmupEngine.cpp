@@ -14,6 +14,17 @@
 
 #include "ShmupEeprom.h"
 
+int ShmupEngine::hp = INITIAL_HP;
+uint32_t ShmupEngine::score = 0;
+bool ShmupEngine::gameover = false;
+uint8_t ShmupEngine::level = 0;
+uint32_t ShmupEngine::next_level_score = 0;
+uint8_t ShmupEngine::weapon_skip_fire = 0;
+int8_t ShmupEngine::skip_spawn = 0;
+int8_t ShmupEngine::skip_fire = 0;
+bool ShmupEngine::inverting = false;
+bool ShmupEngine::collide = false;
+
 void ShmupEngine::CollisionTone() {
   if (options.mute)
     return;
