@@ -69,7 +69,6 @@ void Wave::Tick() {
     if (ShmupSprites::Collides(
         x, y, ShmupSprites::EWAVE_MASK,
         player.x, player.y, ShmupSprites::PLAYER_MASK)) {
-      engine.hp += PLAYER_HIT_SCORE;
       engine.collide = true;
     }
   }

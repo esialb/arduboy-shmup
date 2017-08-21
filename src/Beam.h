@@ -18,7 +18,7 @@ public:
 private:
   void BeamTone();
 
-  int8_t beamf;
+  int8_t beamf = -1;
 };
 
 #endif /* SRC_BEAM_H_ */
