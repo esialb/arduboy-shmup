@@ -144,6 +144,8 @@ void Enemy::Tick() {
   for (uint8_t j = 0; j < ENEMY_BULLETS_SIZE; j++) {
     bullets[j].Tick();
   }
+  if (arduboy.frameCount % (fm - 1) == 0)
+    wave.Tick();
   for (uint8_t j = 0; j < ENEMY_BULLETS_SIZE; j++) {
     if (active && !bullets[j].active) {
       if (random(0, 90) != 0)
@@ -156,12 +158,12 @@ void Enemy::Tick() {
       break;
     }
   }
-  if (active && random(0, 64) == 0 && !wave.active) {
+  if (active && random(0, 32) == 0 && !wave.active) {
     wave.active = true;
     wave.x = x;
     wave.y = y;
+    wave.age = 0;
   }
-  wave.Tick();
 
   for (uint8_t i = 0; i < ENEMIES_SIZE; i++) {
     Enemy& e = enemies[i];

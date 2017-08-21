@@ -35,10 +35,14 @@ void Wave::Tick() {
   if (age >= 64) {
     active = false;
   }
+  if (x < 0 || x >= 120)
+    active = false;
   if (!active)
     return;
   x += dx;
   age++;
+
+
 
   if (dx > 0) {
     for (int i = 0; i < ENEMIES_SIZE; i++) {

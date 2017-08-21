@@ -205,7 +205,7 @@ void ShmupEngine::Draw() {
   arduboy.drawLine(64, 1, 64, 5, BLACK);
   arduboy.drawLine(64, 5, 66, 5, BLACK);
 
-  ShmupSprites::DrawInt(level, 68, 1);
+  ShmupSprites::DrawInt(level - DEFAULT_LEVEL + 1, 68, 1);
 
   int lh = 31 - ((arduboy.frameCount >> 3) & 0x1F);
   arduboy.drawFastVLine(lh, 7, 57, BLACK);

@@ -19,7 +19,7 @@ public:
   void Draw();
 
   int8_t dx = 1;
-  uint8_t x, y;
+  int8_t x, y;
   bool active = false;
   uint8_t age;
 };
