@@ -11,7 +11,7 @@
 #include "Externs.h"
 
 void Beam::Fire() {
-  if (beamf == 0 && engine.hp >= 50) {
+  if (beamf == 0 && engine.hp + BEAM_COST_SCORE > 0) {
     engine.hp += BEAM_COST_SCORE;
     beamf = 20;
   }

@@ -160,7 +160,10 @@ void ShmupEngine::Tick() {
     gameover = true;
   }
 
+  uint8_t was_level = level;
   level = min(DEFAULT_LEVEL + score / 500, ENEMIES_SIZE);
+  if(level != was_level)
+    arduboy.setFrameRate(options.fps + 3 * level);
 
   if (hp < 0)
     arduboy.setRGBled(0, 0, 0);

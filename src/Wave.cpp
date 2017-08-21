@@ -10,8 +10,11 @@
 #include "Externs.h"
 
 void Wave::Fire() {
+  if(engine.hp + WAVE_COST_SCORE <= 0)
+    return;
   if (active)
     return;
+  engine.hp += WAVE_COST_SCORE;
   active = true;
   x = player.x;
   y = player.y;

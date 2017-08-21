@@ -24,7 +24,7 @@ public:
   int hp = INITIAL_HP;
   int score = 0;
   bool gameover = false;
-  uint8_t level = DEFAULT_LEVEL;
+  uint8_t level = 0;
 
 
   void Tick();
