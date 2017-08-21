@@ -39,16 +39,12 @@ public:
   bool inverting = false;
   bool collide = false;
 
-  void DestroyEnemyTone();
-  void DestroyBulletTone();
   void CollisionTone();
   void BeamTone();
   void GameOverTone();
   void BeamCheck();
   void GameOverCheck();
   void CollideCheck();
-  void DestroyCheck();
-  void PlayerUpdate();
   void EnemiesUpdate();
   void MenuCheck();
   void WeaponCheck();

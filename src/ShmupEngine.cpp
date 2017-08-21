@@ -12,46 +12,6 @@
 #include "Constants.h"
 #include "Externs.h"
 
-int8_t curvy(int age) {
-  age = age % 20;
-  if (age < 5)
-    return -age;
-  if (age < 10)
-    return -(10 - age);
-  if (age < 15)
-    return age - 10;
-  return 20 - age;
-}
-
-int8_t jumpy_up(int age) {
-  age = age % 12;
-  if (age == 11)
-    return 3;
-  if (age == 10)
-    return 2;
-  if (age >= 6)
-    return 1;
-  if (age >= 4)
-    return -1;
-  return 0;
-}
-
-int8_t jumpy_down(int age) {
-  return -jumpy_up(age);
-}
-
-void ShmupEngine::DestroyEnemyTone() {
-  if (options.mute)
-    return;
-  tones.tone(800, 50);
-}
-
-void ShmupEngine::DestroyBulletTone() {
-  if (options.mute)
-    return;
-  tones.tone(8800, 10);
-}
-
 void ShmupEngine::CollisionTone() {
   if (options.mute)
     return;
@@ -159,25 +119,6 @@ void ShmupEngine::GameOverCheck() {
 }
 
 void ShmupEngine::CollideCheck() {
-  for (uint8_t i = 0; i < ENEMIES_SIZE; i++) {
-    Enemy& e = enemies[i];
-    if (e.active) {
-      if (ShmupSprites::Collides(player.x, player.y,
-          ShmupSprites::PLAYER_MASK, e.x, e.y, ShmupSprites::ENEMY_MASK)) {
-        collide = true;
-      }
-    }
-    for (uint8_t j = 0; j < ENEMY_BULLETS_SIZE; j++) {
-      Bullet& b = e.bullets[j];
-      if (!b.active)
-        continue;
-      if (ShmupSprites::Collides(player.x, player.y,
-          ShmupSprites::PLAYER_MASK, b.x, b.y, ShmupSprites::BULLET_MASK)) {
-        collide = true;
-      }
-    }
-  }
-
   if (collide) {
     CollisionTone();
     if (!inverting) {
@@ -191,112 +132,10 @@ void ShmupEngine::CollideCheck() {
   }
 }
 
-void ShmupEngine::DestroyCheck() {
-  for (uint8_t i = 0; i < PLAYER_BULLETS_SIZE; i++) {
-    if (player.bullets[i].active) {
-      Bullet& b = player.bullets[i];
-      if (b.active) {
-        for (int j = 0; j < ENEMIES_SIZE; j++) {
-          Enemy& e = enemies[j];
-          if (e.active
-              && ShmupSprites::Collides(b.x, b.y, ShmupSprites::BULLET_MASK,
-                  e.x, e.y, ShmupSprites::ENEMY_MASK)) {
-            e.active = false;
-            b.active = false;
-            hp += DESTROY_ENEMY_SCORE;
-            score += DESTROY_ENEMY_SCORE;
-            DestroyEnemyTone();
-            break;
-          }
-          bool nb = true;
-          for (uint8_t k = 0; nb && k < ENEMY_BULLETS_SIZE; k++) {
-            Bullet& b2 = e.bullets[k];
-            if (b2.active
-                && ShmupSprites::Collides(b.x, b.y,
-                    ShmupSprites::BULLET_MASK, b2.x, b2.y,
-                    ShmupSprites::BULLET_MASK)) {
-              b2.active = false;
-              b.active = false;
-              hp += DESTROY_BULLET_SCORE;
-              score += DESTROY_BULLET_SCORE;
-              DestroyBulletTone();
-              nb = false;
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
-void ShmupEngine::PlayerUpdate() {
-  if (player.x > 0 && arduboy.pressed(LEFT_BUTTON))
-    player.x--;
-  if (player.x < WIDTH - 8 && arduboy.pressed(RIGHT_BUTTON))
-    player.x++;
-  if (player.y > 0 && arduboy.pressed(UP_BUTTON))
-    player.y--;
-  if (player.y < HEIGHT - 8 && arduboy.pressed(DOWN_BUTTON))
-    player.y++;
-
-  for (uint8_t i = 0; i < PLAYER_BULLETS_SIZE; i++) {
-    if (player.bullets[i].active) {
-      player.bullets[i].Tick();
-    }
-  }
-}
-
 void ShmupEngine::EnemiesUpdate() {
   for (uint8_t i = 0; i < ENEMIES_SIZE; i++) {
     Enemy& e = enemies[i];
-    if (!e.active) {
-      if (random(0, 16) == 0) {
-        if (skip_spawn == 0) {
-          e.x = 120;
-          e.y = random(8, 64 - 16);
-          e.active = true;
-          e.fm = 2 + random(0, 3);
-          e.dyfn = 0;
-          e.age = 0;
-          e.dy = 0;
-          int ry = random(0, 5);
-          if (ry == 0)
-            e.dyfn = jumpy_down;
-          else if (ry == 1)
-            e.dyfn = jumpy_up;
-          else if (ry == 2)
-            e.dyfn = curvy;
-
-          skip_spawn = 3 + random(0, 6);
-        } else
-          skip_spawn--;
-      }
-    }
-    if (arduboy.frameCount % e.fm == 0) {
-      e.x += e.dx;
-      e.y += e.dy;
-      e.age++;
-      if (e.dyfn)
-        e.dy = e.dyfn(e.age);
-    }
-    if (e.x <= -8 || e.x >= 128 || e.y <= -8 || e.y >= 64) {
-      e.active = false;
-    }
-    for (uint8_t j = 0; j < ENEMY_BULLETS_SIZE; j++) {
-      e.bullets[j].Tick();
-    }
-    for (uint8_t j = 0; j < ENEMY_BULLETS_SIZE; j++) {
-      if (e.active && !e.bullets[j].active) {
-        if (random(0, 90) != 0)
-          continue;
-        Bullet& b = e.bullets[j];
-        b.active = true;
-        b.x = e.x - 8;
-        b.y = e.y;
-        b.fm = e.fm - 1;
-        break;
-      }
-    }
+    e.Tick();
   }
 }
 
@@ -310,9 +149,8 @@ void ShmupEngine::Tick() {
     return;
   }
 
-  PlayerUpdate();
+  player.Tick();
 
-  DestroyCheck();
   WeaponCheck();
 
   MenuCheck();

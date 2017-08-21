@@ -26,6 +26,7 @@ public:
 
   Bullet bullets[ENEMY_BULLETS_SIZE];
 
+  void Tick();
   void Draw();
 };
 
