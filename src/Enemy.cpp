@@ -109,7 +109,7 @@ void Enemy::Tick() {
         dxfn = 0;
         age = 0;
         dy = 0;
-        int ry = random(0, 5);
+        int ry = random(0, 7);
         if (ry == 0)
           dyfn = jumpy_down;
         else if (ry == 1)
