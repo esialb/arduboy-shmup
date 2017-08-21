@@ -84,6 +84,13 @@ Enemy::Enemy() {
   wave.dx = -1;
 }
 
+void Enemy::Reset() {
+  active = false;
+  for (uint8_t i = 0; i < ENEMY_BULLETS_SIZE; i++)
+    bullets[i].active = false;
+  wave.active = false;
+}
+
 Enemy::~Enemy() {
   // TODO Auto-generated destructor stub
 }

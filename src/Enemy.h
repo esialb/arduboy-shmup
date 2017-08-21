@@ -32,6 +32,7 @@ public:
 
   void Tick();
   void Draw();
+  void Reset();
 };
 
 #endif /* SRC_ENEMY_H_ */

@@ -25,7 +25,7 @@ public:
   uint32_t score = 0;
   bool gameover = false;
   uint8_t level = 0;
-
+  uint32_t next_level_score = 0;
 
   void Tick();
   void Draw();
