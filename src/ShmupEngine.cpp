@@ -85,6 +85,7 @@ void ShmupEngine::GameOverCheck() {
     player.x = 0;
     player.y = 28;
     player.active = true;
+    player.weapon = 2;
     for (uint8_t i = 0; i < PLAYER_BULLETS_SIZE; i++)
       player.bullets[i].active = false;
     for (uint8_t i = 0; i < ENEMIES_SIZE; i++) {
@@ -112,7 +113,7 @@ void ShmupEngine::CollideCheck() {
 }
 
 void ShmupEngine::EnemiesUpdate() {
-  for (uint8_t i = 0; i < min(level, ENEMIES_SIZE); i++) {
+  for (uint8_t i = 0; i < min(level + DEFAULT_LEVEL - 1, ENEMIES_SIZE); i++) {
     Enemy& e = enemies[i];
     e.Tick();
   }
@@ -162,7 +163,6 @@ void ShmupEngine::Tick() {
     next_level_score += 500 * level;
   }
 
-  arduboy.setFrameRate(options.fps + 3 * level);
   hp = min(hp, 599);
 
   if (hp < 0)

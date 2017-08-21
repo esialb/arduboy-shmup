@@ -28,7 +28,7 @@ public:
   uint8_t y;bool active;
 
   Bullet bullets[PLAYER_BULLETS_SIZE];
-  uint8_t weapon = 1;
+  uint8_t weapon = 2;
   Beam beam;
   Wave wave[WAVE_SIZE];
 

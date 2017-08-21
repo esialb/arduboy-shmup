@@ -165,7 +165,7 @@ void Enemy::Tick() {
       break;
     }
   }
-  if (active && random(0, 32) == 0 && !wave.active) {
+  if (active && random(0, 96) == 0 && !wave.active) {
     wave.active = true;
     wave.x = x;
     wave.y = y;
@@ -175,8 +175,9 @@ void Enemy::Tick() {
   for (uint8_t i = 0; i < ENEMIES_SIZE; i++) {
     Enemy& e = enemies[i];
     if (e.active) {
-      if (ShmupSprites::Collides(player.x, player.y,
-          ShmupSprites::PLAYER_MASK, e.x, e.y, ShmupSprites::ENEMY_MASK)) {
+      if (ShmupSprites::Collides(
+          player.x, player.y, ShmupSprites::PLAYER_MASK,
+          e.x, e.y, ShmupSprites::ENEMY_MASK)) {
         engine.collide = true;
       }
     }
@@ -184,8 +185,9 @@ void Enemy::Tick() {
       Bullet& b = e.bullets[j];
       if (!b.active)
         continue;
-      if (ShmupSprites::Collides(player.x, player.y,
-          ShmupSprites::PLAYER_MASK, b.x, b.y, ShmupSprites::BULLET_MASK)) {
+      if (ShmupSprites::Collides(
+          player.x, player.y, ShmupSprites::PLAYER_MASK,
+          b.x, b.y, ShmupSprites::BULLET_MASK)) {
         engine.collide = true;
       }
     }
