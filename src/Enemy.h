@@ -9,6 +9,7 @@
 #define SRC_ENEMY_H_
 
 #include "Bullet.h"
+#include "Wave.h"
 
 #include "Constants.h"
 
@@ -25,6 +26,7 @@ public:
   uint8_t y;bool active;
 
   Bullet bullets[ENEMY_BULLETS_SIZE];
+  Wave wave;
 
   void Tick();
   void Draw();

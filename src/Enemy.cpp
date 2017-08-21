@@ -54,6 +54,8 @@ Enemy::Enemy() {
   dx = -1;
   dy = 0;
   fm = 3;
+
+  wave.dx = -1;
 }
 
 Enemy::~Enemy() {
@@ -66,6 +68,7 @@ void Enemy::Draw() {
 
   for (uint8_t i = 0; i < ENEMY_BULLETS_SIZE; i++)
     bullets[i].Draw();
+  wave.Draw();
 }
 
 void Enemy::Tick() {
@@ -117,6 +120,12 @@ void Enemy::Tick() {
       break;
     }
   }
+  if (active && random(0, 64) == 0 && !wave.active) {
+    wave.active = true;
+    wave.x = x;
+    wave.y = y;
+  }
+  wave.Tick();
 
   for (uint8_t i = 0; i < ENEMIES_SIZE; i++) {
     Enemy& e = enemies[i];
