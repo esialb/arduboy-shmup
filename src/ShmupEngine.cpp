@@ -327,7 +327,7 @@ void ShmupEngine::Tick() {
       b.y = player.y;
       break;
     }
-    skip_fire = 5;
+    skip_fire = 8;
   } else
     skip_fire--;
 
