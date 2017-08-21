@@ -162,7 +162,7 @@ void ShmupEngine::Tick() {
 
   uint8_t tmp_level = 0;
   int tmp_score = score;
-  while(tmp_score > 500 * tmp_level) {
+  while(tmp_score >= 500 * tmp_level) {
     tmp_score -= 500 * tmp_level;
     tmp_level++;
   }
