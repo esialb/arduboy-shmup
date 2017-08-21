@@ -195,3 +195,9 @@ void Enemy::Tick() {
   wave.Collide();
 
 }
+
+bool Enemy::Collides(int x, int y, const uint8_t* mask) {
+  if (!active)
+    return false;
+  return ShmupSprites::Collides(this->x, this->y, ShmupSprites::ENEMY_MASK, x, y, mask);
+}

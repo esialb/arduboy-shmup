@@ -33,6 +33,7 @@ public:
   void Tick();
   void Draw();
   void Reset();
+  bool Collides(int x, int y, const uint8_t* mask);
 };
 
 #endif /* SRC_ENEMY_H_ */

@@ -47,28 +47,17 @@ void Wave::Collide() {
   if(!active)
     return;
   if (dx > 0) {
-    for (int i = 0; i < ENEMIES_SIZE; i++) {
-      Enemy& e = enemies[i];
-      if (e.active && e.x > player.x) {
-        if (ShmupSprites::Collides(
-            e.x, e.y, ShmupSprites::ENEMY_MASK,
-            x, y, ShmupSprites::WAVE_MASK)) {
-          e.active = false;
-          engine.hp += DESTROY_ENEMY_SCORE;
-          engine.score += DESTROY_ENEMY_SCORE + engine.level;
-        }
+    for (Enemy& e : enemies) {
+      if (e.Collides(x, y, ShmupSprites::WAVE_MASK)) {
+        e.active = false;
+        engine.hp += DESTROY_ENEMY_SCORE;
+        engine.score += DESTROY_ENEMY_SCORE + engine.level;
       }
-      for (uint8_t j = 0; j < ENEMY_BULLETS_SIZE; j++) {
-        Bullet& b = e.bullets[j];
-        if (b.active
-            && b.x > player.x) {
-          if (ShmupSprites::Collides(
-              b.x, b.y, ShmupSprites::BULLET_MASK,
-              x, y, ShmupSprites::WAVE_MASK)) {
+      for (Bullet& b : e.bullets) {
+        if (b.Collides(x, y, ShmupSprites::WAVE_MASK)) {
             b.active = false;
-            engine.hp += DESTROY_BULLET_SCORE;
-            engine.score += DESTROY_BULLET_SCORE;
-          }
+          engine.hp += DESTROY_BULLET_SCORE;
+          engine.score += DESTROY_BULLET_SCORE;
         }
       }
     }
@@ -76,9 +65,7 @@ void Wave::Collide() {
     if (age % 6 == 0)
       tones.tone(6000, 5);
   } else if (dx < 0) {
-    if (ShmupSprites::Collides(
-        x, y, ShmupSprites::EWAVE_MASK,
-        player.x, player.y, ShmupSprites::PLAYER_MASK)) {
+    if (player.Collides(x, y, ShmupSprites::EWAVE_MASK)) {
       engine.collide = true;
     }
   }

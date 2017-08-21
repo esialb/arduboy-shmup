@@ -23,6 +23,7 @@ public:
 
   void Tick();
   void Fire();
+  bool Collides(int x, int y, const uint8_t* mask);
 
   uint8_t x;
   uint8_t y;bool active;

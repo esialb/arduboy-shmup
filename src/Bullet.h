@@ -21,6 +21,8 @@ public:
 
   void Tick();
 
+  bool Collides(int x, int y, const uint8_t* mask);
+
   bool active = false;
 
   uint8_t x = 0, y = 0;

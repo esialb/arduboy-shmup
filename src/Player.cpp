@@ -108,3 +108,9 @@ void Player::Tick() {
     wave[i].Tick();
 
 }
+
+bool Player::Collides(int x, int y, const uint8_t* mask) {
+  if (!active)
+    return false;
+  return ShmupSprites::Collides(this->x, this->y, ShmupSprites::PLAYER_MASK, x, y, mask);
+}

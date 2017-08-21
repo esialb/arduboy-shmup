@@ -31,3 +31,9 @@ void Bullet::Tick() {
   if (x <= -8 || x >= 128 || y <= -8 || y >= 64)
     active = false;
 }
+
+bool Bullet::Collides(int x, int y, const uint8_t* mask) {
+  if (!active)
+    return false;
+  return ShmupSprites::Collides(this->x, this->y, ShmupSprites::BULLET_MASK, x, y, mask);
+}
