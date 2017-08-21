@@ -171,7 +171,7 @@ void ShmupEngine::Tick() {
   if(level != tmp_level)
     arduboy.setFrameRate(options.fps + 3 * level);
   level = tmp_level;
-  hp = min(hp, 500);
+  hp = min(hp, 599);
 
   if (hp < 0)
     arduboy.setRGBled(0, 0, 0);
