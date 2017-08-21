@@ -64,7 +64,8 @@ void Wave::Tick() {
       }
     }
 
-    tones.tone((arduboy.frameCount % 2) ? 200 : 100, 10);
+    if (age % 6 == 0)
+      tones.tone(6000, 5);
   } else if (dx < 0) {
     if (ShmupSprites::Collides(
         x, y, ShmupSprites::EWAVE_MASK,
