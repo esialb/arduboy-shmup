@@ -12,6 +12,8 @@
 #include "Constants.h"
 #include "Externs.h"
 
+#include "ShmupEeprom.h"
+
 void ShmupEngine::CollisionTone() {
   if (options.mute)
     return;
@@ -156,6 +158,8 @@ void ShmupEngine::Tick() {
   if (hp < 0) {
     GameOverTone();
     gameover = true;
+    if (score > ShmupEeprom::LoadHighScore())
+      ShmupEeprom::setHighScore(score);
   }
 
   while (score >= next_level_score) {

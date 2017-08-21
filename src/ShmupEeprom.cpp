@@ -14,15 +14,7 @@
 #define SEED_OFFSET (EEPROM_STORAGE_SPACE_START + 0)
 #define FPS_OFFSET (EEPROM_STORAGE_SPACE_START + 1)
 #define MUTE_OFFSET (EEPROM_STORAGE_SPACE_START + 2)
-
-void ShmupEeprom::Init() {
-  EEPROM.begin();
-}
-
-void ShmupEeprom::Commit() {
-  EEPROM.end();
-  EEPROM.begin();
-}
+#define HIGH_SCORE_OFFSET (EEPROM_STORAGE_SPACE_START + 3)
 
 void ShmupEeprom::InitRandom() {
   long int seed = random();
@@ -36,7 +28,7 @@ int ShmupEeprom::LoadFps() {
 }
 
 void ShmupEeprom::SetFps(int fps) {
-  EEPROM.update(FPS_OFFSET, fps);
+  EEPROM.write(FPS_OFFSET, fps);
 }
 
 bool ShmupEeprom::LoadMute() {
@@ -44,5 +36,23 @@ bool ShmupEeprom::LoadMute() {
 }
 
 void ShmupEeprom::SetMute(bool mute) {
-  EEPROM.update(MUTE_OFFSET, mute);
+  EEPROM.write(MUTE_OFFSET, mute);
+}
+
+uint32_t ShmupEeprom::LoadHighScore() {
+  uint32_t high_score = 0;
+  int address = HIGH_SCORE_OFFSET;
+  high_score |= EEPROM.read(address); address++;
+  high_score <<= 8; high_score |= EEPROM.read(address); address++;
+  high_score <<= 8; high_score |= EEPROM.read(address); address++;
+  high_score <<= 8; high_score |= EEPROM.read(address);
+  return high_score;
+}
+
+void ShmupEeprom::setHighScore(uint32_t high_score) {
+  int address = HIGH_SCORE_OFFSET + 3;
+  EEPROM.write(address, high_score); address--;
+  high_score >>= 8; EEPROM.write(address, high_score); address--;
+  high_score >>= 8; EEPROM.write(address, high_score); address--;
+  high_score >>= 8; EEPROM.write(address, high_score);
 }

@@ -37,6 +37,10 @@ void intro() {
   arduboy.setTextColor(BLACK);
   arduboy.setTextBackground(WHITE);
   arduboy.print("ArduSHMUP");
+
+  arduboy.setCursor(1, 55);
+  arduboy.print("high score: ");
+  arduboy.print(ShmupEeprom::LoadHighScore());
   Player player;
   player.x = 1;
   player.y = 28;
@@ -75,6 +79,8 @@ void setup() {
     Serial.begin(9600);
     while (arduboy.pressed(DOWN_BUTTON))
       ;
+  } else if (arduboy.pressed(LEFT_BUTTON)) {
+    ShmupEeprom::setHighScore(0);
   }
 
   while (arduboy.buttonsState())
