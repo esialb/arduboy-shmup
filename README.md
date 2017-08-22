@@ -2,6 +2,11 @@
 
 *ArdoBoy Shoot-Em-Up*
 
+| | | |
+|-------------------------|-------------------------|-------------------------|
+| ![1.png](doc/png/1.png) | ![2.png](doc/png/2.png) | ![3.png](doc/png/3.png) |
+| ![4.png](doc/png/4.png) | ![5.png](doc/png/5.png) | ![6.png](doc/png/6.png) |
+
 ## installing
 
 To install on arduboy:

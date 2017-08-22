@@ -74,7 +74,7 @@ void setup() {
 
   if (arduboy.pressed(DOWN_BUTTON)) {
     options.screencasting = true;
-    Serial.begin(9600);
+    Serial.begin(115200);
     while (arduboy.pressed(DOWN_BUTTON))
       ;
   } else if (arduboy.pressed(LEFT_BUTTON)) {
