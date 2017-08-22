@@ -19,8 +19,19 @@ For now requires platformio to build which means Linux or OSX. Will make somethi
 
 ## gameplay
 
+### In-Game Keys
+
 - `UP` `DOWN` `LEFT` `RIGHT`: move the ship
 - `A`: fire a auxiliary weapon
 - `B`: select weapon menu
+	- `B` + `UP`: rotate previous weapon
+	- `B` + `DOWN`: rotate next weapon
+
+### Startup Keys
+
+- `UP`: Flashlight mode
+- `DOWN`: Enable screen mirroring
+- `LEFT`: Clear high score
+
 
 Score on the upper left, HP on the upper right, difficulty level in the upper center.
