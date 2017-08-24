@@ -99,5 +99,4 @@ void setup() {
 
 void loop() {
   ShmupEngine::Tick();
-  ShmupEngine::Draw();
 }

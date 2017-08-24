@@ -72,6 +72,7 @@ void ShmupEngine::MenuCheck() {
         break;
       }
       arduboy.display();
+      Serial.write(arduboy.getBuffer(), 1024);
       if (arduboy.pressed(UP_BUTTON))
         player.weapon--;
       if (arduboy.pressed(DOWN_BUTTON))
@@ -98,6 +99,8 @@ void ShmupEngine::GameOverCheck() {
       arduboy.setCursor(19, 29);
       arduboy.print("New High Score!");
       arduboy.display();
+      for (int i = 0; i < 1024; i++)
+        Serial.print((char) ~arduboy.getBuffer()[i]);
       while (!arduboy.buttonsState());
         ;
       while (arduboy.buttonsState())
@@ -146,8 +149,21 @@ void ShmupEngine::EnemiesUpdate() {
 }
 
 void ShmupEngine::Tick() {
-  if (!arduboy.nextFrame())
+  static uint8_t skipped_draw = 0;
+  if (!arduboy.nextFrame() || skipped_draw >= 10) {
+    Draw();
+    if (options.screencasting) {
+      if (!inverting)
+        Serial.write(arduboy.getBuffer(), 1024);
+      else
+        for (int i = 0; i < 1024; i++)
+          Serial.print((char) ~arduboy.getBuffer()[i]);
+    }
+    skipped_draw = 0;
     return;
+  } else {
+    skipped_draw++;
+  }
   collide = false;
 
   if (gameover) {
@@ -244,6 +260,4 @@ void ShmupEngine::Draw() {
   }
 
   arduboy.display();
-  if (options.screencasting && (arduboy.frameCount % 4) == 0)
-    Serial.write(arduboy.getBuffer(), 1024);
 }

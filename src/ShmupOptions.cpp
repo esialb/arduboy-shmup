@@ -28,8 +28,8 @@ int ShmupOptions::Menu(const char *str, int length, int opt,
     arduboy.setCursor(0, 16 + 8 * opt);
     arduboy.print(">");
     arduboy.display();
-    if (screencasting)
-      Serial.write(arduboy.getBuffer(), 1024);
+    for (int i = 0; i < 1024; i++)
+      Serial.print((char) ~arduboy.getBuffer()[i]);
     while (arduboy.buttonsState() != 0)
       ;
     while (arduboy.buttonsState() == 0)
